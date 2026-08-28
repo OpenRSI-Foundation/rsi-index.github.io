@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contribute — RSI-Index</title>
+<meta name="description" content="How to contribute an RSI task: bring a project you coauthored or adopt one from the taxonomy, reproduce its recipe, and package it as a verifiable Harbor environment.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Geist+Mono:wght@400;500;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="index.html" aria-label="RSI-Index home">
+      <svg width="18" height="18" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#121509"/><rect x="5" y="21" width="6" height="6" fill="#5b8c2a"/><rect x="13" y="14" width="6" height="6" fill="#d97e2a"/><rect x="21" y="7" width="6" height="6" fill="#f09b3c"/></svg>
+      rsi-index
+    </a>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false">☰</button>
+    <div class="nav-links">
+      <a href="blog.html">Blog</a>
+      <a href="tasks.html">Tasks</a>
+      <a href="contribute.html" class="active">Contribute</a>
+      <a class="ext" href="https://github.com/RSI-Index" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<header class="pagehead">
+  <div class="wrap">
+    <p class="eyebrow">Contribute</p>
+    <h1 class="h-lg">Design a lane. Freeze a baseline. Move the index.</h1>
+    <p class="lede">
+      The goal of every contribution is the same: identify a bounded, researchable experiment
+      inside an influential open project, and turn it into a verifiable RSI environment. An
+      automated pipeline now does most of the work — you bring the idea and the reviews.
+    </p>
+  </div>
+</header>
+
+<!-- ================= FAST PATH ================= -->
+<section class="block">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">The fast path</p>
+      <h2 class="h-lg">From idea to validated RSI task in ≤ 30 active minutes.</h2>
+      <p class="lede">
+        The contribution pipeline is automated end to end: agents draft the proposal, review it,
+        build the Harbor package, and run the checks — you review and confirm. It lives in
+        <a href="https://github.com/RSI-Index/RSI-Index-Public" target="_blank" rel="noopener">RSI-Index-Public</a>;
+        the README there is the canonical guide.
+      </p>
+    </div>
+
+    <div class="grid grid-2" style="align-items: stretch;">
+      <div class="card">
+        <span class="num">01 · PROPOSE</span>
+        <h3>Draft with <span class="mono">proposal-agent</span></h3>
+        <p>Clone <span class="mono">RSI-Index-Public</span>, open it in Codex, and ask for the
+        <span class="mono">proposal-agent</span> skill. It walks the research question, baseline,
+        evaluation, scope, and compute requirements, then generates a complete RSI task proposal
+        for your review.</p>
+      </div>
+      <div class="card">
+        <span class="num">02 · SUBMIT</span>
+        <h3>Post it as a Task-Ideas Discussion</h3>
+        <p>Create a new Discussion in the Task-Ideas category and paste the proposal in. An
+        automated review responds; edit the same Discussion until the proposal is accepted.</p>
+      </div>
+      <div class="card">
+        <span class="num">03 · BUILD</span>
+        <h3>Let the bot create the task</h3>
+        <p>In the accepted Discussion, drive task creation with slash-commands — each posted as
+        a new comment. When you confirm, a private, ready-to-use task repository is created for
+        you.</p>
+      </div>
+      <div class="card">
+        <span class="num">04 · VALIDATE</span>
+        <h3>Run the validator if you have GPUs</h3>
+        <p>Clone your private task repository on a machine with the required GPUs, run the
+        bundled <span class="mono">harbor-task-validator</span> skill, and upload the validation
+        logs. GPU-validated contributions receive more credit; without GPUs, leave feedback and
+        you're done.</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 20px;">
+      <pre class="tree"><span class="c"># in the accepted Task-Ideas Discussion — each command as a new comment</span>
+<span class="a">/task</span>              <span class="c"># start task preparation</span>
+<span class="a">/task</span> <span class="g">&lt;feedback&gt;</span>   <span class="c"># revise the drafted task</span>
+<span class="a">/task confirm</span>      <span class="c"># approve — creates your private task repository</span>
+<span class="a">/reset</span>             <span class="c"># discard the attempt before repository creation</span></pre>
+    </div>
+
+    <p style="margin-top: 26px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+      <a class="btn btn-paper" href="https://github.com/RSI-Index/RSI-Index-Public" target="_blank" rel="noopener">Start in the pipeline repo ↗</a>
+      <a class="btn btn-paper-ghost" href="https://github.com/RSI-Index/RSI-Index-Public/tree/main/rsi-tasks" target="_blank" rel="noopener">Task examples ↗</a>
+      <a class="btn btn-paper-ghost" href="https://github.com/RSI-Index/RSI-Index-Public/tree/main/rsi-logs" target="_blank" rel="noopener">Validation logs ↗</a>
+    </p>
+  </div>
+</section>
+
+<!-- ================= TWO PATHS ================= -->
+<section class="block" style="border-top: 1px solid var(--line-soft);">
+  <div class="wrap">
+    <p class="eyebrow">Two ways in</p>
+    <div class="grid grid-2">
+      <div class="card">
+        <span class="num">PATH A</span>
+        <h3>Bring a project you coauthored</h3>
+        <p>Contribute a high-impact project you helped build, provided it satisfies the
+        project-selection gates below. Nobody knows its meaningful open research space — or its
+        reward-hacking surface — better than you.</p>
+      </div>
+      <div class="card">
+        <span class="num">PATH B</span>
+        <h3>Adopt a project from the taxonomy</h3>
+        <p>Select an existing project from the <a href="tasks.html">track list</a> that is
+        closely aligned with your domain expertise, and design a new RSI task around it.</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 40px;">
+      <h3 class="h-md" style="margin-bottom: 16px;">Project gates</h3>
+      <div class="table-scroll">
+        <table class="data desc">
+          <thead><tr><th>Gate</th><th>Requirement</th></tr></thead>
+          <tbody>
+            <tr><td>Fully open</td><td>Everything necessary for the chosen lane is public and usable: runnable code, configuration, required model/checkpoint and data assets, and an evaluation path.</td></tr>
+            <tr><td>Influential</td><td>The project materially shaped its cohort through adoption, citations, community use, or an important open release.</td></tr>
+            <tr><td>Reproducible</td><td>The author-released path can run end to end in a documented environment. Missing assets, broken execution, or a metric that cannot be independently checked stop admission.</td></tr>
+            <tr><td>Researchable</td><td>It exposes a meaningful open research space in which the agent's research decisions affect the result.</td></tr>
+            <tr><td>Verifiable</td><td>A separate verifier can evaluate the final artifact with fixed metrics and integrity constraints.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WORKFLOW ================= -->
+<section class="block">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Under the hood</p>
+      <h2 class="h-lg">Six steps from open project to RSI task.</h2>
+      <p class="lede">
+        This is the full contract the fast-path automation drives for you — and the checklist
+        for anyone designing and validating a task by hand.
+      </p>
+    </div>
+
+    <div class="steps">
+      <div class="step-item">
+        <h3>Select a project</h3>
+        <p>Choose either a high-impact project you coauthored that meets the gates, or a project
+        from the taxonomy that matches your expertise. Identify its author-released repository
+        and the assets required for the proposed experiment.</p>
+      </div>
+
+      <div class="step-item">
+        <h3>Identify a scientifically meaningful autoresearch lane</h3>
+        <p>Choose a bounded experiment that gives the agent meaningful research decisions and a
+        fixed, measurable objective. Avoid lanes whose main challenge is only engineering
+        parameter search — prefer problems with the potential to produce genuine methodological
+        insight.</p>
+        <div class="callout">
+          COMPUTE ESTIMATE — from the official repository configuration and launch path, report
+          the number of H100s and wall-clock time for one single run (one baseline or candidate
+          training job). Recommended: ≤ 64 H100s and ≤ 8 hours per run. The total duration of
+          the iterative research process is not capped.
+        </div>
+      </div>
+
+      <div class="step-item">
+        <h3>Reproduce the human recipe</h3>
+        <p>The selected experiment must have a baseline reproducible directly from the original
+        repository. Pin the repository, assets, environment, configuration, seed, command, and
+        compute budget — then run the official recipe unchanged.</p>
+        <ul>
+          <li>Compare the result with the paper or repository claim and document any discrepancy.</li>
+          <li>Regardless of whether the numbers match, <b>the local rerun becomes the
+          task-pristine human baseline</b> used for ranking.</li>
+        </ul>
+      </div>
+
+      <div class="step-item">
+        <h3>Package the RSI environment</h3>
+        <p>Convert the experiment into a complete Harbor-format task following the provided
+        sample: the editable workspace, immutable assets, instructions, policy constraints,
+        resource limits, and required outputs.</p>
+      </div>
+
+      <div class="step-item">
+        <h3>Build an independent verifier and policy</h3>
+        <p>Create a fixed evaluation path that checks policy compliance, loads the submitted
+        artifact, reports raw metrics, and computes the disclosed reward. The policy must
+        explicitly prohibit reward hacking:</p>
+        <ul>
+          <li>Evaluator or reward-path modification</li>
+          <li>Evaluation-data leakage and hardcoded answers</li>
+          <li>Undeclared external artifacts</li>
+          <li>Violations of the registered compute or experiment budget</li>
+        </ul>
+      </div>
+
+      <div class="step-item">
+        <h3>Validate and submit the task</h3>
+        <p>Confirm that the baseline runs correctly, the task supports meaningful improvement,
+        and the verifier catches policy violations. Validation should include strong research
+        agents:</p>
+        <div class="callout">
+          GPT 5.6 Sol xhigh + Codex &nbsp;·&nbsp; Opus 5 Max + Claude Code &nbsp;·&nbsp;
+          Opus 4.8 Max + Claude Code
+        </div>
+        <ul>
+          <li>Contributors with GPU access can run these validations themselves — and receive
+          greater contribution credit for doing so.</li>
+          <li>We can provide execution support when compute is unavailable.</li>
+          <li>Submit the complete Harbor task together with baseline results, compute
+          requirements, and the scientific rationale for the selected experiment.</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="muted small" style="margin-top: 10px;">
+      See the task-contribution SOP and provided sample tasks in the
+      <a href="https://github.com/RSI-Index" target="_blank" rel="noopener">GitHub org</a> for details.
+    </p>
+  </div>
+</section>
+
+<!-- ================= WHAT YOU SUBMIT ================= -->
+<section class="block">
+  <div class="wrap">
+    <div class="grid grid-2 grid-wide" style="align-items: start;">
+      <div>
+        <p class="eyebrow">The deliverable</p>
+        <h2 class="h-md" style="margin-bottom: 16px;">One complete Harbor package.</h2>
+        <pre class="tree"><span class="c">&lt;your-task&gt;/</span>
+├── <span class="g">task.toml</span>
+├── <span class="g">instruction.md</span>
+├── <span class="g">policy.yaml</span>
+├── environment/
+│   ├── Dockerfile
+│   └── <span class="g">project/</span>      <span class="c"># pinned upstream source</span>
+└── tests/
+    ├── Dockerfile     <span class="c"># clean, separate verifier image</span>
+    ├── <span class="a">test.sh</span>
+    └── <span class="a">policy_check</span></pre>
+      </div>
+      <div>
+        <p class="eyebrow">Alongside it</p>
+        <h2 class="h-md" style="margin-bottom: 16px;">Evidence the lane is real.</h2>
+        <ul class="checks">
+          <li><b>Baseline results</b> — the frozen rerun of the author recipe, with any
+          discrepancy from the published claim documented.</li>
+          <li><b>Compute requirements</b> — H100 count and wall-clock for a single run, and the
+          registered budget for the research loop.</li>
+          <li><b>Scientific rationale</b> — why this experiment has a meaningful open research
+          space, and what a genuine methodological insight would look like.</li>
+          <li><b>Author review</b> — where possible, we reach out to the original author team to
+          review the environment built from their project.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cta-band" style="margin-top: 64px;">
+      <h2 class="h-md">Ready to design a lane?</h2>
+      <p>Open a discussion in the org, or start from a sample task and the contribution SOP.</p>
+      <a class="btn btn-paper" href="https://github.com/RSI-Index" target="_blank" rel="noopener">Start on GitHub ↗</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="wm">RSI-<span class="dex">INDEX</span></div>
+      <p>Auditable environments for recursive self-improvement research, built from
+      representative fully open model-development projects.</p>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="tasks.html">Tasks</a></li>
+          <li><a href="contribute.html">Contribute</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul>
+          <li><a href="https://github.com/RSI-Index" target="_blank" rel="noopener">GitHub ↗</a></li>
+          <li><a href="https://github.com/RSI-Index/RSI-Index-Public" target="_blank" rel="noopener">Task pipeline ↗</a></li>
+          <li><a href="blog/introducing-rsi-index.html">Announcement</a></li>
+          <li><a href="tasks.html#anatomy">Task format</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-base">
+    <span>© 2026 RSI-Index · Framework v0.1</span>
+    <span><span class="blink">●</span> agent research loop: running</span>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

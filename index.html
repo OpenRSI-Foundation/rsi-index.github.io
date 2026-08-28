@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RSI-Index — Measuring recursive self-improvement in the open</title>
+<meta name="description" content="RSI-Index turns influential open model-development projects into auditable environments where AI research agents iterate against fixed verifiers — and are scored against the human recipe they started from.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Geist+Mono:wght@400;500;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="index.html" aria-label="RSI-Index home">
+      <svg width="18" height="18" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#121509"/><rect x="5" y="21" width="6" height="6" fill="#5b8c2a"/><rect x="13" y="14" width="6" height="6" fill="#d97e2a"/><rect x="21" y="7" width="6" height="6" fill="#f09b3c"/></svg>
+      rsi-index
+    </a>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false">☰</button>
+    <div class="nav-links">
+      <a href="blog.html">Blog</a>
+      <a href="tasks.html">Tasks</a>
+      <a href="contribute.html">Contribute</a>
+      <a class="ext" href="https://github.com/RSI-Index" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<div class="hero-outer">
+  <div class="wrap">
+    <div class="hero">
+      <canvas id="rsi-canvas" aria-hidden="true"></canvas>
+      <div class="hero-scrim" aria-hidden="true"></div>
+      <div class="hero-hint" aria-hidden="true">HOVER TO ILLUMINATE · <b>CLICK TO GROW A BRANCH</b></div>
+      <div class="hero-content">
+        <div class="hero-kicker">ALE · Recursive Self-Improvement Program — <b>Framework v0.1</b></div>
+        <h1 class="wordmark">RSI-<span class="dex">INDEX</span></h1>
+        <p class="hero-sub">
+          Can AI improve the way AI is built? RSI-Index turns representative, fully open
+          model-development projects into <strong>auditable environments</strong> where a research
+          agent repeatedly improves a real workflow against a fixed evaluator — and is scored
+          against <strong>the human recipe it started from</strong>.
+        </p>
+        <div class="hero-ctas">
+          <a class="btn btn-solid" href="tasks.html">Explore the tasks →</a>
+          <a class="btn btn-ghost" href="blog/introducing-rsi-index.html">Read the announcement</a>
+        </div>
+        <div class="hero-stats">
+          <div><span class="n">3</span><span class="l">Signature tasks · running</span></div>
+          <div><span class="n">58</span><span class="l">Environment lanes</span></div>
+          <div><span class="n">≤30</span><span class="l">Min to contribute a task</span></div>
+          <div><span class="n">1</span><span class="l">Rule: beat the human baseline</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PIPELINE ================= -->
+<section class="block">
+  <div class="wrap">
+    <p class="eyebrow">The pipeline</p>
+    <div class="pipeline">
+      <div class="step">
+        <span class="k">Input</span>
+        <span class="v">Open projects</span>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <span class="k">Packaged as</span>
+        <span class="v">Agent environments</span>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <span class="k">Producing</span>
+        <span class="v" style="color: var(--amber-deep)">The RSI Index</span>
+      </div>
+    </div>
+    <p class="muted" style="margin-top: 22px; max-width: 74ch;">
+      In an RSI task, an agent receives the editable source for a real open project, a fixed
+      budget, a concrete experiment, and a verifier it cannot alter. The question is not whether
+      an agent can tune a toy proxy — but how much it can improve a human-built, open recipe
+      while preserving the experiment's scientific contract.
+    </p>
+  </div>
+</section>
+
+<!-- ================= PRINCIPLES ================= -->
+<section class="block">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">What RSI-Index is</p>
+      <h2 class="h-lg">The last puzzle before ASI, measured properly.</h2>
+      <p class="lede">
+        RSI, self-evolve, autoresearch — different names for the same loop: an agent proposes a
+        hypothesis, implements it, and evaluates the result against a verifiable objective.
+        The central question is whether this loop can move beyond the best known human-designed
+        method and reliably extend the scientific frontier.
+      </p>
+    </div>
+    <div class="grid grid-3">
+      <div class="card">
+        <span class="num">01</span>
+        <h3>Optimization, not reproduction</h3>
+        <p>The agent takes over the cluster and starts from the original codebase, data, and
+        checkpoints — then improves the pipeline to produce an artifact that outperforms the
+        original recipe.</p>
+      </div>
+      <div class="card">
+        <span class="num">02</span>
+        <h3>Scientific discovery, not parameter sweeping</h3>
+        <p>RSI goes beyond hyperparameter search: form hypotheses, modify real model-development
+        methods, learn from experiments, and land gains that stay meaningful under a fixed
+        scientific contract.</p>
+      </div>
+      <div class="card">
+        <span class="num">03</span>
+        <h3>Production scale, not toy scale</h3>
+        <p>Tasks reflect problems frontier researchers care about, at model, data, and system
+        scales where improvements matter — and transfer to real training and deployment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= THE MEASURE ================= -->
+<section class="block">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">The measure</p>
+      <h2 class="h-lg">One number, anchored to the human recipe.</h2>
+    </div>
+    <div class="formula">
+      <div class="fx">RSI improvement&nbsp;=&nbsp;<span class="frac"><span class="top">performance of the agent-selected final artifact</span><span class="bot">matched, task-pristine human-recipe baseline</span></span></div>
+      <p class="note">
+        The "human baseline" is the original authors' released recipe, rerun unchanged in the
+        same task environment. This <b>frozen rerun</b> — not the paper's claim — is the ranking
+        baseline. An independent verifier re-evaluates every submitted artifact; hard policy
+        violations fail closed to a reward of zero.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TAXONOMY ================= -->
+<section class="block">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Taxonomy</p>
+      <h2 class="h-lg">Ten tracks across the full model-development lifecycle.</h2>
+      <p class="lede">
+        From pre-training and post-training to model systems and multimodal — together these
+        tracks define a coherent research agenda for studying whether AI can improve the
+        processes through which increasingly capable models are built.
+      </p>
+    </div>
+    <div class="grid grid-2">
+      <a class="card track-card d-pre" href="tasks.html#rsi-1">
+        <span class="num">RSI-1 <span class="tag d-pre">Pretrain</span></span>
+        <h3>Full-Recipe — Marin</h3>
+        <p>Coordinated improvements to a complete pre-training recipe under fixed compute and
+        evaluation. Worked example: positional encoding across a six-rung scaling ladder,
+        550M → 2.5B.</p>
+      </a>
+      <a class="card track-card d-post" href="tasks.html#rsi-2">
+        <span class="num">RSI-2 / 2.5 <span class="tag d-post">Posttrain</span> <span class="tag tbd">TBD</span></span>
+        <h3>Full-Recipe — OLMo 3 &amp; Nemotron 3</h3>
+        <p>Complete post-training pipelines from a fixed base model: stage order, data,
+        objectives, sampling, rewards, and optimization under one total budget — on two open
+        model stacks.</p>
+      </a>
+      <a class="card track-card d-pre" href="tasks.html#rsi-3">
+        <span class="num">RSI-3 <span class="tag d-pre">Pretrain</span></span>
+        <h3>Pretrain Data</h3>
+        <p>Which data a model sees, how often, and how raw content becomes training units —
+        with training and preprocessing cost accounted together. DCLM, BabyLM, SuperBPE,
+        RegMix, FineWeb, Dolma, DataDecide, DataComp.</p>
+      </a>
+      <a class="card track-card d-pre" href="tasks.html#rsi-4">
+        <span class="num">RSI-4 <span class="tag d-pre">Pretrain</span></span>
+        <h3>Pretrain Architectures</h3>
+        <p>Change model structure or parameterization while matching parameters, tokens, and
+        compute closely enough to attribute the gain to the architecture. Gated DeltaNet,
+        PhysicsLM4, DyT, OLMo 2, BLT, nGPT…</p>
+      </a>
+      <a class="card track-card d-pre" href="tasks.html#rsi-5">
+        <span class="num">RSI-5 <span class="tag d-pre">Pretrain</span></span>
+        <h3>Training Efficiency</h3>
+        <p>Reach a target quality with less training, tuning, precision cost, or communication —
+        and test whether decisions transfer across budgets and scales. Muon, OLMo Model Ladder,
+        CompleteP, u-μP, OpenDiLoCo.</p>
+      </a>
+      <a class="card track-card d-sys" href="tasks.html#rsi-6">
+        <span class="num">RSI-6 <span class="tag d-sys">Systems</span></span>
+        <h3>Model Systems</h3>
+        <p>Faster training and inference implementations under fixed workloads, hardware,
+        precision, and numerical tolerances. FlashAttention, FlashMLA, DeepGEMM, DeepEP,
+        Liger-Kernel, Zero Bubble…</p>
+      </a>
+      <a class="card track-card d-post" href="tasks.html#rsi-7">
+        <span class="num">RSI-7 <span class="tag d-post">Posttrain</span></span>
+        <h3>SFT and Alignment</h3>
+        <p>Supervised fine-tuning, preference learning, safety, and reward modeling from a fixed
+        starting model. Tülu 3, DPO, Safe-RLHF, KTO, SPPO, reward-model ensembles, HelpSteer,
+        RM-R1.</p>
+      </a>
+      <a class="card track-card d-post" href="tasks.html#rsi-8">
+        <span class="num">RSI-8 <span class="tag d-post">Posttrain</span></span>
+        <h3>RL</h3>
+        <p>RL with verifiable rewards and agentic RL — rollout budgets, reward verification,
+        tools, and environments fixed so gains come from learning. PRIME, Dr. GRPO, RAGEN,
+        Search-R1, Logic-RL, DAPO.</p>
+      </a>
+      <a class="card track-card d-vis" href="tasks.html#rsi-9">
+        <span class="num">RSI-9 <span class="tag d-vis">Vision</span></span>
+        <h3>Vision Understanding</h3>
+        <p>Reusable visual and multimodal representations, and more efficient visual inputs.
+        MAE, OpenCLIP, I-JEPA, DeepOCR, REPA.</p>
+      </a>
+      <a class="card track-card d-vis" href="tasks.html#rsi-10">
+        <span class="num">RSI-10 <span class="tag d-vis">Vision</span></span>
+        <h3>Vision Generative Modeling</h3>
+        <p>Improve visual generation while accounting jointly for output quality, training cost,
+        and sampling cost. micro_diffusion, VAR, Latent Diffusion, Consistency Models, MAR.</p>
+      </a>
+    </div>
+    <p style="margin-top: 26px;">
+      <a class="btn btn-paper-ghost" href="tasks.html">Browse all 58 environment lanes →</a>
+    </p>
+  </div>
+</section>
+
+<!-- ================= FEATURED TASK ================= -->
+<section class="block">
+  <div class="wrap">
+    <div class="panel-dark">
+      <p class="eyebrow on-dark">Signature tasks · trajectories running</p>
+      <h2 class="h-lg" style="max-width: 720px;">Three flagship environments, agents on the clock.</h2>
+      <p style="color: var(--panel-muted); max-width: 76ch; margin: 16px 0 8px;">
+        One signature task per domain — complete Harbor packages with hardened, adversarially
+        tested verifiers. Research-agent trajectories are running on them now, alongside a
+        growing fleet of crowdsourced 1-node tasks.
+      </p>
+
+      <div class="grid grid-3" style="margin: 30px 0 8px;">
+        <div class="dark-card">
+          <span class="num">PRETRAIN</span>
+          <h3>Optimizer update geometry</h3>
+          <p>One genuinely new, scale-general optimizer must beat the locked AdamH recipe at
+          every rung of the Marin ladder — algorithm discovery, not scalar retuning.</p>
+          <div class="card-foot">
+            <span class="status run">Running</span>
+            <a class="go" href="https://github.com/RSI-Index/RSI-Index/blob/main/tasks/backup/pre-training/optimizer_update_geometry/instruction.md" target="_blank" rel="noopener">instruction ↗</a>
+          </div>
+        </div>
+        <div class="dark-card">
+          <span class="num">VISION</span>
+          <h3>GPIC one-epoch text-to-image</h3>
+          <p>Train any text-to-image model from scratch on 100M captioned images — exactly one
+          pass — and beat the pinned PixelGen baseline on FD-DINOv2 at guidance 1.0.</p>
+          <div class="card-foot">
+            <span class="status run">Running</span>
+            <a class="go" href="https://github.com/RSI-Index/task_collect/tree/main/yh_tasks/gpic_generation" target="_blank" rel="noopener">task ↗</a>
+          </div>
+        </div>
+        <div class="dark-card">
+          <span class="num">POSTTRAIN</span>
+          <h3>Post-training flagship</h3>
+          <p>The third signature environment, on a full open post-training stack. Specification
+          is being finalized now.</p>
+          <div class="card-foot">
+            <span class="status prep">In preparation</span>
+            <a class="go" href="https://github.com/RSI-Index" target="_blank" rel="noopener">org ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <p style="color: var(--panel-muted); max-width: 76ch; margin: 26px 0 8px;">
+        <b style="color: var(--panel-text)">The shared scaffold — Marin scaling ladder E0–E5.</b>
+        The pre-training signature runs on a fixed six-rung ladder: the same optimizer source,
+        equations, and state semantics must hold from 550M to 2.545B parameters, so a win at the
+        smallest scale cannot hide a regression at the largest.
+      </p>
+
+      <div class="table-scroll" style="margin: 22px 0 30px;">
+        <table class="data">
+          <thead>
+            <tr><th>Rung</th><th>Model</th><th class="r">Parameters</th><th class="r">Training tokens</th><th class="r">Updates</th><th class="r">GPUs</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>E0</td><td>d1152-L12</td><td class="r">550M</td><td class="r">2.904B</td><td class="r">44,317</td><td class="r">8</td></tr>
+            <tr><td>E1</td><td>d1408-L15</td><td class="r">837M</td><td class="r">3.613B</td><td class="r">55,125</td><td class="r">8</td></tr>
+            <tr><td>E2</td><td>d1536-L16</td><td class="r">998M</td><td class="r">4.983B</td><td class="r">38,014</td><td class="r">8</td></tr>
+            <tr><td>E3</td><td>d1792-L18</td><td class="r">1.385B</td><td class="r">10.560B</td><td class="r">40,283</td><td class="r">32</td></tr>
+            <tr><td>E4</td><td>d2048-L21</td><td class="r">1.935B</td><td class="r">14.805B</td><td class="r">56,477</td><td class="r">32</td></tr>
+            <tr><td>E5</td><td>d2304-L23</td><td class="r">2.545B</td><td class="r">18.617B</td><td class="r">35,510</td><td class="r">128</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <ul class="checks">
+        <li><b>Scored against locked AdamH.</b> Paloma and training-loss trajectories versus the
+        frozen human recipe — AdamH is the only scored reference optimizer.</li>
+        <li><b>All six rungs, or zero.</b> The same equations, grouping logic, and state
+        semantics must run across E0–E5 without materially regressing any scale.</li>
+        <li><b>Discovery, not retuning.</b> A valid method names a new transformation,
+        preconditioner, state recurrence, or geometry — changing learning rates, momentum, or
+        epsilon is not a new optimizer.</li>
+        <li><b>Verified, not self-reported.</b> An independent verifier re-evaluates the
+        artifact in a clean image; hard policy violations fail closed to zero.</li>
+      </ul>
+
+      <p style="margin-top: 30px; display: flex; gap: 10px; flex-wrap: wrap;">
+        <a class="btn btn-solid" href="tasks.html">All tasks →</a>
+        <a class="btn btn-ghost" href="contribute.html">Contribute in ≤ 30 min</a>
+        <a class="btn btn-ghost" href="https://github.com/RSI-Index/RSI-Index-Public" target="_blank" rel="noopener">Pipeline ↗</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= VERIFICATION ================= -->
+<section class="block">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Anatomy of a task</p>
+      <h2 class="h-lg">Every task ships as a verifiable Harbor environment.</h2>
+      <p class="lede">
+        The environment gives the agent the actual project it must improve — pinned source,
+        declared read-only assets, a reproducible launch path, and enough instrumentation to
+        learn from experiments. The verifier runs in a separate clean image.
+      </p>
+    </div>
+    <div class="grid grid-2 grid-wide" style="align-items: start;">
+      <pre class="tree"><span class="c">&lt;task&gt;/</span>
+├── <span class="g">task.toml</span>
+├── <span class="g">instruction.md</span>     <span class="c"># objective, setup, baseline, loop, submission</span>
+├── <span class="g">policy.yaml</span>        <span class="c"># editable scope, locked variables, hard zeros</span>
+├── environment/
+│   └── <span class="g">project/</span>       <span class="c"># pinned author repository — the workspace</span>
+└── tests/
+    ├── <span class="a">verifier</span>       <span class="c"># separate clean image, fixed evaluation</span>
+    ├── <span class="a">integrity gates</span>
+    └── <span class="a">reward mapping</span> <span class="c"># fails closed to zero</span></pre>
+      <div>
+        <h3 class="h-md" style="margin-bottom: 16px;">Hard-zero violations</h3>
+        <ul class="forbid">
+          <li><b>Reward-path tampering.</b> Modifying or bypassing the reward path.</li>
+          <li><b>Eval leakage.</b> Training on, filtering on, or hardcoding evaluation examples.</li>
+          <li><b>Budget overrun.</b> Exceeding registered compute or wall-clock limits.</li>
+        </ul>
+        <p class="muted small" style="margin-top: 16px;">
+          The verifier compares the candidate workspace against a clean pinned checkout, rejects
+          protected-path changes, and applies programmatic and LLM-as-judge integrity checks
+          before any metric is computed.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COLLABORATION ================= -->
+<section class="block">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Collaboration</p>
+      <h2 class="h-lg">Built in the open, verified by the authors.</h2>
+    </div>
+    <div class="grid grid-2">
+      <div class="card">
+        <span class="num">FRONTIER LABS</span>
+        <h3>Compute partnerships</h3>
+        <p>We are actively seeking partnerships with frontier AI labs that can provide the
+        computational resources needed to scale RSI task design and validation.</p>
+      </div>
+      <div class="card">
+        <span class="num">ORIGINAL AUTHORS</span>
+        <h3>Environment review</h3>
+        <p>For every open project we build on, we invite the original author team to review the
+        corresponding RSI environment — so each task is verified by the people who built the
+        recipe it measures.</p>
+      </div>
+    </div>
+    <div class="cta-band" style="margin-top: 56px;">
+      <h2 class="h-md">Bring a project. Build a task. Move the index.</h2>
+      <p>Contributors can bring a high-impact project they coauthored, or adopt one from the
+      taxonomy and design a new RSI task around it.</p>
+      <a class="btn btn-paper" href="contribute.html">Contribution guide →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="wm">RSI-<span class="dex">INDEX</span></div>
+      <p>Auditable environments for recursive self-improvement research, built from
+      representative fully open model-development projects.</p>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="tasks.html">Tasks</a></li>
+          <li><a href="contribute.html">Contribute</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul>
+          <li><a href="https://github.com/RSI-Index" target="_blank" rel="noopener">GitHub ↗</a></li>
+          <li><a href="https://github.com/RSI-Index/RSI-Index-Public" target="_blank" rel="noopener">Task pipeline ↗</a></li>
+          <li><a href="blog/introducing-rsi-index.html">Announcement</a></li>
+          <li><a href="tasks.html#anatomy">Task format</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-base">
+    <span>© 2026 RSI-Index · Framework v0.1</span>
+    <span><span class="blink">●</span> agent research loop: running</span>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

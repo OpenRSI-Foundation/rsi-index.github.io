@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Introducing the RSI Index — RSI-Index Blog</title>
+<meta name="description" content="Announcing RSI-Index: auditable environments where AI research agents improve real open model-development recipes against fixed verifiers.">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Geist+Mono:wght@400;500;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="../index.html" aria-label="RSI-Index home">
+      <svg width="18" height="18" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#121509"/><rect x="5" y="21" width="6" height="6" fill="#5b8c2a"/><rect x="13" y="14" width="6" height="6" fill="#d97e2a"/><rect x="21" y="7" width="6" height="6" fill="#f09b3c"/></svg>
+      rsi-index
+    </a>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false">☰</button>
+    <div class="nav-links">
+      <a href="../blog.html" class="active">Blog</a>
+      <a href="../tasks.html">Tasks</a>
+      <a href="../contribute.html">Contribute</a>
+      <a class="ext" href="https://github.com/RSI-Index" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<article class="article">
+  <a class="backlink" href="../blog.html">← All posts</a>
+  <div class="meta">
+    <span class="cat">Announcement</span>
+    <span>Aug 27, 2026</span>
+    <span>The RSI-Index Team</span>
+  </div>
+  <h1>Introducing the RSI Index</h1>
+  <p class="standfirst">
+    The RSI-Index program turns representative, fully open model-development projects into
+    auditable environments in which an AI research agent repeatedly improves a real workflow
+    against a fixed evaluator. The question is not whether an agent can tune a toy proxy — but
+    how much it can improve a human-built, open recipe while preserving the experiment's
+    scientific contract.
+  </p>
+
+  <h2><span class="sec">// 01</span>The last puzzle before ASI</h2>
+  <p>
+    To take ASI seriously is to accept a weak-to-strong premise: human intelligence can create
+    a process that eventually produces intelligence beyond human capability. The current
+    vocabulary for that premise — <em>RSI</em>, <em>self-evolve</em>, <em>autoresearch</em> —
+    names the same loop: an agent proposes a hypothesis, implements it, and evaluates the
+    result against a verifiable objective.
+  </p>
+  <p>
+    The central question is whether this loop can move beyond the best known human-designed
+    method and reliably extend the scientific frontier. That question deserves a measurement,
+    not a vibe. It deserves an index.
+  </p>
+
+  <h2><span class="sec">// 02</span>Scaling insights</h2>
+  <p>
+    Scientific progress is limited not only by compute and data, but by the bandwidth of
+    insights. A human researcher holds a few hypotheses in mind and runs a few experiments a
+    week. An agent scales both the generation of candidate ideas and their implementation, and
+    so sweeps a larger region of method-space. That is the ambition of RSI — and it is exactly
+    the thing worth measuring carefully.
+  </p>
+
+  <h2><span class="sec">// 03</span>What we're building</h2>
+  <p>
+    RSI-Index is an evaluation-and-research-production loop for model development:
+  </p>
+  <blockquote class="mono">
+    Open projects &nbsp;→&nbsp; Agent environments &nbsp;→&nbsp; RSI Index
+  </blockquote>
+  <p>
+    In an RSI task, an agent receives the editable source for a real open project, a fixed
+    budget, a concrete experiment, and a verifier it cannot alter. Three commitments shape
+    every task:
+  </p>
+  <ul>
+    <li><strong>Optimization, not reproduction.</strong> The agent takes over the cluster and
+    starts from the original codebase, data, and checkpoints to improve the pipeline — the
+    deliverable is an artifact that outperforms the original recipe.</li>
+    <li><strong>Scientific discovery, not parameter sweeping.</strong> RSI goes beyond
+    hyperparameter search. It tests whether agents can form hypotheses, modify real
+    model-development methods, learn from experiments, and produce gains that remain meaningful
+    under a fixed scientific contract.</li>
+    <li><strong>Production scale, not toy scale.</strong> Tasks reflect problems frontier
+    researchers care about, at model, data, and system scales where improvements matter — and
+    transfer to real training and deployment rather than existing only on toy proxies.</li>
+  </ul>
+  <p>
+    The score itself is deliberately simple: <strong>RSI improvement is the performance of the
+    agent-selected final artifact relative to a matched, task-pristine human-recipe
+    baseline.</strong> The "human baseline" is the original authors' released recipe, rerun
+    unchanged in the same task environment. That frozen rerun — not the paper's claim — is the
+    ranking baseline.
+  </p>
+
+  <h2><span class="sec">// 04</span>From open projects to agent environments</h2>
+  <p>
+    An RSI task is a bounded experimental lane extracted from a runnable open project: an
+    end-to-end run, a repository-published ablation or deployment lane, or a faithful,
+    separately versioned slice of a larger pipeline that preserves the causal mechanism and
+    evaluation path of the source project.
+  </p>
+  <p>
+    Projects pass five gates before task design begins — <em>fully open</em>,
+    <em>influential</em>, <em>reproducible</em>, <em>researchable</em>, and
+    <em>verifiable</em>. Once a project is admitted, the pinned repository becomes the
+    scientific source of truth for the selected task's model, data, configuration, training
+    procedure, evaluator, and baseline.
+  </p>
+  <p>
+    Every task ships in Harbor format: an <code>instruction.md</code> that states the objective
+    and the frozen setup, a <code>policy.yaml</code> that draws the editable boundary, the
+    pinned author repository as the workspace, and a verifier that runs in a separate clean
+    image. The verifier diffs the candidate workspace against a clean checkout, applies
+    programmatic and LLM-as-judge integrity checks, and fails closed to zero on a hard
+    violation — reward-path tampering, evaluation leakage, or budget overrun.
+  </p>
+
+  <h2><span class="sec">// 05</span>Ten tracks across the lifecycle</h2>
+  <p>
+    The taxonomy maps the major frontiers of model development where research agents can make
+    measurable scientific progress — from pre-training recipes, data, architectures, and
+    training efficiency, through model systems, to SFT/alignment, RL, and vision understanding
+    and generation. Today that is <strong>10 tracks and 58 environment lanes</strong>, anchored
+    by projects like Marin, DCLM, FlashAttention, Tülu 3, DAPO, MAE, and VAR — each with a
+    concrete research target stated against its own golden run.
+  </p>
+  <p>
+    The worked example, <a href="../tasks.html#rsi-1">RSI-1 Pretrain-FullRecipe-Marin</a>, asks
+    for a single positional-encoding mechanism, trained only at context 4096, that improves
+    long-context modeling at every rung of a fixed scaling ladder from 550M to 2.5B parameters.
+    The reward is the geometric mean of six relative LongPPL gains — a large win at the
+    smallest scale cannot hide a regression at the largest.
+  </p>
+
+  <h2><span class="sec">// 06</span>Where the program stands</h2>
+  <p>
+    We are past the framework stage. <strong>Three signature tasks</strong> — one per domain,
+    built as complete Harbor packages with hardened, adversarially tested verifiers — anchor
+    the benchmark, and research-agent trajectories are running on them now:
+  </p>
+  <ul>
+    <li><strong>Pre-training — optimizer update geometry.</strong> Design a genuinely new,
+    scale-general optimizer that beats the locked AdamH recipe at every rung of the
+    550M → 2.5B Marin scaling ladder. Algorithm discovery, not scalar retuning.</li>
+    <li><strong>Vision — GPIC one-epoch text-to-image.</strong> From nothing but a 100M-image
+    corpus, exactly one pass, train any text-to-image model that beats the pinned PixelGen
+    baseline on FD-DINOv2 at guidance 1.0 — architecture, objective, and size all free.</li>
+    <li><strong>Post-training — flagship in preparation.</strong> The third signature
+    environment, on a full open post-training stack, is being finalized.</li>
+  </ul>
+  <p>
+    Alongside them, a fleet of <strong>1-node tasks</strong> — community-proposed environments
+    sized to a single GPU node — is expanding through an automated crowdsourcing pipeline that
+    takes a contributor from idea to a validated Harbor task in about thirty active minutes:
+    an agent drafts the proposal with you, an automated review iterates on it in a GitHub
+    Discussion, a bot builds the private task repository on <code>/task confirm</code>, and a
+    bundled validator checks it end to end. The first crowdsourced tasks and their validation
+    logs are already in the pipeline repository.
+  </p>
+  <p>
+    We continue to seek partnerships with frontier labs for the compute to scale task design —
+    and for every project we build on, we invite the original authors to review the environment
+    that carries their recipe.
+  </p>
+
+  <h2><span class="sec">// 07</span>Resources</h2>
+  <ul>
+    <li><a href="https://github.com/RSI-Index/RSI-Index-Public" target="_blank" rel="noopener">Contribution pipeline — RSI-Index-Public</a> (the README is the guide)</li>
+    <li><a href="https://github.com/RSI-Index/RSI-Index-Public/tree/main/rsi-tasks" target="_blank" rel="noopener">Crowdsourced task examples — rsi-tasks</a></li>
+    <li><a href="https://github.com/RSI-Index/RSI-Index-Public/tree/main/rsi-logs" target="_blank" rel="noopener">Validation logs — rsi-logs</a></li>
+    <li>Signature tasks: <a href="https://github.com/RSI-Index/RSI-Index/blob/main/tasks/backup/pre-training/optimizer_update_geometry/instruction.md" target="_blank" rel="noopener">optimizer_update_geometry</a> · <a href="https://github.com/RSI-Index/task_collect/tree/main/yh_tasks/gpic_generation" target="_blank" rel="noopener">gpic_generation</a></li>
+  </ul>
+  <p>
+    If you have coauthored a high-impact open project, or you know one of the projects in the
+    taxonomy deeply, there is a lane for you to design. Read the
+    <a href="../contribute.html">contribution workflow</a> — the fast path takes about half an
+    hour of your time.
+  </p>
+
+  <hr>
+  <p class="muted small">
+    RSI-Index Framework v0.1 · The environments, baselines, and verifier suites described here
+    are under active construction; task specifications may be revised before their release.
+  </p>
+</article>
+
+<footer class="site">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="wm">RSI-<span class="dex">INDEX</span></div>
+      <p>Auditable environments for recursive self-improvement research, built from
+      representative fully open model-development projects.</p>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="../blog.html">Blog</a></li>
+          <li><a href="../tasks.html">Tasks</a></li>
+          <li><a href="../contribute.html">Contribute</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul>
+          <li><a href="https://github.com/RSI-Index" target="_blank" rel="noopener">GitHub ↗</a></li>
+          <li><a href="https://github.com/RSI-Index/RSI-Index-Public" target="_blank" rel="noopener">Task pipeline ↗</a></li>
+          <li><a href="introducing-rsi-index.html">Announcement</a></li>
+          <li><a href="../tasks.html#anatomy">Task format</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-base">
+    <span>© 2026 RSI-Index · Framework v0.1</span>
+    <span><span class="blink">●</span> agent research loop: running</span>
+  </div>
+</footer>
+
+<script src="../assets/site.js"></script>
+</body>
+</html>
