@@ -32,11 +32,11 @@
 <header class="pagehead">
   <div class="wrap">
     <p class="eyebrow">Tasks</p>
-    <h1 class="h-lg">Three signature tasks. A growing 1-node fleet. The map behind them.</h1>
+    <h1 class="h-lg">Signature tasks, 1-node tasks, and the taxonomy behind them.</h1>
     <p class="lede">
-      Every task is the same contract at a different scale: a pinned repository, a task-pristine
-      human baseline, an agent research loop, and an independent final verifier. Every gain is
-      measured against the original authors' recipe, rerun frozen in the same environment.
+      Every task follows the same structure: a pinned repository, a task-pristine human
+      baseline, an agent research loop, and an independent final verifier. Gains are measured
+      against the original authors' recipe, rerun frozen in the same environment.
     </p>
     <span class="updated">Framework v0.1 · updated Aug 2026</span>
   </div>
@@ -47,21 +47,23 @@
   <div class="wrap">
     <div class="section-head" style="margin-bottom: 30px;">
       <p class="eyebrow">Signature tasks</p>
-      <h2 class="h-lg">Three flagship environments. Agents on the clock.</h2>
+      <h2 class="h-lg">One signature task per domain.</h2>
       <p class="lede">
-        The signature tasks are the program's deepest environments — one per domain, built as
-        complete Harbor packages with hardened, adversarially tested verifiers. Research-agent
-        trajectories are running on them now.
+        The signature tasks are the program's deepest environments, built as complete Harbor
+        packages with hardened, adversarially tested verifiers. Research-agent trajectories are
+        currently running on the pre-training and vision tasks; the post-training task is in
+        preparation.
       </p>
     </div>
     <div class="grid grid-3">
       <div class="card track-card d-pre">
         <span class="num">SIGNATURE · <span class="tag d-pre">Pretrain</span></span>
         <h3>Optimizer update geometry</h3>
-        <p>Design one genuinely new, scale-general optimizer — gradient transformation, state,
-        tensor grouping, geometry — that improves Paloma and training-loss trajectories over the
-        locked AdamH recipe at every rung of the 550M → 2.545B Marin ladder. Algorithm
-        discovery, not scalar retuning: LR, momentum, and epsilon tweaks don't count.</p>
+        <p>Design a genuinely new, scale-general optimizer — its gradient transformation,
+        state, tensor grouping, and geometry — that improves Paloma and training-loss
+        trajectories over the locked AdamH recipe at every rung of the 550M → 2.545B Marin
+        ladder. The task asks for a new algorithm; changes to learning rate, momentum, or
+        epsilon alone do not qualify.</p>
         <div class="card-foot">
           <span class="status run">Trajectories running</span>
           <a class="go" href="https://github.com/RSI-Index/RSI-Index/blob/main/tasks/backup/pre-training/optimizer_update_geometry/instruction.md" target="_blank" rel="noopener">instruction ↗</a>
@@ -100,12 +102,13 @@
   <div class="wrap">
     <div class="section-head" style="margin-bottom: 30px;">
       <p class="eyebrow">1-node tasks · crowdsourced</p>
-      <h2 class="h-lg">A growing fleet of single-node environments.</h2>
+      <h2 class="h-lg">Community-proposed tasks on a single GPU node.</h2>
       <p class="lede">
-        Community-proposed tasks sized to a single GPU node, produced through the automated
-        contribution pipeline — from idea to a validated Harbor task in about thirty active
-        minutes of the contributor's time. The fleet is expanding now; the first examples and
-        their validation logs are public in the pipeline repository.
+        These tasks are proposed by the community and sized to a single GPU node. They are
+        produced through an automated contribution pipeline that takes an idea to a validated
+        Harbor task in about thirty minutes of the contributor's active time. The set is
+        growing; the first examples and their validation logs are available in the pipeline
+        repository.
       </p>
     </div>
     <div class="env-grid">
@@ -129,7 +132,7 @@
       </div>
     </div>
     <p style="margin-top: 26px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
-      <a class="btn btn-paper" href="contribute.html">Propose yours in ≤ 30 minutes →</a>
+      <a class="btn btn-paper" href="contribute.html">How to contribute →</a>
       <a class="btn btn-paper-ghost" href="https://github.com/RSI-Index/RSI-Index-Public/tree/main/rsi-tasks" target="_blank" rel="noopener">Task examples ↗</a>
       <a class="btn btn-paper-ghost" href="https://github.com/RSI-Index/RSI-Index-Public/tree/main/rsi-logs" target="_blank" rel="noopener">Validation logs ↗</a>
     </p>
@@ -141,7 +144,7 @@
   <div class="wrap">
     <div class="section-head" style="margin-bottom: 0;">
       <p class="eyebrow">The taxonomy</p>
-      <h2 class="h-lg">Fifty-eight mapped lanes across ten tracks.</h2>
+      <h2 class="h-lg">Ten tracks, fifty-eight planned lanes.</h2>
       <p class="lede">
         The roadmap the tasks above are drawn from. Each lane is a bounded experiment inside a
         runnable open project, with a concrete research target stated against its own golden
@@ -799,7 +802,7 @@
   <div class="wrap">
     <div class="section-head">
       <p class="eyebrow">Task anatomy</p>
-      <h2 class="h-lg">What a lane must prove before it ships.</h2>
+      <h2 class="h-lg">What a task must satisfy before release.</h2>
       <p class="lede">
         Once a project enters task design, the pinned repository is the scientific source of
         truth for the model, data, configuration, training procedure, evaluator, and baseline.
@@ -857,7 +860,7 @@
     </div>
 
     <div class="cta-band" style="margin-top: 64px;">
-      <h2 class="h-md">Have a lane in mind?</h2>
+      <h2 class="h-md">Designing a task</h2>
       <p>Bring a high-impact project you coauthored, or adopt one from the taxonomy above and
       design a new RSI task around it.</p>
       <a class="btn btn-paper" href="contribute.html">Read the contribution workflow →</a>
@@ -894,7 +897,6 @@
   </div>
   <div class="footer-base">
     <span>© 2026 RSI-Index · Framework v0.1</span>
-    <span><span class="blink">●</span> agent research loop: running</span>
   </div>
 </footer>
 

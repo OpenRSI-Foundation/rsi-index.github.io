@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RSI-Index — Measuring recursive self-improvement in the open</title>
+<title>RSI-Index — An open benchmark for recursive self-improvement</title>
 <meta name="description" content="RSI-Index turns influential open model-development projects into auditable environments where AI research agents iterate against fixed verifiers — and are scored against the human recipe they started from.">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,25 +35,25 @@
     <div class="hero">
       <canvas id="rsi-canvas" aria-hidden="true"></canvas>
       <div class="hero-scrim" aria-hidden="true"></div>
-      <div class="hero-hint" aria-hidden="true">HOVER TO ILLUMINATE · <b>CLICK TO GROW A BRANCH</b></div>
+      <div class="hero-hint" aria-hidden="true">HOVER TO EXPLORE · <b>CLICK TO GROW A BRANCH</b></div>
       <div class="hero-content">
         <div class="hero-kicker">ALE · Recursive Self-Improvement Program — <b>Framework v0.1</b></div>
         <h1 class="wordmark">RSI-<span class="dex">INDEX</span></h1>
         <p class="hero-sub">
-          Can AI improve the way AI is built? RSI-Index turns representative, fully open
-          model-development projects into <strong>auditable environments</strong> where a research
-          agent repeatedly improves a real workflow against a fixed evaluator — and is scored
-          against <strong>the human recipe it started from</strong>.
+          RSI-Index studies how far AI research agents can improve the way models are built.
+          We turn fully open model-development projects into <strong>auditable environments</strong>,
+          in which an agent works to improve a real training workflow against a fixed evaluator
+          and is scored against <strong>the original, human-written recipe</strong>.
         </p>
         <div class="hero-ctas">
           <a class="btn btn-solid" href="tasks.html">Explore the tasks →</a>
           <a class="btn btn-ghost" href="blog/introducing-rsi-index.html">Read the announcement</a>
         </div>
         <div class="hero-stats">
-          <div><span class="n">3</span><span class="l">Signature tasks · running</span></div>
+          <div><span class="n">3</span><span class="l">Signature tasks</span></div>
+          <div><span class="n">10</span><span class="l">Research tracks</span></div>
           <div><span class="n">58</span><span class="l">Environment lanes</span></div>
           <div><span class="n">≤30</span><span class="l">Min to contribute a task</span></div>
-          <div><span class="n">1</span><span class="l">Rule: beat the human baseline</span></div>
         </div>
       </div>
     </div>
@@ -94,7 +94,7 @@
   <div class="wrap">
     <div class="section-head">
       <p class="eyebrow">What RSI-Index is</p>
-      <h2 class="h-lg">The last puzzle before ASI, measured properly.</h2>
+      <h2 class="h-lg">What the program is trying to find out.</h2>
       <p class="lede">
         RSI, self-evolve, autoresearch — different names for the same loop: an agent proposes a
         hypothesis, implements it, and evaluates the result against a verifiable objective.
@@ -132,7 +132,7 @@
   <div class="wrap">
     <div class="section-head">
       <p class="eyebrow">The measure</p>
-      <h2 class="h-lg">One number, anchored to the human recipe.</h2>
+      <h2 class="h-lg">How performance is measured.</h2>
     </div>
     <div class="formula">
       <div class="fx">RSI improvement&nbsp;=&nbsp;<span class="frac"><span class="top">performance of the agent-selected final artifact</span><span class="bot">matched, task-pristine human-recipe baseline</span></span></div>
@@ -239,19 +239,21 @@
   <div class="wrap">
     <div class="panel-dark">
       <p class="eyebrow on-dark">Signature tasks · trajectories running</p>
-      <h2 class="h-lg" style="max-width: 720px;">Three flagship environments, agents on the clock.</h2>
+      <h2 class="h-lg" style="max-width: 720px;">Three signature tasks are running now.</h2>
       <p style="color: var(--panel-muted); max-width: 76ch; margin: 16px 0 8px;">
-        One signature task per domain — complete Harbor packages with hardened, adversarially
-        tested verifiers. Research-agent trajectories are running on them now, alongside a
-        growing fleet of crowdsourced 1-node tasks.
+        There is one signature task per domain, each built as a complete Harbor package with a
+        hardened, adversarially tested verifier. Research-agent trajectories are currently
+        running on the pre-training and vision tasks, alongside a growing set of
+        community-contributed 1-node tasks.
       </p>
 
       <div class="grid grid-3" style="margin: 30px 0 8px;">
         <div class="dark-card">
           <span class="num">PRETRAIN</span>
           <h3>Optimizer update geometry</h3>
-          <p>One genuinely new, scale-general optimizer must beat the locked AdamH recipe at
-          every rung of the Marin ladder — algorithm discovery, not scalar retuning.</p>
+          <p>A genuinely new, scale-general optimizer must beat the locked AdamH recipe at
+          every rung of the Marin ladder. The task asks for a new algorithm, not retuned
+          hyperparameters.</p>
           <div class="card-foot">
             <span class="status run">Running</span>
             <a class="go" href="https://github.com/RSI-Index/RSI-Index/blob/main/tasks/backup/pre-training/optimizer_update_geometry/instruction.md" target="_blank" rel="noopener">instruction ↗</a>
@@ -303,15 +305,17 @@
       </div>
 
       <ul class="checks">
-        <li><b>Scored against locked AdamH.</b> Paloma and training-loss trajectories versus the
-        frozen human recipe — AdamH is the only scored reference optimizer.</li>
-        <li><b>All six rungs, or zero.</b> The same equations, grouping logic, and state
-        semantics must run across E0–E5 without materially regressing any scale.</li>
-        <li><b>Discovery, not retuning.</b> A valid method names a new transformation,
-        preconditioner, state recurrence, or geometry — changing learning rates, momentum, or
-        epsilon is not a new optimizer.</li>
-        <li><b>Verified, not self-reported.</b> An independent verifier re-evaluates the
-        artifact in a clean image; hard policy violations fail closed to zero.</li>
+        <li><b>Scored against a locked baseline.</b> Candidates are compared on Paloma and
+        training-loss trajectories against the frozen AdamH recipe, the only scored reference
+        optimizer.</li>
+        <li><b>Evaluated at every scale.</b> The same equations, grouping logic, and state
+        semantics must run across E0–E5, and a material regression at any scale invalidates
+        the result.</li>
+        <li><b>New algorithms only.</b> A valid method introduces a new transformation,
+        preconditioner, state recurrence, or geometry; changing learning rates, momentum, or
+        epsilon alone does not qualify.</li>
+        <li><b>Independently verified.</b> A separate verifier re-evaluates the submitted
+        artifact in a clean image, and hard policy violations set the reward to zero.</li>
       </ul>
 
       <p style="margin-top: 30px; display: flex; gap: 10px; flex-wrap: wrap;">
@@ -328,7 +332,7 @@
   <div class="wrap">
     <div class="section-head">
       <p class="eyebrow">Anatomy of a task</p>
-      <h2 class="h-lg">Every task ships as a verifiable Harbor environment.</h2>
+      <h2 class="h-lg">How a task is packaged and verified.</h2>
       <p class="lede">
         The environment gives the agent the actual project it must improve — pinned source,
         declared read-only assets, a reproducible launch path, and enough instrumentation to
@@ -347,7 +351,7 @@
     ├── <span class="a">integrity gates</span>
     └── <span class="a">reward mapping</span> <span class="c"># fails closed to zero</span></pre>
       <div>
-        <h3 class="h-md" style="margin-bottom: 16px;">Hard-zero violations</h3>
+        <h3 class="h-md" style="margin-bottom: 16px;">Violations that zero the reward</h3>
         <ul class="forbid">
           <li><b>Reward-path tampering.</b> Modifying or bypassing the reward path.</li>
           <li><b>Eval leakage.</b> Training on, filtering on, or hardcoding evaluation examples.</li>
@@ -368,7 +372,7 @@
   <div class="wrap">
     <div class="section-head">
       <p class="eyebrow">Collaboration</p>
-      <h2 class="h-lg">Built in the open, verified by the authors.</h2>
+      <h2 class="h-lg">How we work with labs and original authors.</h2>
     </div>
     <div class="grid grid-2">
       <div class="card">
@@ -386,7 +390,7 @@
       </div>
     </div>
     <div class="cta-band" style="margin-top: 56px;">
-      <h2 class="h-md">Bring a project. Build a task. Move the index.</h2>
+      <h2 class="h-md">Contributing a task</h2>
       <p>Contributors can bring a high-impact project they coauthored, or adopt one from the
       taxonomy and design a new RSI task around it.</p>
       <a class="btn btn-paper" href="contribute.html">Contribution guide →</a>
@@ -424,7 +428,6 @@
   </div>
   <div class="footer-base">
     <span>© 2026 RSI-Index · Framework v0.1</span>
-    <span><span class="blink">●</span> agent research loop: running</span>
   </div>
 </footer>
 
