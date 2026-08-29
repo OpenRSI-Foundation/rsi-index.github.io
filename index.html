@@ -51,9 +51,8 @@
         </div>
         <div class="hero-stats">
           <div><span class="n">3</span><span class="l">Signature tasks</span></div>
-          <div><span class="n">10</span><span class="l">Research tracks</span></div>
-          <div><span class="n">58</span><span class="l">Environment lanes</span></div>
-          <div><span class="n">≤30</span><span class="l">Min to contribute a task</span></div>
+          <div><span class="n">1</span><span class="l">GPU node per community task</span></div>
+          <div><span class="n">&lt;1</span><span class="l">Hour from idea to a task</span></div>
         </div>
       </div>
     </div>
@@ -143,94 +142,6 @@
         violations fail closed to a reward of zero.
       </p>
     </div>
-  </div>
-</section>
-
-<!-- ================= TAXONOMY ================= -->
-<section class="block">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow">Taxonomy</p>
-      <h2 class="h-lg">Ten tracks across the full model-development lifecycle.</h2>
-      <p class="lede">
-        From pre-training and post-training to model systems and multimodal — together these
-        tracks define a coherent research agenda for studying whether AI can improve the
-        processes through which increasingly capable models are built.
-      </p>
-    </div>
-    <div class="grid grid-2">
-      <a class="card track-card d-pre" href="tasks.html#rsi-1">
-        <span class="num">RSI-1 <span class="tag d-pre">Pretrain</span></span>
-        <h3>Full-Recipe — Marin</h3>
-        <p>Coordinated improvements to a complete pre-training recipe under fixed compute and
-        evaluation. Worked example: positional encoding across a six-rung scaling ladder,
-        550M → 2.5B.</p>
-      </a>
-      <a class="card track-card d-post" href="tasks.html#rsi-2">
-        <span class="num">RSI-2 / 2.5 <span class="tag d-post">Posttrain</span> <span class="tag tbd">TBD</span></span>
-        <h3>Full-Recipe — OLMo 3 &amp; Nemotron 3</h3>
-        <p>Complete post-training pipelines from a fixed base model: stage order, data,
-        objectives, sampling, rewards, and optimization under one total budget — on two open
-        model stacks.</p>
-      </a>
-      <a class="card track-card d-pre" href="tasks.html#rsi-3">
-        <span class="num">RSI-3 <span class="tag d-pre">Pretrain</span></span>
-        <h3>Pretrain Data</h3>
-        <p>Which data a model sees, how often, and how raw content becomes training units —
-        with training and preprocessing cost accounted together. DCLM, BabyLM, SuperBPE,
-        RegMix, FineWeb, Dolma, DataDecide, DataComp.</p>
-      </a>
-      <a class="card track-card d-pre" href="tasks.html#rsi-4">
-        <span class="num">RSI-4 <span class="tag d-pre">Pretrain</span></span>
-        <h3>Pretrain Architectures</h3>
-        <p>Change model structure or parameterization while matching parameters, tokens, and
-        compute closely enough to attribute the gain to the architecture. Gated DeltaNet,
-        PhysicsLM4, DyT, OLMo 2, BLT, nGPT…</p>
-      </a>
-      <a class="card track-card d-pre" href="tasks.html#rsi-5">
-        <span class="num">RSI-5 <span class="tag d-pre">Pretrain</span></span>
-        <h3>Training Efficiency</h3>
-        <p>Reach a target quality with less training, tuning, precision cost, or communication —
-        and test whether decisions transfer across budgets and scales. Muon, OLMo Model Ladder,
-        CompleteP, u-μP, OpenDiLoCo.</p>
-      </a>
-      <a class="card track-card d-sys" href="tasks.html#rsi-6">
-        <span class="num">RSI-6 <span class="tag d-sys">Systems</span></span>
-        <h3>Model Systems</h3>
-        <p>Faster training and inference implementations under fixed workloads, hardware,
-        precision, and numerical tolerances. FlashAttention, FlashMLA, DeepGEMM, DeepEP,
-        Liger-Kernel, Zero Bubble…</p>
-      </a>
-      <a class="card track-card d-post" href="tasks.html#rsi-7">
-        <span class="num">RSI-7 <span class="tag d-post">Posttrain</span></span>
-        <h3>SFT and Alignment</h3>
-        <p>Supervised fine-tuning, preference learning, safety, and reward modeling from a fixed
-        starting model. Tülu 3, DPO, Safe-RLHF, KTO, SPPO, reward-model ensembles, HelpSteer,
-        RM-R1.</p>
-      </a>
-      <a class="card track-card d-post" href="tasks.html#rsi-8">
-        <span class="num">RSI-8 <span class="tag d-post">Posttrain</span></span>
-        <h3>RL</h3>
-        <p>RL with verifiable rewards and agentic RL — rollout budgets, reward verification,
-        tools, and environments fixed so gains come from learning. PRIME, Dr. GRPO, RAGEN,
-        Search-R1, Logic-RL, DAPO.</p>
-      </a>
-      <a class="card track-card d-vis" href="tasks.html#rsi-9">
-        <span class="num">RSI-9 <span class="tag d-vis">Vision</span></span>
-        <h3>Vision Understanding</h3>
-        <p>Reusable visual and multimodal representations, and more efficient visual inputs.
-        MAE, OpenCLIP, I-JEPA, DeepOCR, REPA.</p>
-      </a>
-      <a class="card track-card d-vis" href="tasks.html#rsi-10">
-        <span class="num">RSI-10 <span class="tag d-vis">Vision</span></span>
-        <h3>Vision Generative Modeling</h3>
-        <p>Improve visual generation while accounting jointly for output quality, training cost,
-        and sampling cost. micro_diffusion, VAR, Latent Diffusion, Consistency Models, MAR.</p>
-      </a>
-    </div>
-    <p style="margin-top: 26px;">
-      <a class="btn btn-paper-ghost" href="tasks.html">Browse all 58 environment lanes →</a>
-    </p>
   </div>
 </section>
 
@@ -391,8 +302,8 @@
     </div>
     <div class="cta-band" style="margin-top: 56px;">
       <h2 class="h-md">Contributing a task</h2>
-      <p>Contributors can bring a high-impact project they coauthored, or adopt one from the
-      taxonomy and design a new RSI task around it.</p>
+      <p>Contributors can bring a high-impact project they coauthored, or start from any
+      influential open project and design an RSI task around one of its experiments.</p>
       <a class="btn btn-paper" href="contribute.html">Contribution guide →</a>
     </div>
   </div>

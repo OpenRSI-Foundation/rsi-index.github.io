@@ -123,24 +123,7 @@
     violation — reward-path tampering, evaluation leakage, or budget overrun.
   </p>
 
-  <h2><span class="sec">// 05</span>Ten tracks across the lifecycle</h2>
-  <p>
-    The taxonomy maps the major frontiers of model development where research agents can make
-    measurable scientific progress — from pre-training recipes, data, architectures, and
-    training efficiency, through model systems, to SFT/alignment, RL, and vision understanding
-    and generation. Today that is <strong>10 tracks and 58 environment lanes</strong>, anchored
-    by projects like Marin, DCLM, FlashAttention, Tülu 3, DAPO, MAE, and VAR — each with a
-    concrete research target stated against its own golden run.
-  </p>
-  <p>
-    The worked example, <a href="../tasks.html#rsi-1">RSI-1 Pretrain-FullRecipe-Marin</a>, asks
-    for a single positional-encoding mechanism, trained only at context 4096, that improves
-    long-context modeling at every rung of a fixed scaling ladder from 550M to 2.5B parameters.
-    The reward is the geometric mean of six relative LongPPL gains — a large win at the
-    smallest scale cannot hide a regression at the largest.
-  </p>
-
-  <h2><span class="sec">// 06</span>Where the program stands</h2>
+  <h2><span class="sec">// 05</span>Where the program stands</h2>
   <p>
     The framework is now running. <strong>Three signature tasks</strong> — one per domain,
     built as complete Harbor packages with hardened, adversarially tested verifiers — anchor
@@ -159,11 +142,13 @@
   <p>
     Alongside them, a growing set of <strong>1-node tasks</strong> — community-proposed environments
     sized to a single GPU node — is expanding through an automated crowdsourcing pipeline that
-    takes a contributor from idea to a validated Harbor task in about thirty active minutes:
-    an agent drafts the proposal with you, an automated review iterates on it in a GitHub
-    Discussion, a bot builds the private task repository on <code>/task confirm</code>, and a
-    bundled validator checks it end to end. The first crowdsourced tasks and their validation
-    logs are already in the pipeline repository.
+    takes a contributor from idea to a validated Harbor task in under an hour of active time.
+    An agent drafts the proposal with you, and a review agent evaluates it in a GitHub
+    Discussion. If it is rejected, the review's reasons can be handed to your own coding agent
+    for revision; once it is accepted, a private task repository is created for you under the
+    organization and you receive an email. A bundled validator then checks the task end to
+    end. The first crowdsourced tasks and their validation logs are already in the pipeline
+    repository.
   </p>
   <p>
     We continue to seek partnerships with frontier labs for the compute to scale task design —
@@ -171,7 +156,7 @@
     that carries their recipe.
   </p>
 
-  <h2><span class="sec">// 07</span>Resources</h2>
+  <h2><span class="sec">// 06</span>Resources</h2>
   <ul>
     <li><a href="https://github.com/RSI-Index/RSI-Index-Public" target="_blank" rel="noopener">Contribution pipeline — RSI-Index-Public</a> (the README is the guide)</li>
     <li><a href="https://github.com/RSI-Index/RSI-Index-Public/tree/main/rsi-tasks" target="_blank" rel="noopener">Crowdsourced task examples — rsi-tasks</a></li>
@@ -179,8 +164,8 @@
     <li>Signature tasks: <a href="https://github.com/RSI-Index/RSI-Index/blob/main/tasks/backup/pre-training/optimizer_update_geometry/instruction.md" target="_blank" rel="noopener">optimizer_update_geometry</a> · <a href="https://github.com/RSI-Index/task_collect/tree/main/yh_tasks/gpic_generation" target="_blank" rel="noopener">gpic_generation</a></li>
   </ul>
   <p>
-    If you have coauthored a high-impact open project, or you know one of the projects in the
-    taxonomy deeply, there is a lane for you to design. Read the
+    If you have coauthored a high-impact open project, or there is an influential open
+    project you know deeply, there is a task for you to design. Read the
     <a href="../contribute.html">contribution workflow</a> — the fast path takes about half an
     hour of your time.
   </p>

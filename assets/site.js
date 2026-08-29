@@ -12,7 +12,7 @@
     });
   }
 
-  /* ---------- task domain filters ---------- */
+  /* ---------- task domain filters (no-op if no filterbar) ---------- */
   var chips = document.querySelectorAll(".filterbar .chip");
   if (chips.length) {
     var sections = document.querySelectorAll(".track-section");
@@ -29,13 +29,13 @@
     });
   }
 
-  /* ---------- hero: the self-rewiring blueprint ----------
-     An engineering schematic of the RSI loop, drawn in hairlines:
-     PROPOSE → PATCH → TRAIN → VERIFY → ARCHIVE. An amber signal runs
-     the loop. When a lap verifies, the revision counter advances and
-     the schematic rewrites one piece of itself — a trace is rerouted,
-     the training profile changes, a test stub appears. Failed laps
-     ride the dashed reject bus back to PROPOSE and change nothing.
+  /* ---------- hero: the instrument ----------
+     The RSI loop as a drawn instrument. Five modules ring a central
+     revision gauge; an amber signal runs laps and leaves light where it
+     has been. Verified laps advance the gauge and rewrite one piece of
+     the schematic — superseded traces linger underneath as ghost layers,
+     the palimpsest of earlier revisions. Failed laps ride the dashed
+     reject bus and leave no mark.
      Pointer (≥900px): hover a module for its note, click to run a lap. */
   var canvas = document.getElementById("rsi-canvas");
   if (!canvas) return;
@@ -59,12 +59,12 @@
   var GREEN = "159,199,106";
   var PINK = "212,137,155";
   var MONO = "'Geist Mono', ui-monospace, monospace";
+  var PIXEL = "Silkscreen, 'Geist Mono', monospace";
 
   var VW = 1000, VH = 620;
   var W = 0, H = 0, dpr = 1;
   var mouse = { x: 0, y: 0, inside: false };
 
-  /* glow sprite for the signal */
   var glowS = null;
   function glowSprite() {
     if (glowS) return glowS;
@@ -80,55 +80,65 @@
     return glowS;
   }
 
-  /* ---- the schematic, hand-composed in virtual 1000×620 space ---- */
+  /* ---- the instrument, hand-composed in virtual 1000×620 space ---- */
   var M = {
-    propose: { x: 150, y: 132, w: 170, h: 60, label: "PROPOSE",
+    propose: { x: 120, y: 250, w: 170, h: 60, label: "PROPOSE",
                note: "drafts the next hypothesis" },
-    patch:   { x: 520, y: 92,  w: 170, h: 60, label: "PATCH",
+    patch:   { x: 450, y: 70,  w: 170, h: 60, label: "PATCH",
                note: "edits the pinned source" },
-    train:   { x: 760, y: 250, w: 190, h: 130, label: "TRAIN",
+    train:   { x: 780, y: 180, w: 190, h: 130, label: "TRAIN",
                note: "six rungs · fixed budget" },
-    verify:  { x: 540, y: 474, w: 180, h: 60, label: "VERIFY",
+    verify:  { x: 640, y: 480, w: 180, h: 60, label: "VERIFY",
                note: "clean image · fail → zero" },
-    archive: { x: 130, y: 452, w: 190, h: 60, label: "ARCHIVE",
+    archive: { x: 200, y: 480, w: 190, h: 60, label: "ARCHIVE",
                note: "commit if the rerun is beaten" }
   };
+  var DIAL = { x: 600, y: 312, r: 95 };
 
-  /* connection routes: hand-designed Manhattan variants */
   var ROUTES = {
     A: { variants: [   // propose → patch
-      [[320, 162], [430, 162], [430, 122], [520, 122]],
-      [[320, 150], [382, 150], [382, 62], [468, 62], [468, 122], [520, 122]],
-      [[320, 176], [462, 176], [462, 122], [520, 122]]
+      [[290, 280], [350, 280], [350, 100], [450, 100]],
+      [[290, 262], [326, 262], [326, 48], [520, 48], [520, 70]],
+      [[290, 296], [372, 296], [372, 100], [450, 100]]
     ], cur: 0 },
     B: { variants: [   // patch → train
-      [[690, 122], [855, 122], [855, 250]],
-      [[690, 140], [782, 140], [782, 204], [855, 204], [855, 250]]
+      [[620, 100], [860, 100], [860, 180]],
+      [[620, 116], [724, 116], [724, 152], [860, 152], [860, 180]]
     ], cur: 0 },
     C: { variants: [   // train → verify
-      [[855, 380], [855, 504], [720, 504]],
-      [[855, 380], [855, 442], [792, 442], [792, 504], [720, 504]]
+      [[860, 310], [860, 505], [820, 505]],
+      [[860, 310], [860, 420], [908, 420], [908, 505], [820, 505]]
     ], cur: 0 },
     D: { variants: [   // verify → archive
-      [[540, 504], [430, 504], [430, 482], [320, 482]],
-      [[540, 520], [362, 520], [362, 482], [320, 482]]
+      [[640, 505], [390, 505]],
+      [[640, 522], [514, 522], [514, 505], [390, 505]]
     ], cur: 0 },
     E: { variants: [   // archive → propose (left return bus)
-      [[130, 482], [72, 482], [72, 150], [150, 150]],
-      [[130, 500], [52, 500], [52, 172], [150, 172]]
+      [[200, 505], [86, 505], [86, 296], [120, 296]],
+      [[200, 522], [64, 522], [64, 268], [120, 268]]
     ], cur: 0 }
   };
-  var REJECT = [[630, 534], [630, 586], [90, 586], [90, 180], [150, 180]];
+  var REJECT = [[730, 540], [730, 578], [96, 578], [96, 308], [120, 308]];
   var ORDER = ["A", "B", "C", "D", "E"];
 
-  var rev = 41;                     // schematic revision counter
-  var trainBars = [];               // current E0–E5 profile
+  var rev = 41;
+  var trainBars = [];
   var trainBarsOld = null, barsMorphT0 = 0;
-  var stubs = [];                   // accreted test stubs
-  var floats = [];                  // rising annotations
-  var rewire = null;                // {conn, oldPts, t0}
-  var verdict = null;               // {ok, t0} tick at VERIFY
+  var stubs = [];
+  var floats = [];
+  var rewire = null;
+  var verdict = null;
   var hoverMod = null;
+  var ghosts = [];      // palimpsest: superseded route sets, oldest first
+
+  /* atmosphere: fixed dust field */
+  var dust = [];
+  (function () {
+    var dr = mulberry32(77);
+    for (var i = 0; i < 46; i++) {
+      dust.push({ x: dr() * VW, y: dr() * VH, r: 0.5 + dr() * 0.8, a: 0.04 + dr() * 0.09 });
+    }
+  })();
 
   function newBars() {
     var b = [];
@@ -138,7 +148,7 @@
   trainBars = newBars();
 
   /* ---- lap state machine ---- */
-  var lap = null;   // {plan:[{kind,conn|at,dur,fx}], t, ok}
+  var lap = null;
   var nextLapAt = 0;
 
   function buildLap(ok) {
@@ -160,14 +170,19 @@
     for (var i = 0; i < p.length; i++) { p[i].t0 = acc; acc += p[i].dur; }
     return { plan: p, total: acc, t: 0, ok: ok, fired: {} };
   }
-
   function startLap() { lap = buildLap(rnd() < 0.78); }
 
-  /* one self-rewrite after a verified lap */
+  function snapshotRoutes() {
+    var snap = {};
+    for (var k in ROUTES) snap[k] = ROUTES[k].variants[ROUTES[k].cur];
+    return snap;
+  }
+
   function rewriteOnce(now) {
     var roll = rnd();
     if (roll < 0.45) {
-      /* reroute one already-travelled trace */
+      ghosts.push(snapshotRoutes());
+      if (ghosts.length > 3) ghosts.shift();
       var pool = ["A", "B", "C", "D"].filter(function (k) { return ROUTES[k].variants.length > 1; });
       var k2 = pool[(rnd() * pool.length) | 0];
       var r = ROUTES[k2];
@@ -175,12 +190,10 @@
       rewire = { conn: k2, oldPts: r.variants[r.cur], t0: now };
       r.cur = next;
     } else if (roll < 0.75) {
-      /* new training profile */
       trainBarsOld = trainBars.slice();
       trainBars = newBars();
       barsMorphT0 = now;
     } else {
-      /* accrete a test stub off a random trace */
       var k3 = ORDER[(rnd() * ORDER.length) | 0];
       var pts = ROUTES[k3].variants[ROUTES[k3].cur];
       var si = (rnd() * (pts.length - 1)) | 0;
@@ -197,6 +210,7 @@
   }
 
   /* ---- geometry ---- */
+  var trail = null, trailCtx = null;   // accumulated light
   function resize() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     var rect = canvas.getBoundingClientRect();
@@ -204,6 +218,10 @@
     canvas.width = Math.round(W * dpr);
     canvas.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    trail = document.createElement("canvas");
+    trail.width = canvas.width; trail.height = canvas.height;
+    trailCtx = trail.getContext("2d");
+    trailCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   function region() {
     var narrow = W < 900;
@@ -233,32 +251,30 @@
   function easeIO(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
 
   /* ---- drawing ---- */
-  function tracePath(rg, pts, upTo) {
-    ctx.beginPath();
+  function tracePath(g, rg, pts, off) {
+    var ox = off || 0;
+    g.beginPath();
     var R = 7;
-    var n = upTo == null ? pts.length : upTo;
-    for (var i = 0; i < n; i++) {
-      var X = mx(rg, pts[i][0]), Y = my(rg, pts[i][1]);
-      if (i === 0) ctx.moveTo(X, Y);
-      else if (i < n - 1 && upTo == null) {
-        var nx = mx(rg, pts[i + 1][0]), ny = my(rg, pts[i + 1][1]);
-        ctx.arcTo(X, Y, nx, ny, R);
-      } else ctx.lineTo(X, Y);
+    for (var i = 0; i < pts.length; i++) {
+      var X = mx(rg, pts[i][0]) + ox, Y = my(rg, pts[i][1]) + ox * 0.7;
+      if (i === 0) g.moveTo(X, Y);
+      else if (i < pts.length - 1) {
+        var nx = mx(rg, pts[i + 1][0]) + ox, ny = my(rg, pts[i + 1][1]) + ox * 0.7;
+        g.arcTo(X, Y, nx, ny, R);
+      } else g.lineTo(X, Y);
     }
   }
-  function drawTrace(rg, pts, alpha, dashed) {
+  function drawTrace(rg, pts, alpha, withVias) {
     ctx.strokeStyle = "rgba(" + INK + "," + alpha + ")";
     ctx.lineWidth = 1;
-    if (dashed) ctx.setLineDash([4, 5]);
-    tracePath(rg, pts);
+    tracePath(ctx, rg, pts, 0);
     ctx.stroke();
-    ctx.setLineDash([]);
-    /* vias on interior bends */
-    for (var i = 1; i < pts.length - 1; i++) {
-      ctx.beginPath();
-      ctx.arc(mx(rg, pts[i][0]), my(rg, pts[i][1]), 2, 0, 7);
-      ctx.strokeStyle = "rgba(" + INK + "," + (alpha * 0.9) + ")";
-      ctx.stroke();
+    if (withVias) {
+      for (var i = 1; i < pts.length - 1; i++) {
+        ctx.beginPath();
+        ctx.arc(mx(rg, pts[i][0]), my(rg, pts[i][1]), 2, 0, 7);
+        ctx.stroke();
+      }
     }
   }
   function drawPartialTrace(rg, pts, f, alpha, color) {
@@ -282,6 +298,15 @@
     ctx.stroke();
   }
 
+  function trainT0(l) {
+    for (var i = 0; i < l.plan.length; i++) if (l.plan[i].at === "train") return l.plan[i].t0;
+    return 0;
+  }
+  function segAt(l) {
+    for (var i = l.plan.length - 1; i >= 0; i--) if (l.t >= l.plan[i].t0) return l.plan[i];
+    return l.plan[0];
+  }
+
   function drawModule(rg, key, now, active) {
     var m = M[key];
     var X = mx(rg, m.x), Y = my(rg, m.y);
@@ -290,6 +315,11 @@
     var a = hot ? 0.85 : 0.5;
 
     if (active) {
+      ctx.globalCompositeOperation = "lighter";
+      ctx.globalAlpha = 0.35;
+      ctx.drawImage(glowSprite(), X + Wd / 2 - 55, Y + Hd / 2 - 55, 110, 110);
+      ctx.globalCompositeOperation = "source-over";
+      ctx.globalAlpha = 1;
       ctx.fillStyle = "rgba(" + AMBER + ",0.07)";
       ctx.fillRect(X, Y, Wd, Hd);
     }
@@ -297,22 +327,18 @@
     ctx.lineWidth = 1;
     ctx.strokeRect(X, Y, Wd, Hd);
 
-    /* pin ticks */
     ctx.strokeStyle = "rgba(" + INK + "," + (a * 0.6) + ")";
-    var pins = 3;
-    for (var i = 1; i <= pins; i++) {
-      var py2 = Y + (Hd * i) / (pins + 1);
+    for (var i = 1; i <= 3; i++) {
+      var py2 = Y + (Hd * i) / 4;
       ctx.beginPath(); ctx.moveTo(X - 5, py2); ctx.lineTo(X, py2); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(X + Wd, py2); ctx.lineTo(X + Wd + 5, py2); ctx.stroke();
     }
 
-    /* label */
     ctx.font = "700 10px " + MONO;
     ctx.textAlign = "left";
     ctx.fillStyle = hot ? "rgba(" + AMBER + ",0.95)" : "rgba(" + INK + ",0.8)";
     ctx.fillText(m.label, X + 10, Y + 17);
 
-    /* TRAIN: inner rung bars */
     if (key === "train") {
       var innerX = X + 12, innerY = Y + 30;
       var innerW = Wd - 24, innerH = Hd - 44;
@@ -320,14 +346,13 @@
       var fillN = 6;
       if (lap) {
         var seg = segAt(lap);
-        if (seg && seg.at === "train") {
-          fillN = ((lap.t - seg.t0) / seg.dur) * 7;
-        } else if (seg && seg.t0 < trainT0(lap)) fillN = 0;
+        if (seg && seg.at === "train") fillN = ((lap.t - seg.t0) / seg.dur) * 7;
+        else if (seg && seg.t0 < trainT0(lap)) fillN = 0;
       }
       for (var b = 0; b < 6; b++) {
         var hgt = trainBars[b];
         if (trainBarsOld && now - barsMorphT0 < 900) {
-          var mt = easeIO(Math.min(1, (now - barsMorphT0) / 900));
+          var mt = easeIO(Math.max(0, Math.min(1, (now - barsMorphT0) / 900)));
           hgt = trainBarsOld[b] + (trainBars[b] - trainBarsOld[b]) * mt;
         }
         var bh = innerH * hgt;
@@ -335,7 +360,7 @@
         ctx.strokeStyle = "rgba(" + INK + ",0.35)";
         ctx.strokeRect(bx, innerY + innerH - bh, bw - 3, bh);
         if (b < fillN) {
-          ctx.fillStyle = "rgba(" + AMBER + "," + (b < fillN - 1 ? 0.55 : 0.55 * Math.min(1, fillN - b)) + ")";
+          ctx.fillStyle = "rgba(" + AMBER + "," + (0.55 * Math.min(1, fillN - b)) + ")";
           ctx.fillRect(bx, innerY + innerH - bh, bw - 3, bh);
         }
         ctx.font = "700 6.5px " + MONO;
@@ -344,13 +369,11 @@
       }
     }
 
-    /* ARCHIVE: revision label */
     if (key === "archive") {
       ctx.font = "700 10px " + MONO;
       ctx.fillStyle = "rgba(" + AMBER + ",0.75)";
       ctx.fillText("#" + String(rev).padStart(3, "0"), X + 10, Y + Hd - 12);
     }
-    /* VERIFY: verdict tick */
     if (key === "verify" && verdict && now - verdict.t0 < 1400) {
       var va = 1 - Math.max(0, (now - verdict.t0 - 800) / 600);
       ctx.font = "700 15px " + MONO;
@@ -360,7 +383,6 @@
       ctx.textAlign = "left";
     }
 
-    /* hover note */
     if (hoverMod === key && !region().narrow) {
       ctx.font = "700 9px " + MONO;
       var note = m.note.toUpperCase();
@@ -376,38 +398,114 @@
     }
   }
 
-  function trainT0(l) {
-    for (var i = 0; i < l.plan.length; i++) if (l.plan[i].at === "train") return l.plan[i].t0;
-    return 0;
-  }
-  function segAt(l) {
-    for (var i = l.plan.length - 1; i >= 0; i--) if (l.t >= l.plan[i].t0) return l.plan[i];
-    return l.plan[0];
-  }
+  /* the central revision gauge */
+  function drawDial(rg, now) {
+    var cx = mx(rg, DIAL.x), cy = my(rg, DIAL.y);
+    var R = (DIAL.r / VW) * (rg.x1 - rg.x0);
 
-  function drawTitleBlock(rg, now) {
-    var X = mx(rg, 700), Y = my(rg, 548);
-    var Wd = mx(rg, 952) - X, Hd = my(rg, 612) - Y;
-    ctx.strokeStyle = "rgba(" + INK + ",0.4)";
+    /* soft heart-light behind the gauge */
+    ctx.globalCompositeOperation = "lighter";
+    ctx.globalAlpha = 0.16 + 0.05 * Math.sin(now / 2400);
+    ctx.drawImage(glowSprite(), cx - R * 1.9, cy - R * 1.9, R * 3.8, R * 3.8);
+    ctx.globalCompositeOperation = "source-over";
+    ctx.globalAlpha = 1;
+
+    /* outer ring + ticks */
+    ctx.strokeStyle = "rgba(" + INK + ",0.42)";
     ctx.lineWidth = 1;
-    ctx.strokeRect(X, Y, Wd, Hd);
-    var r1 = Y + Hd / 3, r2 = Y + (2 * Hd) / 3;
-    ctx.beginPath(); ctx.moveTo(X, r1); ctx.lineTo(X + Wd, r1); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(X, r2); ctx.lineTo(X + Wd, r2); ctx.stroke();
-    ctx.font = "700 8.5px " + MONO;
-    ctx.textAlign = "left";
-    ctx.fillStyle = "rgba(" + INK + ",0.6)";
-    ctx.fillText("RSI LOOP — SCHEMATIC", X + 8, r1 - 4);
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.stroke();
+    for (var i = 0; i < 48; i++) {
+      var th = (i / 48) * 6.2832 - 1.5708;
+      var long = i % 4 === 0;
+      var r1 = R - (long ? 9 : 5);
+      ctx.strokeStyle = "rgba(" + INK + "," + (long ? 0.42 : 0.22) + ")";
+      ctx.beginPath();
+      ctx.moveTo(cx + Math.cos(th) * r1, cy + Math.sin(th) * r1);
+      ctx.lineTo(cx + Math.cos(th) * (R - 1), cy + Math.sin(th) * (R - 1));
+      ctx.stroke();
+    }
+    ctx.strokeStyle = "rgba(" + INK + ",0.14)";
+    ctx.beginPath(); ctx.arc(cx, cy, R * 0.74, 0, 7); ctx.stroke();
+
+    /* lap progress arc */
+    if (lap) {
+      var prog = Math.min(1, lap.t / lap.total);
+      var failing = !lap.ok && segAt(lap).kind === "reject";
+      ctx.strokeStyle = failing ? "rgba(" + PINK + ",0.7)" : "rgba(" + AMBER + ",0.8)";
+      ctx.lineWidth = 2;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.arc(cx, cy, R - 14, -1.5708, -1.5708 + prog * 6.2832);
+      ctx.stroke();
+      ctx.lineCap = "butt";
+    }
+
+    /* the number */
     var flash = lap && lap.ok && segAt(lap).at === "archive";
-    ctx.fillStyle = flash ? "rgba(" + AMBER + ",0.95)" : "rgba(" + AMBER + ",0.7)";
-    ctx.fillText("REV #" + String(rev).padStart(3, "0"), X + 8, r2 - 4);
-    ctx.fillStyle = "rgba(" + INK + ",0.45)";
-    ctx.fillText("SIX RUNGS · CLEAN VERIFIER", X + 8, Y + Hd - 5);
+    ctx.textAlign = "center";
+    ctx.font = "700 9px " + MONO;
+    ctx.fillStyle = "rgba(" + INK + ",0.5)";
+    ctx.fillText("REV", cx, cy - R * 0.34);
+    ctx.font = "700 " + Math.round(R * 0.42) + "px " + PIXEL;
+    ctx.fillStyle = flash ? "rgba(255,220,160,1)" : "rgba(" + AMBER + ",0.95)";
+    ctx.fillText("#" + String(rev).padStart(3, "0"), cx, cy + R * 0.14);
+    ctx.font = "700 7.5px " + MONO;
+    ctx.fillStyle = "rgba(" + INK + ",0.38)";
+    ctx.fillText("VERIFIED LOOP", cx, cy + R * 0.42);
+    ctx.textAlign = "left";
   }
 
+  function moduleAnchor(key) {
+    var m = M[key];
+    return [m.x + m.w / 2, m.y + m.h / 2];
+  }
+  function drawSignal(rg, P, color, dim) {
+    var X = mx(rg, P[0]), Y = my(rg, P[1]);
+    /* light left behind */
+    if (trailCtx && !dim) {
+      trailCtx.globalCompositeOperation = "lighter";
+      trailCtx.globalAlpha = 0.13;
+      trailCtx.drawImage(glowSprite(), X - 9, Y - 9, 18, 18);
+      trailCtx.globalCompositeOperation = "source-over";
+      trailCtx.globalAlpha = 1;
+    }
+    ctx.globalCompositeOperation = "lighter";
+    ctx.globalAlpha = dim ? 0.35 : 0.85;
+    ctx.drawImage(glowSprite(), X - 17, Y - 17, 34, 34);
+    ctx.globalCompositeOperation = "source-over";
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = "rgba(" + color + ",0.95)";
+    ctx.beginPath(); ctx.arc(X, Y, 2.4, 0, 7); ctx.fill();
+  }
+
+  var frameN = 0;
   function draw(now) {
+    frameN++;
     ctx.clearRect(0, 0, W, H);
     var rg = region();
+
+    /* dust */
+    for (var d2 = 0; d2 < dust.length; d2++) {
+      var dd = dust[d2];
+      ctx.fillStyle = "rgba(" + INK + "," + dd.a + ")";
+      ctx.beginPath();
+      ctx.arc(mx(rg, dd.x), my(rg, dd.y), dd.r, 0, 7);
+      ctx.fill();
+    }
+
+    /* accumulated light, fading slowly */
+    if (trailCtx) {
+      if (frameN % 10 === 0) {
+        trailCtx.save();
+        trailCtx.globalCompositeOperation = "destination-out";
+        trailCtx.fillStyle = "rgba(0,0,0,0.02)";
+        trailCtx.fillRect(0, 0, W, H);
+        trailCtx.restore();
+      }
+      ctx.globalCompositeOperation = "lighter";
+      ctx.drawImage(trail, 0, 0, W, H);
+      ctx.globalCompositeOperation = "source-over";
+    }
 
     /* registration marks */
     ctx.strokeStyle = "rgba(" + INK + ",0.25)";
@@ -417,6 +515,18 @@
       ctx.beginPath(); ctx.moveTo(X - 4, Y); ctx.lineTo(X + 4, Y); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(X, Y - 4); ctx.lineTo(X, Y + 4); ctx.stroke();
     });
+
+    /* palimpsest: superseded revisions linger underneath */
+    for (var gI = 0; gI < ghosts.length; gI++) {
+      var depth = ghosts.length - gI;                 // oldest = deepest
+      var ga = [0.055, 0.035, 0.022][depth - 1] || 0.02;
+      ctx.strokeStyle = "rgba(" + INK + "," + ga + ")";
+      ctx.lineWidth = 1;
+      for (var gk in ghosts[gI]) {
+        tracePath(ctx, rg, ghosts[gI][gk], depth * 3);
+        ctx.stroke();
+      }
+    }
 
     /* stubs */
     for (var s = 0; s < stubs.length; s++) {
@@ -429,37 +539,37 @@
       ctx.lineTo(mx(rg, st.x2), my(rg, st.y2));
       ctx.stroke();
       ctx.setLineDash([]);
-      if (st.sq) {
-        ctx.strokeRect(mx(rg, st.x2) - 2.5, my(rg, st.y2) - 2.5, 5, 5);
-      } else {
-        ctx.beginPath(); ctx.arc(mx(rg, st.x2), my(rg, st.y2), 2.5, 0, 7); ctx.stroke();
-      }
+      if (st.sq) ctx.strokeRect(mx(rg, st.x2) - 2.5, my(rg, st.y2) - 2.5, 5, 5);
+      else { ctx.beginPath(); ctx.arc(mx(rg, st.x2), my(rg, st.y2), 2.5, 0, 7); ctx.stroke(); }
     }
 
     /* reject bus, always faint */
     ctx.setLineDash([4, 5]);
     ctx.strokeStyle = "rgba(" + PINK + ",0.14)";
-    tracePath(rg, REJECT);
+    tracePath(ctx, rg, REJECT, 0);
     ctx.stroke();
     ctx.setLineDash([]);
 
-    /* the loop traces */
+    /* live traces */
     for (var k = 0; k < ORDER.length; k++) {
       var key = ORDER[k];
       if (rewire && rewire.conn === key) {
         var rt = now - rewire.t0;
         if (rt < 600) {
-          drawPartialTrace(rg, rewire.oldPts, 1 - easeIO(rt / 600), 0.3);
+          drawPartialTrace(rg, rewire.oldPts, 1 - easeIO(Math.max(0, rt) / 600), 0.3);
         } else if (rt < 1500) {
           drawPartialTrace(rg, ROUTES[key].variants[ROUTES[key].cur], easeIO((rt - 600) / 900), 0.7, AMBER);
         } else {
-          drawTrace(rg, ROUTES[key].variants[ROUTES[key].cur], 0.38);
+          drawTrace(rg, ROUTES[key].variants[ROUTES[key].cur], 0.38, true);
           rewire = null;
         }
       } else {
-        drawTrace(rg, ROUTES[key].variants[ROUTES[key].cur], 0.38);
+        drawTrace(rg, ROUTES[key].variants[ROUTES[key].cur], 0.38, true);
       }
     }
+
+    /* the gauge at the heart */
+    drawDial(rg, now);
 
     /* lap: signal + effects */
     var activeMod = null;
@@ -468,19 +578,17 @@
       var segT = Math.min(1, (lap.t - seg.t0) / seg.dur);
       if (seg.kind === "travel") {
         var pts = ROUTES[seg.conn].variants[ROUTES[seg.conn].cur];
-        var P = pointAt(pts, easeIO(segT));
-        drawSignal(rg, P, AMBER);
+        drawSignal(rg, pointAt(pts, easeIO(segT)), AMBER);
       } else if (seg.kind === "reject") {
         ctx.setLineDash([4, 5]);
         ctx.strokeStyle = "rgba(" + PINK + ",0.4)";
-        tracePath(rg, REJECT);
+        tracePath(ctx, rg, REJECT, 0);
         ctx.stroke();
         ctx.setLineDash([]);
-        drawSignal(rg, pointAt(REJECT, easeIO(segT)), PINK);
+        drawSignal(rg, pointAt(REJECT, easeIO(segT)), PINK, true);
       } else {
         activeMod = seg.at;
-        drawSignal(rg, moduleAnchor(seg.at), AMBER, 0.5);
-        /* one-shot effects at dwell start */
+        drawSignal(rg, moduleAnchor(seg.at), AMBER, true);
         if (!lap.fired[seg.t0]) {
           lap.fired[seg.t0] = true;
           if (seg.fx === "patch") {
@@ -498,10 +606,8 @@
       }
     }
 
-    /* modules on top of traces */
+    /* modules above everything */
     for (var mk in M) drawModule(rg, mk, now, activeMod === mk);
-
-    drawTitleBlock(rg, now);
 
     /* floats */
     for (var f2 = floats.length - 1; f2 >= 0; f2--) {
@@ -516,24 +622,7 @@
     }
   }
 
-  function moduleAnchor(key) {
-    var m = M[key];
-    return [m.x + m.w / 2, m.y + m.h / 2];
-  }
-  function drawSignal(rg, P, color, dim) {
-    var X = mx(rg, P[0]), Y = my(rg, P[1]);
-    ctx.globalCompositeOperation = "lighter";
-    ctx.globalAlpha = dim ? 0.35 : 0.8;
-    ctx.drawImage(glowSprite(), X - 16, Y - 16, 32, 32);
-    ctx.globalCompositeOperation = "source-over";
-    ctx.globalAlpha = 1;
-    ctx.fillStyle = "rgba(" + color + ",0.95)";
-    ctx.beginPath(); ctx.arc(X, Y, 2.4, 0, 7); ctx.fill();
-  }
-
-  /* ---- frame loop ----
-     rAF while visible; a slow setTimeout tick while the page is hidden,
-     so the schematic never boots to a blank panel. */
+  /* ---- frame loop: rAF while visible, slow tick while hidden ---- */
   var lastTs = 0, boost = 0;
   function scheduleNext() {
     if (reduced) return;
@@ -559,7 +648,7 @@
     return { x: e.clientX - r.left, y: e.clientY - r.top };
   }
   function toVirtual(p, rg) {
-    return [ (p.x - rg.x0) / (rg.x1 - rg.x0) * VW, (p.y - rg.y0) / (rg.y1 - rg.y0) * VH ];
+    return [(p.x - rg.x0) / (rg.x1 - rg.x0) * VW, (p.y - rg.y0) / (rg.y1 - rg.y0) * VH];
   }
   hero.addEventListener("mousemove", function (e) {
     var p = toLocal(e);
@@ -589,7 +678,6 @@
   function boot() {
     resize();
     if (reduced) {
-      /* static: finished schematic, mid-history */
       rev = 47;
       for (var i = 0; i < 4; i++) rewriteOnce(-1e6);
       rewire = null;
@@ -603,7 +691,7 @@
   var rT;
   window.addEventListener("resize", function () {
     clearTimeout(rT);
-    rT = setTimeout(function () { resize(); if (reduced) draw(0); }, 120);
+    rT = setTimeout(function () { resize(); if (reduced) draw(performance.now()); }, 120);
   });
   boot();
 })();
