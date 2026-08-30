@@ -674,7 +674,7 @@
     var hero = document.querySelector("[data-tree-hero]");
     if (hero) createField(hero, {
       spawnMs: 300, maxLive: 230, frontierAt: 0.86,
-      padTop: 76, padBottom: 170, preGrow: 80, shotGrow: 300, readout: true
+      padTop: 76, padBottom: 170, preGrow: 150, shotGrow: 300, readout: true
     });
     var heads = document.querySelectorAll("[data-tree-head]");
     for (var i = 0; i < heads.length; i++) createField(heads[i], {

@@ -7,15 +7,34 @@ No build step, no dependencies. Plain HTML/CSS/JS.
 ## Structure
 
 ```
-index.html                        # home: hero, principles, measure, taxonomy, featured task
-tasks.html                        # all 10 tracks / 58 environment lanes, filterable by domain
+index.html                        # home: search-field hero, principles, measure, signature tasks
+tasks.html                        # signature tasks + community 1-node tasks, task anatomy
 blog.html                         # blog index
 blog/introducing-rsi-index.html   # announcement post
 contribute.html                   # contribution workflow, gates, Harbor deliverable
 assets/style.css                  # shared stylesheet (design tokens at the top)
-assets/site.js                    # hero animation, nav toggle, task filters
+assets/site.js                    # nav toggle, task filters, scroll reveals
+assets/tree.js                    # the search field — interactive experiment-tree canvas
 assets/favicon.svg
+assets/og.png                     # social card (crop of the hero)
 ```
+
+## The search field (`assets/tree.js`)
+
+The hero (and every subpage header) runs an illustrative simulation of the RSI
+loop: an agent explores a tree of runs from a frozen human baseline. Node
+brightness tracks score, a new best sends a pulse down its lineage, and hard
+policy violations flash orange and are pruned to a reward of zero.
+
+- **Hover** a run — its lineage lights up with a staggered sweep and a tooltip
+  shows the run's score vs baseline and the mutation it tried.
+- **Click** a run — the agent branches the search from it.
+- Sections opt in with `data-tree-hero` (dense, with the live readout strip)
+  or `data-tree-head` (ambient) plus a `<canvas>` child.
+- Respects `prefers-reduced-motion` (renders one static frame, hover still
+  works); pauses off-screen and in hidden tabs; caps DPR at 2.
+- `?shot=1` fast-forwards the simulation and disables entrance animations —
+  useful for screenshots.
 
 ## Local preview
 
@@ -40,10 +59,10 @@ For a custom domain, add a `CNAME` file containing the domain and set the DNS
 ## Editing notes
 
 - Design tokens (colors, fonts) are CSS variables at the top of `assets/style.css`.
+  The system: deep ink-indigo "field" surfaces (`--field*`) with lavender
+  node-light and amber accents, and warm paper documentation sections.
 - Each page carries its own copy of the nav/footer — when editing them, update all
   five HTML files.
 - To add a blog post: copy `blog/introducing-rsi-index.html`, edit, and add a card
   to `blog.html`.
-- The hero animation lives in `assets/site.js` (`#rsi-canvas`); it respects
-  `prefers-reduced-motion` and renders a static frame in that case.
 - Content source: "ALE - RSI Framework v0.1".
