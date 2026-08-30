@@ -281,7 +281,7 @@
     function treeDir(x, y, out) {
       var r = Math.sqrt(x * x + y * y) + 1e-3;
       var ox = x / r, oy = y / r;
-      var tau = Math.min(0.9, r / 620);
+      var tau = 0.6 + Math.min(1.6, r / 210);       // strongly tangential: branches sweep round the ring
       curl(x, y, t, vout);
       out[0] = ox + (-oy) * tau + vout[0] * 0.02;
       out[1] = oy + ox * tau + vout[1] * 0.02;
@@ -322,7 +322,7 @@
         tip = tips[i];
         treeDir(tip.x, tip.y, dout);
         var m = Math.sqrt(dout[0] * dout[0] + dout[1] * dout[1]) + 1e-6;
-        var k = Math.min(1, 0.55 * dt);
+        var k = Math.min(1, 0.95 * dt);
         var w = gauss(rng) * 0.8 * dt;                 // wiggle
         var dx = tip.dx + (dout[0] / m - tip.dx) * k, dy = tip.dy + (dout[1] / m - tip.dy) * k;
         var cw = Math.cos(w), sw = Math.sin(w);
@@ -792,10 +792,10 @@
 
   function init() {
     var hero = document.querySelector("[data-field-hero]");
-    if (hero) createField(hero, { seed: 7, interactive: true, poleAt: [0.7, 0.46], density: 0.5, lineGap: 185, maxTips: 52, treeSpeed: 40 });
+    if (hero) createField(hero, { seed: 7, interactive: true, poleAt: [0.7, 0.46], density: 0.5, lineGap: 185, maxTips: 52, treeSpeed: 46 });
     var heads = document.querySelectorAll("[data-field-head]");
     for (var i = 0; i < heads.length; i++) {
-      createField(heads[i], { seed: 11 + i, interactive: false, poleAt: [0.76, 0.5], density: 0.3, lineGap: 230, maxTips: 24, treeSpeed: 32 });
+      createField(heads[i], { seed: 11 + i, interactive: false, poleAt: [0.76, 0.5], density: 0.3, lineGap: 230, maxTips: 24, treeSpeed: 36 });
     }
   }
 
