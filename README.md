@@ -7,34 +7,41 @@ No build step, no dependencies. Plain HTML/CSS/JS.
 ## Structure
 
 ```
-index.html                        # home: search-field hero, principles, measure, signature tasks
+index.html                        # home: star-field hero, how a run works, principles, measure, signature tasks
 tasks.html                        # signature tasks + community 1-node tasks, task anatomy
 blog.html                         # blog index
 blog/introducing-rsi-index.html   # announcement post
 contribute.html                   # contribution workflow, gates, Harbor deliverable
 assets/style.css                  # shared stylesheet (design tokens at the top)
 assets/site.js                    # nav toggle, task filters, scroll reveals
-assets/tree.js                    # the search field — interactive experiment-tree canvas
+assets/field.js                   # the star field — flow-field star map (drag / zoom)
 assets/favicon.svg
 assets/og.png                     # social card (crop of the hero)
 ```
 
-## The search field (`assets/tree.js`)
+## The star field (`assets/field.js`)
 
-The hero (and every subpage header) runs an illustrative simulation of the RSI
-loop: an agent explores a tree of runs from a frozen human baseline. Node
-brightness tracks score, a new best sends a pulse down its lineage, and hard
-policy violations flash orange and are pruned to a reward of zero.
+The hero (and every subpage header) is a long-exposure star map: thousands of
+white points drift along a smooth flow — a vortex around a bright pole plus a
+periodic, divergence-free potential field — leaving trails, while faint blue
+streamlines with arrowheads trace the same flow. The field loops every ~52 s
+with a slow phase drift, so no two passes are identical.
 
-- **Hover** a run — its lineage lights up with a staggered sweep and a tooltip
-  shows the run's score vs baseline and the mutation it tried.
-- **Click** a run — the agent branches the search from it.
-- Sections opt in with `data-tree-hero` (dense, with the live readout strip)
-  or `data-tree-head` (ambient) plus a `<canvas>` child.
-- Respects `prefers-reduced-motion` (renders one static frame, hover still
-  works); pauses off-screen and in hidden tabs; caps DPR at 2.
-- `?shot=1` fast-forwards the simulation and disables entrance animations —
-  useful for screenshots.
+- **Drag** to pan · **ctrl/⌘ + scroll** or **pinch** to zoom · **double-click**
+  to reset. Plain scrolling over the hero still scrolls the page.
+- Sections opt in with `data-field-hero` (interactive) or `data-field-head`
+  (ambient) plus two `<canvas>` children: `.field-lines` and `.field-stars`.
+- Respects `prefers-reduced-motion` (one static exposure, interactions still
+  re-render); pauses off-screen and in hidden tabs; caps DPR at 2.
+- `?shot=1` disables entrance animations — useful for screenshots.
+
+## How a run works (the diagram)
+
+`index.html#how-a-run-works` is a pure HTML/CSS diagram of the RSI Harness
+run: the persistent Work container with the agent's inner research loop, the
+fresh-per-submission Judge container, the outer loop of rounds, and the final
+score. The round bars show a real run (`learnability-cot`, 6 rounds, best in
+round 5) taken from the harness logs.
 
 ## Local preview
 
@@ -59,8 +66,8 @@ For a custom domain, add a `CNAME` file containing the domain and set the DNS
 ## Editing notes
 
 - Design tokens (colors, fonts) are CSS variables at the top of `assets/style.css`.
-  The system: deep ink-indigo "field" surfaces (`--field*`) with lavender
-  node-light and amber accents, and warm paper documentation sections.
+  The system: black-blue "field" surfaces (`--field*`) with white light and a
+  single electric-blue accent, and neutral white documentation sections.
 - Each page carries its own copy of the nav/footer — when editing them, update all
   five HTML files.
 - To add a blog post: copy `blog/introducing-rsi-index.html`, edit, and add a card

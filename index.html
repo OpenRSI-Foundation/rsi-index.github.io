@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RSI-Index — An open benchmark for recursive self-improvement</title>
+<title>RSI-Index — RSI's First Exam</title>
 <meta name="description" content="RSI-Index turns influential open model-development projects into auditable environments where AI research agents iterate against fixed verifiers — and are scored against the human recipe they started from.">
-<meta name="theme-color" content="#0e0c16">
+<meta name="theme-color" content="#04070f">
 <meta property="og:type" content="website">
-<meta property="og:title" content="RSI-Index — An open benchmark for recursive self-improvement">
+<meta property="og:title" content="RSI-Index — RSI's First Exam">
 <meta property="og:description" content="RSI-Index turns influential open model-development projects into auditable environments where AI research agents iterate against fixed verifiers — and are scored against the human recipe they started from.">
 <meta property="og:image" content="https://rsi-index.github.io/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -22,7 +22,7 @@
 <nav class="nav">
   <div class="wrap nav-inner">
     <a class="brand" href="index.html" aria-label="RSI-Index home">
-      <svg width="19" height="19" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#14111f"/><path d="M7 23 L14 17 L21 19 L25 9" stroke="#8f93d6" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/><circle cx="7" cy="23" r="2.2" fill="#8f93d6"/><circle cx="14" cy="17" r="2.6" fill="#a9a7e6"/><circle cx="21" cy="19" r="2.2" fill="#8f93d6"/><circle cx="25" cy="9" r="3.1" fill="#f7a648"/></svg>
+      <svg width="19" height="19" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1224"/><path d="M6 25 C 10 15, 18 11, 24 9" stroke="#5f8fe0" stroke-width="1.3" fill="none" stroke-linecap="round" opacity="0.9"/><path d="M9 27 C 14 19, 20 15, 26 13" stroke="#5f8fe0" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.45"/><circle cx="8.5" cy="21.5" r="1.3" fill="#dfe8ff"/><circle cx="14" cy="16.5" r="1.1" fill="#dfe8ff" opacity="0.8"/><circle cx="19" cy="13" r="1.4" fill="#ffffff"/><circle cx="24" cy="9" r="2.4" fill="#ffffff"/><circle cx="24" cy="9" r="4.6" fill="#ffffff" opacity="0.18"/></svg>
       rsi-index
     </a>
     <button class="nav-toggle" aria-label="Menu" aria-expanded="false">☰</button>
@@ -35,47 +35,25 @@
   </div>
 </nav>
 
-<!-- ================= HERO — the search field ================= -->
-<header class="hero-field" data-tree-hero>
-  <canvas class="hero-canvas" aria-hidden="true"></canvas>
+<!-- ================= HERO — the star field ================= -->
+<header class="hero-field" data-field-hero>
+  <canvas class="field-lines" aria-hidden="true"></canvas>
+  <canvas class="field-stars" aria-hidden="true"></canvas>
   <div class="hero-scrim" aria-hidden="true"></div>
-
-  <div class="hero-legend" aria-hidden="true">
-    <span class="k-run"><i></i>one run of the agent</span>
-    <span class="k-best"><i></i>new best vs the human recipe</span>
-    <span class="k-viol"><i></i>policy violation → reward 0</span>
-    <span class="k-hint">hover a run · click to branch it</span>
-  </div>
+  <div class="field-hint" aria-hidden="true">drag to pan · ctrl + scroll to zoom · double-click to reset</div>
 
   <div class="hero-inner">
     <div class="hero-copy">
-      <a class="hero-pill" href="contribute.html"><b>New</b> The contribution pipeline is live <span class="arr">→</span></a>
-      <h1 class="hero-title">An open benchmark for <em>recursive self-improvement</em>.</h1>
+      <p class="hero-kicker"><span class="k-num">01</span><span class="k-line"></span><span>The first open exam for recursive self-improvement</span></p>
+      <h1 class="hero-title">RSI's <em>First</em> Exam.</h1>
       <p class="hero-sub">
-        RSI-Index turns fully open model-development projects into <strong>auditable
-        environments</strong>: an agent works to improve a real training workflow against a
-        fixed evaluator, and is scored against <strong>the original, human-written
-        recipe</strong>.
+        Fully open model-development projects, turned into auditable environments: an agent
+        improves a real training workflow against a fixed evaluator, and is scored against
+        <strong>the original, human-written recipe</strong>.
       </p>
       <div class="hero-ctas">
         <a class="btn btn-solid" href="tasks.html">Explore the tasks →</a>
         <a class="btn btn-ghost" href="blog/introducing-rsi-index.html">Read the announcement</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="hero-strip">
-    <div class="hero-strip-inner">
-      <div class="hero-stats">
-        <div><span class="n">3</span><span class="l">Signature tasks</span></div>
-        <div><span class="n">1</span><span class="l">GPU node per community task</span></div>
-        <div><span class="n">&lt;1</span><span class="l">Hour from idea to a task</span></div>
-      </div>
-      <div class="hero-readout" aria-hidden="true">
-        <span class="live">simulated search</span>
-        <span>runs <b data-ro-runs>0000</b></span>
-        <span>best <b data-ro-best>+0.00%</b></span>
-        <span>violations <b data-ro-viol>0</b> → 0</span>
       </div>
     </div>
   </div>
@@ -107,6 +85,92 @@
       an agent can tune a toy proxy — but how much it can improve a human-built, open recipe
       while preserving the experiment's scientific contract.
     </p>
+  </div>
+</section>
+
+<!-- ================= HOW A RUN WORKS ================= -->
+<section class="block" id="how-a-run-works">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">How a run works</p>
+      <h2 class="h-lg">Two containers, two loops.</h2>
+      <p class="lede">
+        The agent lives in a persistent Work container and runs its own research loop. Each
+        time it wants a score, a fresh Judge container evaluates a snapshot of its work and
+        reports back — round after round, until the submission budget is spent. The best round
+        is what counts.
+      </p>
+    </div>
+
+    <div class="runflow">
+      <div class="rf-col rf-work">
+        <div class="rf-head"><span>Work container</span><span class="rf-tag">persistent · GPU-attached</span></div>
+        <div class="rf-box">
+          <div class="rf-box-title">Task package</div>
+          <ul>
+            <li><code>instruction.md</code><span>objective, frozen baseline, research loop</span></li>
+            <li><code>policy.yaml</code><span>editable surface, locked variables, hard zeros</span></li>
+            <li><code>project/</code><span>pinned source and immutable assets</span></li>
+          </ul>
+        </div>
+        <div class="rf-arrow-down"></div>
+        <div class="rf-loop">
+          <div class="rf-loop-label">Inner loop · the agent's research cycle</div>
+          <ol class="rf-steps">
+            <li><b>01</b><span>Inspect the code, the data, and the feedback from earlier rounds</span></li>
+            <li><b>02</b><span>State one hypothesis; change only the allowed surface</span></li>
+            <li><b>03</b><span>Run the experiment and materialize the candidate on disk</span></li>
+            <li class="rf-submit"><b>04</b><span>Call <code>rsi-submit</code> for a score</span></li>
+          </ol>
+          <div class="rf-return">→ keep, revise, or reject the hypothesis, then go again</div>
+        </div>
+      </div>
+
+      <div class="rf-channel" aria-hidden="true">
+        <div class="rf-link rf-link-out"><span>snapshot</span></div>
+        <div class="rf-link rf-link-back"><span>reward + output</span></div>
+      </div>
+
+      <div class="rf-col rf-judge">
+        <div class="rf-head"><span>Judge container</span><span class="rf-tag">fresh per submission</span></div>
+        <div class="rf-box">
+          <div class="rf-box-title">Snapshot of Work</div>
+          <p>Work is paused and its filesystem captured at submission time. Judge writes never flow back.</p>
+        </div>
+        <div class="rf-arrow-down"></div>
+        <div class="rf-box">
+          <div class="rf-box-title"><code>tests/test.sh</code></div>
+          <p>Integrity gates, then the fixed evaluation in a clean image. Writes <code>reward.json</code>.</p>
+        </div>
+        <div class="rf-arrow-down"></div>
+        <div class="rf-box rf-zero">
+          <div class="rf-box-title">Hard violation → reward 0</div>
+          <p>Reward-path tampering, evaluation leakage, or a budget overrun fails closed.</p>
+        </div>
+      </div>
+
+      <div class="rf-outer">
+        <div class="rf-outer-label">Outer loop · one round per submission</div>
+        <div>
+          <div class="rf-rounds" aria-label="Scores of six rounds from a real run; round 5 was the best">
+            <span class="rf-round" style="--h: 3%"><i></i></span>
+            <span class="rf-round" style="--h: 3%"><i></i></span>
+            <span class="rf-round" style="--h: 82%"><i></i></span>
+            <span class="rf-round" style="--h: 81%"><i></i></span>
+            <span class="rf-round best" style="--h: 92%"><i></i></span>
+            <span class="rf-round" style="--h: 88%"><i></i></span>
+            <span class="rf-round more">…</span>
+          </div>
+          <span class="rf-rounds-caption">a real run · learnability-cot · 6 rounds · best in round 5</span>
+        </div>
+        <p>A stop hook keeps the agent iterating until <code>--max-submissions</code> is spent; the engine keeps the best round.</p>
+      </div>
+
+      <div class="rf-final">
+        <span class="rf-final-k">Score</span>
+        <span class="rf-final-v"><b>best round</b> ÷ <b>frozen human baseline</b> = RSI improvement</span>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -365,6 +429,6 @@
 </footer>
 
 <script src="assets/site.js"></script>
-<script src="assets/tree.js"></script>
+<script src="assets/field.js"></script>
 </body>
 </html>
