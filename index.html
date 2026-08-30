@@ -88,17 +88,76 @@
   </div>
 </section>
 
-<!-- ================= HOW A RUN WORKS ================= -->
-<section class="block" id="how-a-run-works">
+
+<!-- ================= PRINCIPLES ================= -->
+<section class="block">
   <div class="wrap">
     <div class="section-head">
-      <p class="eyebrow">How a run works</p>
-      <h2 class="h-lg">Two containers, two loops.</h2>
+      <p class="eyebrow">What RSI-Index is</p>
+      <h2 class="h-lg">What the program is trying to find out.</h2>
       <p class="lede">
-        The agent lives in a persistent Work container and runs its own research loop. Each
-        time it wants a score, a fresh Judge container evaluates a snapshot of its work and
-        reports back — round after round, until the submission budget is spent. The best round
-        is what counts.
+        RSI, self-evolve, autoresearch — different names for the same loop: an agent proposes a
+        hypothesis, implements it, and evaluates the result against a verifiable objective.
+        The central question is whether this loop can move beyond the best known human-designed
+        method and reliably extend the scientific frontier.
+      </p>
+    </div>
+    <div class="grid grid-3">
+      <div class="card">
+        <span class="num">01</span>
+        <h3>Optimization, not reproduction</h3>
+        <p>The agent takes over the cluster and starts from the original codebase, data, and
+        checkpoints — then improves the pipeline to produce an artifact that outperforms the
+        original recipe.</p>
+      </div>
+      <div class="card">
+        <span class="num">02</span>
+        <h3>Scientific discovery, not parameter sweeping</h3>
+        <p>RSI goes beyond hyperparameter search: form hypotheses, modify real model-development
+        methods, learn from experiments, and land gains that stay meaningful under a fixed
+        scientific contract.</p>
+      </div>
+      <div class="card">
+        <span class="num">03</span>
+        <h3>Production scale, not toy scale</h3>
+        <p>Tasks reflect problems frontier researchers care about, at model, data, and system
+        scales where improvements matter — and transfer to real training and deployment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= THE MEASURE ================= -->
+<section class="block">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">The measure</p>
+      <h2 class="h-lg">How performance is measured.</h2>
+    </div>
+    <div class="formula">
+      <div class="fx">RSI improvement&nbsp;=&nbsp;<span class="frac"><span class="top">performance of the agent-selected final artifact</span><span class="bot">matched, task-pristine human-recipe baseline</span></span></div>
+      <p class="note">
+        The "human baseline" is the original authors' released recipe, rerun unchanged in the
+        same task environment. This <b>frozen rerun</b> — not the paper's claim — is the ranking
+        baseline. An independent verifier re-evaluates every submitted artifact; hard policy
+        violations fail closed to a reward of zero.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= THE EVALUATION HARNESS ================= -->
+<section class="block" id="evaluation">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">The evaluation harness</p>
+      <h2 class="h-lg">How an agent is evaluated.</h2>
+      <p class="lede">
+        Once a task exists, the RSI Harness runs the agent against it. The agent lives in a
+        persistent Work container and runs its own research loop; each time it wants a score, a
+        fresh Judge container evaluates a snapshot of its work and reports back — round after
+        round, until the submission budget is spent. The best round is what enters the formula
+        above.
       </p>
     </div>
 
@@ -170,63 +229,6 @@
         <span class="rf-final-k">Score</span>
         <span class="rf-final-v"><b>best round</b> ÷ <b>frozen human baseline</b> = RSI improvement</span>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= PRINCIPLES ================= -->
-<section class="block">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow">What RSI-Index is</p>
-      <h2 class="h-lg">What the program is trying to find out.</h2>
-      <p class="lede">
-        RSI, self-evolve, autoresearch — different names for the same loop: an agent proposes a
-        hypothesis, implements it, and evaluates the result against a verifiable objective.
-        The central question is whether this loop can move beyond the best known human-designed
-        method and reliably extend the scientific frontier.
-      </p>
-    </div>
-    <div class="grid grid-3">
-      <div class="card">
-        <span class="num">01</span>
-        <h3>Optimization, not reproduction</h3>
-        <p>The agent takes over the cluster and starts from the original codebase, data, and
-        checkpoints — then improves the pipeline to produce an artifact that outperforms the
-        original recipe.</p>
-      </div>
-      <div class="card">
-        <span class="num">02</span>
-        <h3>Scientific discovery, not parameter sweeping</h3>
-        <p>RSI goes beyond hyperparameter search: form hypotheses, modify real model-development
-        methods, learn from experiments, and land gains that stay meaningful under a fixed
-        scientific contract.</p>
-      </div>
-      <div class="card">
-        <span class="num">03</span>
-        <h3>Production scale, not toy scale</h3>
-        <p>Tasks reflect problems frontier researchers care about, at model, data, and system
-        scales where improvements matter — and transfer to real training and deployment.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= THE MEASURE ================= -->
-<section class="block">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow">The measure</p>
-      <h2 class="h-lg">How performance is measured.</h2>
-    </div>
-    <div class="formula">
-      <div class="fx">RSI improvement&nbsp;=&nbsp;<span class="frac"><span class="top">performance of the agent-selected final artifact</span><span class="bot">matched, task-pristine human-recipe baseline</span></span></div>
-      <p class="note">
-        The "human baseline" is the original authors' released recipe, rerun unchanged in the
-        same task environment. This <b>frozen rerun</b> — not the paper's claim — is the ranking
-        baseline. An independent verifier re-evaluates every submitted artifact; hard policy
-        violations fail closed to a reward of zero.
-      </p>
     </div>
   </div>
 </section>

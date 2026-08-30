@@ -7,6 +7,14 @@
     document.documentElement.classList.add("shot");
   }
 
+  /* ---------- nav blur only once the page has scrolled (cheap over the live field) ---------- */
+  var nav = document.querySelector(".nav");
+  if (nav) {
+    var onScroll = function () { nav.classList.toggle("scrolled", window.scrollY > 24); };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
+
   /* ---------- mobile nav ---------- */
   var toggle = document.querySelector(".nav-toggle");
   var links = document.querySelector(".nav-links");

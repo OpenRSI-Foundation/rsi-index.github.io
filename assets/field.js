@@ -68,6 +68,8 @@
     var seeds = [];
     var t = rng() * PERIOD, lastT = 0, frame = 0;
     var raf = null, running = false, visible = !document.hidden, inView = true;
+    var quality = { count: 1, dpr: 1, lineEvery: 8 };  // degraded by the governor if frames run long
+    var dtAvg = 16, slowSince = 0, level = 0;
 
     /* ---------- the flow ---------- */
 
@@ -112,8 +114,9 @@
 
     function resize() {
       var r = section.getBoundingClientRect();
-      DPR = Math.min(window.devicePixelRatio || 1, 2);
       var nw = Math.max(1, Math.round(r.width)), nh = Math.max(1, Math.round(r.height));
+      // pixel budget: ~3.6M canvas pixels max, never above 1.5x, never below 1x
+      DPR = Math.max(1, Math.min(window.devicePixelRatio || 1, 1.5, Math.sqrt(3.6e6 / (nw * nh)))) * quality.dpr;
       var first = W === 0;
       W = nw; H = nh;
       linesC.width = starsC.width = W * DPR;
@@ -123,7 +126,7 @@
       homeX = -(poleAt[0] - 0.5) * W;
       homeY = -(poleAt[1] - 0.5) * H;
       if (first) { camX = camXT = homeX; camY = camYT = homeY; }
-      var target = clamp(Math.round(W * H / 520 * density), 500, 3400);
+      var target = clamp(Math.round(W * H / 780 * density * quality.count), 300, 2400);
       if (target !== count) { count = target; seedParticles(); }
       seedLines();
       drawLines();
@@ -271,13 +274,12 @@
       lctx.lineWidth = 1;
       lctx.lineCap = "round";
       lctx.lineJoin = "round";
-      var arrowShift = (t * 26) % ARROW_GAP;
       var arrows = [];
       lctx.strokeStyle = "rgba(96,142,224,0.28)";
       lctx.beginPath();
       for (var s = 0; s < seeds.length; s++) {
         var x = seeds[s].x, y = seeds[s].y;
-        var arc = -arrowShift, nextArrow = 0;
+        var arc = 0, nextArrow = 0;
         var sx0 = toScreenX(x), sy0 = toScreenY(y);
         lctx.moveTo(sx0, sy0);
         for (var i = 0; i < STEPS; i++) {
@@ -378,8 +380,25 @@
       var moved = easeCamera();
       update(dt);
       drawStars(0.072);
-      if (moved || (frame++ % 3) === 0) drawLines();
+      if (moved || (frame++ % quality.lineEvery) === 0) drawLines();
+      govern(now, dt);
       raf = requestAnimationFrame(frameFn);
+    }
+
+    /* frame-time governor: shed work on machines that cannot keep ~40 fps */
+    function govern(now, dt) {
+      dtAvg += (dt * 1000 - dtAvg) * 0.05;
+      if (dtAvg > 27) {
+        if (!slowSince) slowSince = now;
+        if (now - slowSince > 1500 && level < 2) {
+          level++;
+          if (level === 1) { quality.count = 0.6; quality.lineEvery = 12; }
+          else { quality.dpr = 1 / 1.5; quality.lineEvery = 16; }
+          count = 0;                                   // force re-seed at the new budget
+          resize();
+          slowSince = 0; dtAvg = 16;
+        }
+      } else slowSince = 0;
     }
 
     function start() {
@@ -499,7 +518,7 @@
     /* ---------- init ---------- */
 
     resize();
-    preroll(reduced || shotMode ? 220 : 110);
+    preroll(reduced || shotMode ? 60 : 30);
 
     if (!reduced) {
       if ("IntersectionObserver" in window) {

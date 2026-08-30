@@ -37,7 +37,7 @@ with a slow phase drift, so no two passes are identical.
 
 ## How a run works (the diagram)
 
-`index.html#how-a-run-works` is a pure HTML/CSS diagram of the RSI Harness
+`index.html#evaluation` is a pure HTML/CSS diagram of the RSI Harness
 run: the persistent Work container with the agent's inner research loop, the
 fresh-per-submission Judge container, the outer loop of rounds, and the final
 score. The round bars show a real run (`learnability-cot`, 6 rounds, best in
