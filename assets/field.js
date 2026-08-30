@@ -1,12 +1,13 @@
 /* ============================================================
    RSI-Index — the star field
-   A long-exposure star map of an agent's search. Every point is a
-   run drifting along a smooth flow — a vortex around a bright pole
-   plus a periodic, divergence-free potential field — and leaving a
-   trail. Runs fork: a new hypothesis branches off, the better branch
-   survives and brightens, the weaker one fades. Faint blue streamlines
-   with arrowheads trace the flow. The field loops every ~52 s with a
-   slow phase drift, so no two passes are identical.
+   A long-exposure star map with a search tree growing through it.
+   Stars drift along a smooth flow — a vortex around a bright pole
+   plus a periodic, divergence-free potential field. From the pole (the
+   human baseline) a tree of runs grows outward along that flow: tips
+   split into new hypotheses, each branch's score random-walks, the
+   branches that fall behind die and dim, the leaders split more often,
+   and the lineage of the current best is drawn in white. A generation
+   grows to the edge, fades, and a new one starts — never the same.
 
    Drag to pan (with inertia) · scroll to zoom after a click, or
    ctrl/⌘ + scroll · pinch on touch · double-click to reset.
@@ -77,7 +78,8 @@
     var poleAt = opts.poleAt || [0.7, 0.46];       // screen fraction at rest
     var density = opts.density || 1;
     var lineGap = opts.lineGap || 185;             // world px between streamline seeds
-    var forkRate = opts.forkRate || 0;             // forks per second (0 = none)
+    var maxTips = opts.maxTips || 48;              // growing frontiers per tree
+    var treeSpeed = opts.treeSpeed || 40;          // world px/s
 
     var W = 0, H = 0, DPR = 1;
     var quality = { count: 1, dpr: 1, lineEvery: 8 };
@@ -91,10 +93,10 @@
     var dragging = false, homing = false;
     var homeX = 0, homeY = 0;
 
-    var particles = [], count = 0, base = 0, active = 0, free = [];
-    var flashes = [];
+    var particles = [], count = 0;
+    var trees = [], growing = null, rMax = 800;
     var linesPath = null, linesArrows = [], arrowsPath = null, arrowsZoom = 1;
-    var t = rng() * PERIOD, lastT = 0, frame = 0, forkBudget = 0;
+    var t = rng() * PERIOD, lastT = 0, frame = 0;
     var raf = null, running = false, visible = !document.hidden, inView = true;
 
     /* ---------- the flow ---------- */
@@ -115,7 +117,7 @@
     var SWIRL = 0.15, R0 = 260, CURL = 0.55, INWARD = 3.2;
     var vout = [0, 0];
 
-    function flow(x, y, time, out) {
+    function curl(x, y, time, out) {
       var dx = 0, dy = 0;
       for (var i = 0; i < waves.length; i++) {
         var w = waves[i];
@@ -123,7 +125,12 @@
         dx += w.kx * c;
         dy += w.ky * c;
       }
-      var vx = dy * CURL, vy = -dx * CURL;           // curl of psi: divergence-free
+      out[0] = dy; out[1] = -dx;                     // curl of psi: divergence-free
+    }
+
+    function flow(x, y, time, out) {
+      curl(x, y, time, out);
+      var vx = out[0] * CURL, vy = out[1] * CURL;
       var r = Math.sqrt(x * x + y * y) + 1e-3;
       var om = SWIRL / Math.sqrt(1 + r / R0);
       vx += -y * om - (x / r) * INWARD;
@@ -160,6 +167,7 @@
       homeX = -(poleAt[0] - 0.5) * W;
       homeY = -(poleAt[1] - 0.5) * H;
       if (first) {
+        rMax = Math.max(220, Math.min(W * 0.34, H * 0.56));
         camX = homeX; camY = homeY;
         if (zoomParam) { zoom = zoomT = clamp(zoomParam, 0.55, 3); }
         setAnchor(W / 2, H / 2);
@@ -188,89 +196,28 @@
       } while (tries < 8 && rng() > band(p.x, p.y, t));
       p.life = 11 + rng() * 21;
       p.age = fresh ? rng() * p.life : 0;
-      p.score = gauss(rng) * 0.35;
       p.size = 0.7 + rng() * 0.9;
-      p.bright = false;
+      p.alpha = 0.25 + rng() * 0.55;
       p.tint = rng() < 0.55 ? 0 : rng() < 0.7 ? 1 : 2;
-      p.bx = 0; p.by = 0;
-      p.dead = false;
-      setAlpha(p);
     }
-    function setAlpha(p) { p.alpha = 0.3 + 0.62 * clamp01(0.5 + p.score * 0.38); }
 
     function seedParticles() {
       particles = new Array(count);
-      base = Math.round(count * (forkRate ? 0.85 : 1));
-      free = [];
-      for (var i = 0; i < count; i++) {
-        particles[i] = {};
-        if (i < base) spawn(particles[i], true);
-        else { particles[i].dead = true; free.push(i); }
-      }
-      active = base;
-    }
-
-    /* a run forks: a hypothesis branches off, the better branch survives */
-    function fork(p) {
-      if (!free.length) return;
-      var j = free.pop();
-      var c = particles[j];
-      flow(p.x, p.y, t, vout);
-      var m = Math.sqrt(vout[0] * vout[0] + vout[1] * vout[1]) + 1e-6;
-      var ux = vout[0] / m, uy = vout[1] / m;
-      var side = rng() < 0.5 ? -1 : 1;
-      var mag = (0.7 + rng() * 0.45) * m;
-      c.x = p.x; c.y = p.y;
-      c.age = 0;
-      c.score = p.score + gauss(rng) * 0.5 + 0.08;
-      c.size = 0.8 + rng() * 0.8;
-      c.tint = 0;
-      c.dead = false;
-      c.bx = -uy * side * mag; c.by = ux * side * mag;
-      p.bx = uy * side * mag * 0.5; p.by = -ux * side * mag * 0.5;
-      if (c.score > p.score) {                       // the child wins: parent is pruned
-        c.life = 7 + rng() * 9;
-        p.life = Math.min(p.life, p.age + 2 + rng() * 2);
-      } else {                                       // the child is pruned
-        c.life = 2.2 + rng() * 2.4;
-      }
-      c.bright = c.score > 1.3;
-      setAlpha(c);
-      flashes.push({ x: p.x, y: p.y, t0: t });
+      for (var i = 0; i < count; i++) { particles[i] = {}; spawn(particles[i], true); }
     }
 
     function stepParticles(dt) {
-      var kill = 14, decay = Math.exp(-dt / 2.1);
+      var kill = 14;
       var vw = W / zoom * 0.7, vh = H / zoom * 0.7;
       for (var i = 0; i < count; i++) {
         var p = particles[i];
-        if (p.dead || (i < base && i >= active)) continue;
         flow(p.x, p.y, t, vout);
-        p.x += (vout[0] + p.bx) * dt;
-        p.y += (vout[1] + p.by) * dt;
-        p.bx *= decay; p.by *= decay;
+        p.x += vout[0] * dt;
+        p.y += vout[1] * dt;
         p.age += dt;
         var r = p.x * p.x + p.y * p.y;
-        var gone = p.age >= p.life || r < kill * kill ||
-          Math.abs(p.x - camX) > vw * 1.35 + 80 || Math.abs(p.y - camY) > vh * 1.35 + 80;
-        if (gone) {
-          if (i < base) spawn(p, false);
-          else { p.dead = true; free.push(i); }
-        }
-      }
-      // forks: a fixed budget per second, spent on visible, settled runs
-      if (forkRate && free.length) {
-        forkBudget += dt * forkRate;
-        var guard = 0;
-        while (forkBudget >= 1 && guard++ < 6) {
-          forkBudget -= 1;
-          var k = (rng() * count) | 0;             // any live run, so branches branch again
-          var q = particles[k];
-          if (q.dead || (k < base && k >= active) || q.age < 1.2 || q.life - q.age < 3) continue;
-          if (q.x * q.x + q.y * q.y < 90 * 90) continue;
-          if (Math.abs(q.x - camX) > vw || Math.abs(q.y - camY) > vh) continue;
-          fork(q);
-        }
+        if (p.age >= p.life || r < kill * kill ||
+            Math.abs(p.x - camX) > vw * 1.35 + 80 || Math.abs(p.y - camY) > vh * 1.35 + 80) spawn(p, false);
       }
     }
 
@@ -290,7 +237,6 @@
       var i, p;
       for (i = 0; i < count; i++) {
         p = particles[i];
-        if (p.dead || (i < base && i >= active)) continue;
         var env = Math.min(1, p.age / 1.2, (p.life - p.age) / 2.2);
         if (env <= 0.02) continue;
         var a = p.alpha * env;
@@ -304,29 +250,191 @@
         sctx.beginPath();
         for (i = 0; i < list.length; i++) {
           var q = list[i];
-          var x = sx(q.x), y = sy(q.y), s = q.bright ? 2.2 : q.size;
+          var x = sx(q.x), y = sy(q.y), s = q.size;
           sctx.rect(x - s / 2, y - s / 2, s, s);
         }
         sctx.fill();
       }
-      // halos on breakthrough runs, flashes at fork points
-      sctx.globalAlpha = 0.55;
-      for (i = base; i < count; i++) {
-        p = particles[i];
-        if (p.dead || !p.bright) continue;
-        var e = Math.min(1, p.age / 1.2, (p.life - p.age) / 2.2);
-        if (e <= 0.05) continue;
-        sctx.drawImage(SPRITE, sx(p.x) - 9, sy(p.y) - 9, 18, 18);
+    }
+
+    /* ============================================================
+       THE SEARCH TREE — grows from the pole along the flow
+       ============================================================ */
+
+    function newTree() {
+      var tr = { edges: [], nodes: [], tips: [], best: 0, bestEdge: -1, alpha: 1, born: t, fadeAt: 0, done: false };
+      tr.nodes.push({ x: 0, y: 0, edge: -1, dead: false });
+      var n = 4, centre = -0.25 + (rng() - 0.5) * 0.6, span = 2.6;
+      for (var k = 0; k < n; k++) {
+        var a = centre + (k / (n - 1) - 0.5) * span + (rng() - 0.5) * 0.25;
+        var score = gauss(rng) * 0.3;
+        tr.edges.push({ pts: [0, 0], parent: -1, score: score, depth: 0, state: 0 });
+        tr.tips.push({ edge: k, x: 0, y: 0, dx: Math.cos(a), dy: Math.sin(a), score: score, depth: 0, since: 0, next: 0.7 + rng() * 0.8 });
+        if (score > tr.best) tr.best = score;
       }
-      for (i = flashes.length - 1; i >= 0; i--) {
-        var f = flashes[i];
-        var ft = (t - f.t0) / 0.55;
-        if (ft >= 1 || ft < 0) { flashes.splice(i, 1); continue; }
-        var fr = 7 + ft * 9;
-        sctx.globalAlpha = 0.9 * (1 - ft);
-        sctx.drawImage(SPRITE, sx(f.x) - fr, sy(f.y) - fr, fr * 2, fr * 2);
+      trees.push(tr);
+      if (trees.length > 3) trees.shift();
+      return tr;
+    }
+
+    // growth direction: outward from the pole, bending into the ring as radius grows
+    function treeDir(x, y, out) {
+      var r = Math.sqrt(x * x + y * y) + 1e-3;
+      var ox = x / r, oy = y / r;
+      var tau = Math.min(0.9, r / 620);
+      curl(x, y, t, vout);
+      out[0] = ox + (-oy) * tau + vout[0] * 0.02;
+      out[1] = oy + ox * tau + vout[1] * 0.02;
+    }
+    var dout = [0, 0];
+
+    function splitTip(tr, tip) {
+      var e = tr.edges[tip.edge];
+      tr.nodes.push({ x: tip.x, y: tip.y, edge: tip.edge, dead: false });
+      var n = rng() < 0.22 ? 3 : 2;
+      var spread = 0.42 + rng() * 0.4;
+      for (var k = 0; k < n; k++) {
+        var off = n === 2 ? (k === 0 ? -spread : spread) * (0.55 + rng() * 0.45)
+                          : (k - 1) * spread * 1.15;
+        var ca = Math.cos(off), sa = Math.sin(off);
+        var score = tip.score + gauss(rng) * 0.42 - 0.05 + (rng() < 0.06 ? 1 : 0);
+        var idx = tr.edges.length;
+        tr.edges.push({ pts: [tip.x, tip.y], parent: tip.edge, score: score, depth: tip.depth + 1, state: 0 });
+        var lead = score >= tr.best - 0.35;
+        tr.tips.push({
+          edge: idx, x: tip.x, y: tip.y,
+          dx: tip.dx * ca - tip.dy * sa, dy: tip.dx * sa + tip.dy * ca,
+          score: score, depth: tip.depth + 1, since: 0,
+          next: (0.9 + rng() * 1.3) * (lead ? 0.7 : 1.25) * Math.min(2.2, 1 + tip.depth * 0.09)
+        });
+        if (score > tr.best) tr.best = score;
       }
-      sctx.globalAlpha = 1;
+    }
+
+    function killTip(tr, tip) {
+      tr.edges[tip.edge].state = 1;
+      tr.nodes.push({ x: tip.x, y: tip.y, edge: tip.edge, dead: true });
+    }
+
+    function stepTree(tr, dt) {
+      var tips = tr.tips, i, tip;
+      for (i = tips.length - 1; i >= 0; i--) {
+        tip = tips[i];
+        treeDir(tip.x, tip.y, dout);
+        var m = Math.sqrt(dout[0] * dout[0] + dout[1] * dout[1]) + 1e-6;
+        var k = Math.min(1, 0.55 * dt);
+        var w = gauss(rng) * 0.8 * dt;                 // wiggle
+        var dx = tip.dx + (dout[0] / m - tip.dx) * k, dy = tip.dy + (dout[1] / m - tip.dy) * k;
+        var cw = Math.cos(w), sw = Math.sin(w);
+        var rx = dx * cw - dy * sw, ry = dx * sw + dy * cw;
+        var rm = Math.sqrt(rx * rx + ry * ry) + 1e-6;
+        tip.dx = rx / rm; tip.dy = ry / rm;
+        tip.x += tip.dx * treeSpeed * dt;
+        tip.y += tip.dy * treeSpeed * dt;
+        tip.since += dt;
+        var e = tr.edges[tip.edge], pts = e.pts, n = pts.length;
+        var ddx = tip.x - pts[n - 2], ddy = tip.y - pts[n - 1];
+        if (ddx * ddx + ddy * ddy >= 25) pts.push(tip.x, tip.y);
+
+        var r = Math.sqrt(tip.x * tip.x + tip.y * tip.y);
+        if (r > rMax) { e.state = 2; pts.push(tip.x, tip.y); tips.splice(i, 1); continue; }   // reached the horizon
+        var behind = tr.best - tip.score;
+        var hazard = 0.03 + (behind > 1.4 ? 0.8 : behind > 0.8 ? 0.18 : 0);
+        if (rng() < hazard * dt && tip.depth > 0) { pts.push(tip.x, tip.y); killTip(tr, tip); tips.splice(i, 1); continue; }
+        if (tip.since >= tip.next) { pts.push(tip.x, tip.y); splitTip(tr, tip); tips.splice(i, 1); }
+      }
+      // keep the frontier bounded: the weakest tips are pruned
+      if (tips.length > maxTips) {
+        tips.sort(function (a, b) { return b.score - a.score; });
+        while (tips.length > maxTips) { var w2 = tips.pop(); w2.edge >= 0 && killTip(tr, w2); }
+      }
+      // current best lineage
+      var bestTip = null;
+      for (i = 0; i < tips.length; i++) if (!bestTip || tips[i].score > bestTip.score) bestTip = tips[i];
+      tr.bestEdge = bestTip ? bestTip.edge : tr.bestEdge;
+      if (!tips.length && !tr.done) { tr.done = true; tr.fadeAt = t + 1.5; }
+    }
+
+    function stepTrees(dt) {
+      if (!growing || growing.done) growing = newTree();
+      for (var i = trees.length - 1; i >= 0; i--) {
+        var tr = trees[i];
+        if (!tr.done) stepTree(tr, dt);
+        if (tr.done && t > tr.fadeAt) {
+          tr.alpha = Math.max(0, 1 - (t - tr.fadeAt) / 8);
+          if (tr.alpha <= 0) trees.splice(i, 1);
+        }
+      }
+      // the next generation starts while this one is still filling the frame
+      var far = 0;
+      for (i = 0; i < growing.tips.length; i++) {
+        var tp = growing.tips[i];
+        far = Math.max(far, tp.x * tp.x + tp.y * tp.y);
+      }
+      if (far > rMax * rMax * 0.5 && growing.edges.length > 120) {
+        growing.old = true;
+        growing = newTree();
+        // at most two generations grow at once; older ones wind down
+        var live = 0;
+        for (i = trees.length - 1; i >= 0; i--) {
+          if (trees[i].done) continue;
+          live++;
+          if (live > 2) { trees[i].done = true; trees[i].fadeAt = t + 1; }
+        }
+      }
+    }
+
+    function drawTree(tr) {
+      var A = tr.alpha, edges = tr.edges, i, e, p, n;
+      // best lineage as a set
+      var bestSet = {};
+      for (i = tr.bestEdge; i >= 0; i = edges[i].parent) bestSet[i] = true;
+      var pAlive = new Path2D(), pDead = new Path2D(), pBest = new Path2D();
+      for (i = 0; i < edges.length; i++) {
+        e = edges[i]; p = e.pts; n = p.length;
+        if (n < 4) continue;
+        var target = bestSet[i] ? pBest : e.state === 1 ? pDead : pAlive;
+        target.moveTo(p[0], p[1]);
+        for (var j = 2; j < n; j += 2) target.lineTo(p[j], p[j + 1]);
+      }
+      lctx.lineWidth = 1 / zoom;
+      lctx.strokeStyle = "rgba(96,130,205," + (0.36 * A).toFixed(3) + ")";
+      lctx.stroke(pDead);
+      lctx.lineWidth = 1.3 / zoom;
+      lctx.strokeStyle = "rgba(186,208,255," + (0.8 * A).toFixed(3) + ")";
+      lctx.stroke(pAlive);
+      lctx.lineWidth = 4 / zoom;
+      lctx.strokeStyle = "rgba(170,200,255," + (0.14 * A).toFixed(3) + ")";
+      lctx.stroke(pBest);
+      lctx.lineWidth = 1.7 / zoom;
+      lctx.strokeStyle = "rgba(255,255,255," + (0.9 * A).toFixed(3) + ")";
+      lctx.stroke(pBest);
+
+      // nodes: split points and dead ends
+      var nd = new Path2D(), na = new Path2D(), rr = 1.7 / zoom;
+      for (i = 0; i < tr.nodes.length; i++) {
+        var q = tr.nodes[i];
+        var tgt = q.dead ? nd : na;
+        tgt.moveTo(q.x + rr, q.y);
+        tgt.arc(q.x, q.y, rr, 0, TAU);
+      }
+      lctx.fillStyle = "rgba(96,130,205," + (0.45 * A).toFixed(3) + ")";
+      lctx.fill(nd);
+      lctx.fillStyle = "rgba(222,234,255," + (0.85 * A).toFixed(3) + ")";
+      lctx.fill(na);
+    }
+
+    function drawTips() {
+      if (!growing) return;
+      var tips = growing.tips, A = growing.alpha;
+      for (var i = 0; i < tips.length; i++) {
+        var tp = tips[i];
+        var lead = growing.bestEdge === tp.edge;
+        var s = lead ? 22 : 12, a = lead ? 0.95 : 0.55;
+        lctx.globalAlpha = a * A;
+        lctx.drawImage(SPRITE, sx(tp.x) - s / 2, sy(tp.y) - s / 2, s, s);
+      }
+      lctx.globalAlpha = 1;
     }
 
     /* ---------- streamlines (cached in world space, re-projected per frame) ---------- */
@@ -407,13 +515,15 @@
       lctx.setTransform(DPR * zoom, 0, 0, DPR * zoom, DPR * (W / 2 - camX * zoom), DPR * (H / 2 - camY * zoom));
       lctx.lineCap = "round";
       lctx.lineJoin = "round";
-      lctx.strokeStyle = "rgba(96,142,224,0.28)";
+      lctx.strokeStyle = "rgba(96,142,224,0.16)";
       lctx.lineWidth = 1 / zoom;
       lctx.stroke(linesPath);
-      lctx.strokeStyle = "rgba(130,172,240,0.6)";
+      lctx.strokeStyle = "rgba(130,172,240,0.34)";
       lctx.lineWidth = 1.1 / zoom;
       lctx.stroke(arrowsPath);
+      for (var ti = 0; ti < trees.length; ti++) drawTree(trees[ti]);
       lctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      drawTips();
     }
 
     /* ---------- camera ---------- */
@@ -488,13 +598,13 @@
       if (!running) return;
       var dt = Math.min(0.05, (now - lastT) / 1000 || 0.016);
       lastT = now;
-      var moved = stepCamera(dt);
+      stepCamera(dt);
       t += dt;
       stepParticles(dt);
+      stepTrees(dt);
       drawStars(0.066);
-      var rebuild = (frame++ % quality.lineEvery) === 0;
-      if (rebuild) linesPath = null;
-      if (moved || rebuild) drawLines();
+      if ((frame++ % quality.lineEvery) === 0) linesPath = null;
+      drawLines();
       govern(now, dt);
       raf = requestAnimationFrame(frameFn);
     }
@@ -526,7 +636,9 @@
     }
     function syncRun() { (visible && inView) ? start() : stop(); }
 
-    function preroll(frames) {
+    function preroll(frames, treeSeconds) {
+      var steps = Math.round(treeSeconds * 30);
+      for (var k = 0; k < steps; k++) { t += 1 / 30; stepTrees(1 / 30); }
       for (var i = 0; i < frames; i++) {
         t += 1 / 60;
         stepParticles(1 / 60);
@@ -651,7 +763,7 @@
     /* ---------- init ---------- */
 
     resize();
-    preroll(reduced || shotMode ? 60 : 30);
+    preroll(reduced || shotMode ? 60 : 30, reduced || shotMode ? 16 : 7);
 
     if (!reduced) {
       if ("IntersectionObserver" in window) {
@@ -680,10 +792,10 @@
 
   function init() {
     var hero = document.querySelector("[data-field-hero]");
-    if (hero) createField(hero, { seed: 7, interactive: true, poleAt: [0.7, 0.46], density: 1, lineGap: 185, forkRate: 13 });
+    if (hero) createField(hero, { seed: 7, interactive: true, poleAt: [0.7, 0.46], density: 0.5, lineGap: 185, maxTips: 52, treeSpeed: 40 });
     var heads = document.querySelectorAll("[data-field-head]");
     for (var i = 0; i < heads.length; i++) {
-      createField(heads[i], { seed: 11 + i, interactive: false, poleAt: [0.76, 0.5], density: 0.55, lineGap: 230, forkRate: 3 });
+      createField(heads[i], { seed: 11 + i, interactive: false, poleAt: [0.76, 0.5], density: 0.3, lineGap: 230, maxTips: 24, treeSpeed: 32 });
     }
   }
 

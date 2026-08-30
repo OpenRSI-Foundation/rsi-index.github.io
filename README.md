@@ -21,13 +21,15 @@ assets/og.png                     # social card (crop of the hero)
 
 ## The star field (`assets/field.js`)
 
-The hero (and every subpage header) is a long-exposure star map of an agent's
-search: every white point is a run drifting along a smooth flow — a vortex
-around a bright pole plus a periodic, divergence-free potential field — and
-leaving a trail. Runs **fork**: a hypothesis branches off with a flash, the
-better branch survives and brightens, the weaker one fades, and branches
-branch again. Faint blue streamlines with arrowheads trace the same flow. The
-field loops every ~52 s with a slow phase drift, so no two passes are identical.
+The hero (and every subpage header) is a long-exposure star map with a
+search tree growing through it. Background stars drift along a smooth flow —
+a vortex around a bright pole plus a periodic, divergence-free potential
+field. From the pole (the human baseline) a **tree of runs** grows outward:
+tips split into new hypotheses, each branch's score random-walks, the
+branches that fall behind die and dim (the dead ends explored), the leaders
+split more often, and the lineage of the current best is drawn in white. The
+longer branches bend into the star ring as they reach outward. A generation
+grows to the edge, fades, and the next one starts — never the same tree twice.
 
 - **Drag** to pan (with inertia) · **click, then scroll** or **ctrl/⌘ + scroll**
   or **pinch** to zoom · **double-click** to reset. Plain scrolling over the
