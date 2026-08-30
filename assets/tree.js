@@ -491,6 +491,7 @@
                  + (isBest ? 2.0 : 0)
                  + (n.depth === 0 ? 2.4 : 0)) * pop;
         var alpha2 = 0.55 + bn2 * 0.45;
+        alpha2 *= clamp01((H - 48 - sy) / 70);          // soft fade at the bottom edge
         if (n.state === "ghost") alpha2 = Math.max(0, 1 - (now - n.stateT) / 700);
         if (dim > 0.01 && !(hovering && inLineage(n))) alpha2 *= (1 - dim * 0.75);
         var hlN = n._hl;
@@ -541,7 +542,7 @@
       }
       if (best && best.depth > 0) {
         var bx = best.x - camX;
-        if (bx > -80 && bx < W + 80) {
+        if (bx > -80 && bx < W + 80 && best.y < H - 110) {
           ctx.fillStyle = "rgba(247,196,120,0.9)";
           ctx.textAlign = "center";
           ctx.fillText("+" + best.score.toFixed(2) + "%", bx, best.y - 16);
@@ -631,6 +632,13 @@
     }
 
     window.addEventListener("resize", resize);
+    if ("ResizeObserver" in window) {
+      var ro = new ResizeObserver(function () {
+        var r = section.getBoundingClientRect();
+        if (Math.round(r.width) !== W || Math.round(r.height) !== H) resize();
+      });
+      ro.observe(section);
+    }
 
     if (hasPointer) {
       canvas.addEventListener("mousemove", function (e) {

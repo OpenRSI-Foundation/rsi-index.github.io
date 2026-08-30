@@ -226,6 +226,7 @@ section.block + section.block { border-top: 1px solid var(--line-soft); }
     radial-gradient(90% 70% at 50% 40%, rgba(52, 44, 82, 0.55), transparent 75%),
     var(--field);
   color: var(--field-text);
+  min-height: min(calc(94vh - 58px), 1060px);
   min-height: min(calc(94svh - 58px), 1060px);
   display: flex;
   flex-direction: column;
