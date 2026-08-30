@@ -13,32 +13,37 @@
   var TAU = Math.PI * 2;
 
   var MUTATIONS = [
-    "swap LR schedule → WSD",
+    /* optimizer geometry (pretrain signature) */
     "reshape preconditioner geometry",
-    "fuse QKV projections",
-    "raise grad-clip → 1.5",
-    "re-mix data: +code −web",
-    "cache dataloader shards",
-    "EMA weights for eval",
-    "rotate momentum basis",
-    "widen warmup 2×",
-    "drop attention bias terms",
-    "compress long-CoT traces",
-    "curriculum: easy → hard",
-    "orthogonalize update steps",
-    "prune duplicate captions",
-    "tighten tokenizer merges",
-    "overlap comm/compute",
-    "re-weight loss by learnability",
-    "anneal batch size up",
-    "distill judge signal",
-    "regularize state norms",
-    "shard optimizer states",
-    "swap init → μP-scaled",
+    "orthogonalize the update step",
+    "rotate momentum into eigenbasis",
+    "block-diagonal preconditioner",
+    "whiten gradients per layer",
+    "regularize optimizer state norms",
+    "swap init \u2192 \u03bcP-scaled",
+    /* data & curriculum */
+    "re-mix data: +code \u2212web",
     "filter low-entropy batches",
-    "two-stage decay restart",
+    "curriculum: easy \u2192 hard",
+    /* one-epoch text-to-image (vision signature) */
+    "switch objective \u2192 flow matching",
+    "prune duplicate captions",
+    "re-caption with dense tags",
+    "resample hard negatives",
+    "fuse QKV projections",
+    "drop attention bias terms",
+    /* post-training / CoT (community tasks) */
+    "adapt long/short CoT ratio",
+    "compress long-CoT traces",
+    "re-weight loss by learnability",
+    "reorder SFT mixture stages",
+    "denser temporal sampling",
+    /* systems, inside the fixed budget */
+    "overlap comm/compute",
+    "cache dataloader shards",
+    "shard optimizer states",
     "quantize activations to fp8",
-    "resample hard negatives"
+    "EMA weights for eval"
   ];
 
   var VIOLATIONS = [
@@ -62,6 +67,13 @@
   function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
   function lerp(a, b, t) { return a + (b - a) * t; }
   function backOut(t) { var s = 1.70158; t -= 1; return 1 + (s + 1) * t * t * t + s * t * t; }
+
+  /* raw sim score -> displayed %, saturating toward ~9% so an idle tab
+     never drifts into implausible improvement claims */
+  function fmtPct(s) {
+    var d = s > 0 ? 9 * s / (s + 4.5) : Math.max(s, -4);
+    return (d >= 0 ? "+" : "") + d.toFixed(2) + "%";
+  }
 
   /* pre-rendered radial glow sprite (white); tinted at draw time */
   function makeGlow(size) {
@@ -299,7 +311,7 @@
       }
       if (readout) {
         if (readout.runs) readout.runs.textContent = String(runCount).padStart(4, "0");
-        if (readout.best) readout.best.textContent = (bestScore >= 0 ? "+" : "") + bestScore.toFixed(2) + "%";
+        if (readout.best) readout.best.textContent = fmtPct(bestScore);
         if (readout.viol) readout.viol.textContent = String(violCount);
       }
     }
@@ -339,11 +351,11 @@
 
     function showTip(n) {
       var html;
-      var pct = (n.score >= 0 ? "+" : "") + n.score.toFixed(2) + "%";
+      var pct = fmtPct(n.score);
       if (n.state === "viol") {
         html = '<span class="t-id">run ' + String(n.run).padStart(4, "0") + "</span> · " +
                '<span class="t-viol">hard violation: ' + n.violMsg + "</span>" +
-               '<span class="t-note">reward → 0 · branch pruned</span>';
+               '<span class="t-note">reward → 0 · run excluded</span>';
       } else if (n.depth === 0) {
         html = '<span class="t-id">baseline</span> · human recipe, rerun frozen' +
                '<span class="t-note">the reference every run is scored against</span>';
@@ -545,7 +557,7 @@
         if (bx > -80 && bx < W + 80 && best.y < H - 110) {
           ctx.fillStyle = "rgba(247,196,120,0.9)";
           ctx.textAlign = "center";
-          ctx.fillText("+" + best.score.toFixed(2) + "%", bx, best.y - 16);
+          ctx.fillText(fmtPct(best.score), bx, best.y - 16);
         }
       }
       ctx.textAlign = "start";
