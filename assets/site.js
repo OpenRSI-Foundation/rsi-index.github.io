@@ -212,8 +212,9 @@
   /* ---- geometry ---- */
   var trail = null, trailCtx = null;   // accumulated light
   function resize() {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
     var rect = canvas.getBoundingClientRect();
+    if (rect.width < 4 || rect.height < 4) return;   // hidden / not laid out yet
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
     W = rect.width; H = rect.height;
     canvas.width = Math.round(W * dpr);
     canvas.height = Math.round(H * dpr);
@@ -480,6 +481,7 @@
 
   var frameN = 0;
   function draw(now) {
+    if (!W || !H) return;                            // canvas not sized yet
     frameN++;
     ctx.clearRect(0, 0, W, H);
     var rg = region();
@@ -630,6 +632,7 @@
     else requestAnimationFrame(frame);
   }
   function frame(ts) {
+    if (!W) resize();                                // keep retrying until measurable
     var dt = Math.min(250, lastTs ? ts - lastTs : 16.7);
     lastTs = ts;
     if (lap) {
@@ -694,4 +697,41 @@
     rT = setTimeout(function () { resize(); if (reduced) draw(performance.now()); }, 120);
   });
   boot();
+})();
+
+/* ---------- scroll reveal (expo-out rise on first sight) ---------- */
+(function () {
+  "use strict";
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var groups = document.querySelectorAll(
+    ".grid, .env-grid, .post-list, .pipeline, .steps"
+  );
+  var singles = document.querySelectorAll(
+    ".section-head, .formula, .cta-band, .track-head, .track-desc, " +
+    ".table-scroll, pre.tree, .forbid, .checks, .updated, .pagehead .lede"
+  );
+  var tagged = [];
+  groups.forEach(function (g) {
+    if (g.closest(".hero")) return;
+    Array.prototype.forEach.call(g.children, function (c, i) {
+      c.classList.add("reveal");
+      c.style.setProperty("--rd", Math.min(i, 6) * 70 + "ms");
+      tagged.push(c);
+    });
+  });
+  singles.forEach(function (el) {
+    if (el.closest(".hero")) return;
+    el.classList.add("reveal");
+    tagged.push(el);
+  });
+  if (reduced || document.hidden || !("IntersectionObserver" in window)) {
+    tagged.forEach(function (el) { el.classList.add("in"); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.1, rootMargin: "0px 0px -6% 0px" });
+  tagged.forEach(function (el) { io.observe(el); });
 })();
