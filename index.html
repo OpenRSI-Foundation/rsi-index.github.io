@@ -8,7 +8,7 @@
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Geist+Mono:wght@400;500;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Geist+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -16,7 +16,7 @@
 <nav class="nav">
   <div class="wrap nav-inner">
     <a class="brand" href="index.html" aria-label="RSI-Index home">
-      <svg width="18" height="18" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#121509"/><rect x="5" y="21" width="6" height="6" fill="#5b8c2a"/><rect x="13" y="14" width="6" height="6" fill="#d97e2a"/><rect x="21" y="7" width="6" height="6" fill="#f09b3c"/></svg>
+      <svg width="19" height="19" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#14111f"/><path d="M7 23 L14 17 L21 19 L25 9" stroke="#8f93d6" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/><circle cx="7" cy="23" r="2.2" fill="#8f93d6"/><circle cx="14" cy="17" r="2.6" fill="#a9a7e6"/><circle cx="21" cy="19" r="2.2" fill="#8f93d6"/><circle cx="25" cy="9" r="3.1" fill="#f7a648"/></svg>
       rsi-index
     </a>
     <button class="nav-toggle" aria-label="Menu" aria-expanded="false">☰</button>
@@ -29,34 +29,51 @@
   </div>
 </nav>
 
-<!-- ================= HERO ================= -->
-<div class="hero-outer">
-  <div class="wrap">
-    <div class="hero">
-      <div class="hero-aurora" aria-hidden="true"><i></i><i></i><i></i></div>
-      <div class="hero-scrim" aria-hidden="true"></div>
-      <div class="hero-content">
-        <a class="hero-pill" href="contribute.html"><b>New</b> The contribution pipeline is live <span class="arr">→</span></a>
-        <h1 class="wordmark">RSI-<span class="dex">INDEX</span></h1>
-        <p class="hero-sub">
-          RSI-Index studies how far AI research agents can improve the way models are built.
-          We turn fully open model-development projects into <strong>auditable environments</strong>,
-          in which an agent works to improve a real training workflow against a fixed evaluator
-          and is scored against <strong>the original, human-written recipe</strong>.
-        </p>
-        <div class="hero-ctas">
-          <a class="btn btn-solid" href="tasks.html">Explore the tasks →</a>
-          <a class="btn btn-ghost" href="blog/introducing-rsi-index.html">Read the announcement</a>
-        </div>
-        <div class="hero-stats">
-          <div><span class="n">3</span><span class="l">Signature tasks</span></div>
-          <div><span class="n">1</span><span class="l">GPU node per community task</span></div>
-          <div><span class="n">&lt;1</span><span class="l">Hour from idea to a task</span></div>
-        </div>
+<!-- ================= HERO — the search field ================= -->
+<header class="hero-field" data-tree-hero>
+  <canvas class="hero-canvas" aria-hidden="true"></canvas>
+  <div class="hero-scrim" aria-hidden="true"></div>
+
+  <div class="hero-legend" aria-hidden="true">
+    <span class="k-run"><i></i>one run of the agent</span>
+    <span class="k-best"><i></i>new best vs the human recipe</span>
+    <span class="k-viol"><i></i>policy violation → reward 0</span>
+    <span class="k-hint">hover a run · click to branch it</span>
+  </div>
+
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <a class="hero-pill" href="contribute.html"><b>New</b> The contribution pipeline is live <span class="arr">→</span></a>
+      <h1 class="hero-title">An open benchmark for <em>recursive self-improvement</em>.</h1>
+      <p class="hero-sub">
+        RSI-Index turns fully open model-development projects into <strong>auditable
+        environments</strong>: an agent works to improve a real training workflow against a
+        fixed evaluator, and is scored against <strong>the original, human-written
+        recipe</strong>.
+      </p>
+      <div class="hero-ctas">
+        <a class="btn btn-solid" href="tasks.html">Explore the tasks →</a>
+        <a class="btn btn-ghost" href="blog/introducing-rsi-index.html">Read the announcement</a>
       </div>
     </div>
   </div>
-</div>
+
+  <div class="hero-strip">
+    <div class="hero-strip-inner">
+      <div class="hero-stats">
+        <div><span class="n">3</span><span class="l">Signature tasks</span></div>
+        <div><span class="n">1</span><span class="l">GPU node per community task</span></div>
+        <div><span class="n">&lt;1</span><span class="l">Hour from idea to a task</span></div>
+      </div>
+      <div class="hero-readout" aria-hidden="true">
+        <span class="live">simulated search</span>
+        <span>runs <b data-ro-runs>0000</b></span>
+        <span>best <b data-ro-best>+0.00%</b></span>
+        <span>violations <b data-ro-viol>0</b> → 0</span>
+      </div>
+    </div>
+  </div>
+</header>
 
 <!-- ================= PIPELINE ================= -->
 <section class="block">
@@ -150,7 +167,7 @@
     <div class="panel-dark">
       <p class="eyebrow on-dark">Signature tasks · trajectories running</p>
       <h2 class="h-lg" style="max-width: 720px;">Three signature tasks are running now.</h2>
-      <p style="color: var(--panel-muted); max-width: 76ch; margin: 16px 0 8px;">
+      <p style="color: var(--field-body); max-width: 76ch; margin: 16px 0 8px;">
         There is one signature task per domain, each built as a complete Harbor package with a
         hardened, adversarially tested verifier. Research-agent trajectories are currently
         running on the pre-training and vision tasks, alongside a growing set of
@@ -191,8 +208,8 @@
         </div>
       </div>
 
-      <p style="color: var(--panel-muted); max-width: 76ch; margin: 26px 0 8px;">
-        <b style="color: var(--panel-text)">The shared scaffold — Marin scaling ladder E0–E5.</b>
+      <p style="color: var(--field-body); max-width: 76ch; margin: 26px 0 8px;">
+        <b style="color: var(--field-text)">The shared scaffold — Marin scaling ladder E0–E5.</b>
         The pre-training signature runs on a fixed six-rung ladder: the same optimizer source,
         equations, and state semantics must hold from 550M to 2.545B parameters, so a win at the
         smallest scale cannot hide a regression at the largest.
@@ -312,7 +329,7 @@
 <footer class="site">
   <div class="footer-inner">
     <div class="footer-brand">
-      <div class="wm">RSI-<span class="dex">INDEX</span></div>
+      <div class="wm">rsi-<span class="dex">index</span></div>
       <p>Auditable environments for recursive self-improvement research, built from
       representative fully open model-development projects.</p>
     </div>
@@ -342,5 +359,6 @@
 </footer>
 
 <script src="assets/site.js"></script>
+<script src="assets/tree.js"></script>
 </body>
 </html>
