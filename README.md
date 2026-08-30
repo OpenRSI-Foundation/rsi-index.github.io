@@ -21,14 +21,21 @@ assets/og.png                     # social card (crop of the hero)
 
 ## The star field (`assets/field.js`)
 
-The hero (and every subpage header) is a long-exposure star map: thousands of
-white points drift along a smooth flow — a vortex around a bright pole plus a
-periodic, divergence-free potential field — leaving trails, while faint blue
-streamlines with arrowheads trace the same flow. The field loops every ~52 s
-with a slow phase drift, so no two passes are identical.
+The hero (and every subpage header) is a long-exposure star map of an agent's
+search: every white point is a run drifting along a smooth flow — a vortex
+around a bright pole plus a periodic, divergence-free potential field — and
+leaving a trail. Runs **fork**: a hypothesis branches off with a flash, the
+better branch survives and brightens, the weaker one fades, and branches
+branch again. Faint blue streamlines with arrowheads trace the same flow. The
+field loops every ~52 s with a slow phase drift, so no two passes are identical.
 
-- **Drag** to pan · **ctrl/⌘ + scroll** or **pinch** to zoom · **double-click**
-  to reset. Plain scrolling over the hero still scrolls the page.
+- **Drag** to pan (with inertia) · **click, then scroll** or **ctrl/⌘ + scroll**
+  or **pinch** to zoom · **double-click** to reset. Plain scrolling over the
+  hero still scrolls the page. The camera is one anchor (a world point pinned
+  to a screen point), so pan and zoom compose exactly and the point under the
+  cursor never drifts; streamlines are cached as world-space `Path2D` and only
+  re-projected while the camera moves.
+- `?zoom=2` starts zoomed in (handy for screenshots).
 - Sections opt in with `data-field-hero` (interactive) or `data-field-head`
   (ambient) plus two `<canvas>` children: `.field-lines` and `.field-stars`.
 - Respects `prefers-reduced-motion` (one static exposure, interactions still

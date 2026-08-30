@@ -1,12 +1,16 @@
 /* ============================================================
    RSI-Index — the star field
-   A long-exposure star map: thousands of white points drift along
-   a smooth flow (a vortex around a pole plus a periodic, divergence-
-   free potential field), leaving trails. Faint blue streamlines with
-   arrowheads trace the same flow. The field loops every ~52 s with a
+   A long-exposure star map of an agent's search. Every point is a
+   run drifting along a smooth flow — a vortex around a bright pole
+   plus a periodic, divergence-free potential field — and leaving a
+   trail. Runs fork: a new hypothesis branches off, the better branch
+   survives and brightens, the weaker one fades. Faint blue streamlines
+   with arrowheads trace the flow. The field loops every ~52 s with a
    slow phase drift, so no two passes are identical.
-   Drag to pan · ctrl/⌘ + scroll (or pinch) to zoom · double-click to
-   reset. Ambient variant on subpage headers is non-interactive.
+
+   Drag to pan (with inertia) · scroll to zoom after a click, or
+   ctrl/⌘ + scroll · pinch on touch · double-click to reset.
+   Ambient variant on subpage headers is non-interactive.
    ============================================================ */
 (function () {
   "use strict";
@@ -14,10 +18,13 @@
   var TAU = Math.PI * 2;
   var PERIOD = 52;                                   // seconds per loop
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var shotMode = /(\?|&)shot=1/.test(location.search);
+  var params = location.search;
+  var shotMode = /(\?|&)shot=1/.test(params);
   if (shotMode) document.documentElement.classList.add("shot");
+  var zoomParam = parseFloat((params.match(/[?&]zoom=([\d.]+)/) || [])[1]) || 0;
 
   function clamp(x, a, b) { return x < a ? a : x > b ? b : x; }
+  function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
 
   /* deterministic rng so the field is reproducible per page */
   function mulberry(seed) {
@@ -28,8 +35,20 @@
       return ((t ^ t >>> 14) >>> 0) / 4294967296;
     };
   }
+  function gauss(rng) {
+    var u = 0, v = 0;
+    while (u === 0) u = rng();
+    while (v === 0) v = rng();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(TAU * v);
+  }
+  // stable jitter for a grid cell
+  function hash2(x, y) {
+    var h = (x * 374761393 + y * 668265263) | 0;
+    h = Math.imul(h ^ (h >>> 13), 1274126177);
+    return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+  }
 
-  /* soft round sprite for the brightest stars */
+  /* soft round sprite for flashes and the brightest runs */
   function makeSprite(size) {
     var c = document.createElement("canvas");
     c.width = c.height = size;
@@ -57,23 +76,29 @@
     var interactive = !!opts.interactive;
     var poleAt = opts.poleAt || [0.7, 0.46];       // screen fraction at rest
     var density = opts.density || 1;
-    var lineCount = opts.lines || 84;
+    var lineGap = opts.lineGap || 185;             // world px between streamline seeds
+    var forkRate = opts.forkRate || 0;             // forks per second (0 = none)
 
     var W = 0, H = 0, DPR = 1;
-    var zoom = 1, camX = 0, camY = 0;               // world point at screen centre
-    var zoomT = 1, camXT = 0, camYT = 0;            // eased targets
-    var zoomAnchor = null;                          // screen point to zoom about
-    var homeX = 0, homeY = 0;
-    var particles = [], count = 0;
-    var seeds = [];
-    var t = rng() * PERIOD, lastT = 0, frame = 0;
-    var raf = null, running = false, visible = !document.hidden, inView = true;
-    var quality = { count: 1, dpr: 1, lineEvery: 8 };  // degraded by the governor if frames run long
+    var quality = { count: 1, dpr: 1, lineEvery: 8 };
     var dtAvg = 16, slowSince = 0, level = 0;
+
+    /* camera: derived every frame from an anchor (a world point pinned to a screen point) */
+    var zoom = 1, zoomT = 1, camX = 0, camY = 0;
+    var aSX = 0, aSY = 0, aWX = 0, aWY = 0;         // anchor: screen point <- world point
+    var pendSX = null, pendSY = null;               // pointer position waiting for the next frame
+    var velX = 0, velY = 0;                         // inertia of the anchor, screen px/s
+    var dragging = false, homing = false;
+    var homeX = 0, homeY = 0;
+
+    var particles = [], count = 0, base = 0, active = 0, free = [];
+    var flashes = [];
+    var linesPath = null, linesArrows = [], arrowsPath = null, arrowsZoom = 1;
+    var t = rng() * PERIOD, lastT = 0, frame = 0, forkBudget = 0;
+    var raf = null, running = false, visible = !document.hidden, inView = true;
 
     /* ---------- the flow ---------- */
 
-    // periodic potential: sum of plane waves, each with a period that divides PERIOD
     var waves = [];
     var wl = [980, 640, 470, 350, 270, 210, 165];
     for (var i = 0; i < wl.length; i++) {
@@ -88,18 +113,17 @@
       });
     }
     var SWIRL = 0.15, R0 = 260, CURL = 0.55, INWARD = 3.2;
+    var vout = [0, 0];
 
-    // velocity at world point (px/s) -> writes into out[0], out[1]
     function flow(x, y, time, out) {
       var dx = 0, dy = 0;
       for (var i = 0; i < waves.length; i++) {
         var w = waves[i];
         var c = Math.cos(w.kx * x + w.ky * y + w.phase + (w.omega + w.drift) * time) * w.amp;
-        dx += w.kx * c;                              // dpsi/dx
-        dy += w.ky * c;                              // dpsi/dy
+        dx += w.kx * c;
+        dy += w.ky * c;
       }
-      // curl of psi is divergence-free: (dpsi/dy, -dpsi/dx)
-      var vx = dy * CURL, vy = -dx * CURL;
+      var vx = dy * CURL, vy = -dx * CURL;           // curl of psi: divergence-free
       var r = Math.sqrt(x * x + y * y) + 1e-3;
       var om = SWIRL / Math.sqrt(1 + r / R0);
       vx += -y * om - (x / r) * INWARD;
@@ -109,33 +133,44 @@
 
     /* ---------- geometry ---------- */
 
-    function toScreenX(x) { return (x - camX) * zoom + W / 2; }
-    function toScreenY(y) { return (y - camY) * zoom + H / 2; }
+    function sx(x) { return (x - camX) * zoom + W / 2; }
+    function sy(y) { return (y - camY) * zoom + H / 2; }
+    function worldX(px) { return camX + (px - W / 2) / zoom; }
+    function worldY(py) { return camY + (py - H / 2) / zoom; }
+
+    function setAnchor(px, py) {                     // re-pin without moving the camera
+      aWX = worldX(px); aWY = worldY(py);
+      aSX = px; aSY = py;
+    }
+    function applyAnchor() {
+      camX = aWX - (aSX - W / 2) / zoom;
+      camY = aWY - (aSY - H / 2) / zoom;
+    }
 
     function resize() {
       var r = section.getBoundingClientRect();
       var nw = Math.max(1, Math.round(r.width)), nh = Math.max(1, Math.round(r.height));
-      // pixel budget: ~3.6M canvas pixels max, never above 1.5x, never below 1x
-      DPR = Math.max(1, Math.min(window.devicePixelRatio || 1, 1.5, Math.sqrt(3.6e6 / (nw * nh)))) * quality.dpr;
       var first = W === 0;
       W = nw; H = nh;
-      linesC.width = starsC.width = W * DPR;
-      linesC.height = starsC.height = H * DPR;
+      DPR = Math.max(1, Math.min(window.devicePixelRatio || 1, 1.5, Math.sqrt(3.6e6 / (W * H)))) * quality.dpr;
+      linesC.width = starsC.width = Math.round(W * DPR);
+      linesC.height = starsC.height = Math.round(H * DPR);
       lctx.setTransform(DPR, 0, 0, DPR, 0, 0);
       sctx.setTransform(DPR, 0, 0, DPR, 0, 0);
       homeX = -(poleAt[0] - 0.5) * W;
       homeY = -(poleAt[1] - 0.5) * H;
-      if (first) { camX = camXT = homeX; camY = camYT = homeY; }
+      if (first) {
+        camX = homeX; camY = homeY;
+        if (zoomParam) { zoom = zoomT = clamp(zoomParam, 0.55, 3); }
+        setAnchor(W / 2, H / 2);
+      }
       var target = clamp(Math.round(W * H / 780 * density * quality.count), 300, 2400);
       if (target !== count) { count = target; seedParticles(); }
-      seedLines();
-      drawLines();
-      if (!first) drawStars(0);                      // repaint after a resize
+      redrawAll();
     }
 
     /* ---------- particles ---------- */
 
-    // spawn density forms spiral bands that follow the swirl
     function band(x, y, time) {
       var r = Math.sqrt(x * x + y * y), th = Math.atan2(y, x);
       var b = 0.5 + 0.5 * Math.sin(2.5 * th - r / 175 + 0.6 * Math.sin(time / 11));
@@ -153,39 +188,96 @@
       } while (tries < 8 && rng() > band(p.x, p.y, t));
       p.life = 11 + rng() * 21;
       p.age = fresh ? rng() * p.life : 0;
-      var s = rng();
-      p.size = s < 0.02 ? 2.3 : 0.7 + rng() * 0.9;
-      p.bright = s < 0.02;
-      p.alpha = 0.35 + rng() * 0.65;
+      p.score = gauss(rng) * 0.35;
+      p.size = 0.7 + rng() * 0.9;
+      p.bright = false;
       p.tint = rng() < 0.55 ? 0 : rng() < 0.7 ? 1 : 2;
+      p.bx = 0; p.by = 0;
+      p.dead = false;
+      setAlpha(p);
     }
+    function setAlpha(p) { p.alpha = 0.3 + 0.62 * clamp01(0.5 + p.score * 0.38); }
 
     function seedParticles() {
       particles = new Array(count);
-      for (var i = 0; i < count; i++) { particles[i] = {}; spawn(particles[i], true); }
+      base = Math.round(count * (forkRate ? 0.85 : 1));
+      free = [];
+      for (var i = 0; i < count; i++) {
+        particles[i] = {};
+        if (i < base) spawn(particles[i], true);
+        else { particles[i].dead = true; free.push(i); }
+      }
+      active = base;
+    }
+
+    /* a run forks: a hypothesis branches off, the better branch survives */
+    function fork(p) {
+      if (!free.length) return;
+      var j = free.pop();
+      var c = particles[j];
+      flow(p.x, p.y, t, vout);
+      var m = Math.sqrt(vout[0] * vout[0] + vout[1] * vout[1]) + 1e-6;
+      var ux = vout[0] / m, uy = vout[1] / m;
+      var side = rng() < 0.5 ? -1 : 1;
+      var mag = (0.7 + rng() * 0.45) * m;
+      c.x = p.x; c.y = p.y;
+      c.age = 0;
+      c.score = p.score + gauss(rng) * 0.5 + 0.08;
+      c.size = 0.8 + rng() * 0.8;
+      c.tint = 0;
+      c.dead = false;
+      c.bx = -uy * side * mag; c.by = ux * side * mag;
+      p.bx = uy * side * mag * 0.5; p.by = -ux * side * mag * 0.5;
+      if (c.score > p.score) {                       // the child wins: parent is pruned
+        c.life = 7 + rng() * 9;
+        p.life = Math.min(p.life, p.age + 2 + rng() * 2);
+      } else {                                       // the child is pruned
+        c.life = 2.2 + rng() * 2.4;
+      }
+      c.bright = c.score > 1.3;
+      setAlpha(c);
+      flashes.push({ x: p.x, y: p.y, t0: t });
+    }
+
+    function stepParticles(dt) {
+      var kill = 14, decay = Math.exp(-dt / 2.1);
+      var vw = W / zoom * 0.7, vh = H / zoom * 0.7;
+      for (var i = 0; i < count; i++) {
+        var p = particles[i];
+        if (p.dead || (i < base && i >= active)) continue;
+        flow(p.x, p.y, t, vout);
+        p.x += (vout[0] + p.bx) * dt;
+        p.y += (vout[1] + p.by) * dt;
+        p.bx *= decay; p.by *= decay;
+        p.age += dt;
+        var r = p.x * p.x + p.y * p.y;
+        var gone = p.age >= p.life || r < kill * kill ||
+          Math.abs(p.x - camX) > vw * 1.35 + 80 || Math.abs(p.y - camY) > vh * 1.35 + 80;
+        if (gone) {
+          if (i < base) spawn(p, false);
+          else { p.dead = true; free.push(i); }
+        }
+      }
+      // forks: a fixed budget per second, spent on visible, settled runs
+      if (forkRate && free.length) {
+        forkBudget += dt * forkRate;
+        var guard = 0;
+        while (forkBudget >= 1 && guard++ < 6) {
+          forkBudget -= 1;
+          var k = (rng() * count) | 0;             // any live run, so branches branch again
+          var q = particles[k];
+          if (q.dead || (k < base && k >= active) || q.age < 1.2 || q.life - q.age < 3) continue;
+          if (q.x * q.x + q.y * q.y < 90 * 90) continue;
+          if (Math.abs(q.x - camX) > vw || Math.abs(q.y - camY) > vh) continue;
+          fork(q);
+        }
+      }
     }
 
     var TINTS = ["255,255,255", "214,228,255", "176,204,255"];
+    var ALPHAS = [0.22, 0.42, 0.66, 0.92];
     var buckets = [];
     for (var b = 0; b < 12; b++) buckets.push([]);
-
-    var vout = [0, 0];
-
-    function stepParticles(dt) {
-      var kill = 14;                                 // core radius: respawn there
-      for (var i = 0; i < count; i++) {
-        var p = particles[i];
-        flow(p.x, p.y, t, vout);
-        p.x += vout[0] * dt;
-        p.y += vout[1] * dt;
-        p.age += dt;
-        var r = p.x * p.x + p.y * p.y;
-        if (p.age >= p.life || r < kill * kill) { spawn(p, false); continue; }
-        // out of the extended view -> respawn
-        var sx = toScreenX(p.x), sy = toScreenY(p.y);
-        if (sx < -W * 0.35 || sx > W * 1.35 || sy < -H * 0.35 || sy > H * 1.35) spawn(p, false);
-      }
-    }
 
     function drawStars(fade) {
       if (fade > 0) {
@@ -195,15 +287,16 @@
         sctx.globalCompositeOperation = "source-over";
       }
       for (var b = 0; b < 12; b++) buckets[b].length = 0;
-      for (var i = 0; i < count; i++) {
-        var p = particles[i];
-        var env = Math.min(1, p.age / 1.6, (p.life - p.age) / 2.2);
+      var i, p;
+      for (i = 0; i < count; i++) {
+        p = particles[i];
+        if (p.dead || (i < base && i >= active)) continue;
+        var env = Math.min(1, p.age / 1.2, (p.life - p.age) / 2.2);
         if (env <= 0.02) continue;
         var a = p.alpha * env;
         var ab = a < 0.3 ? 0 : a < 0.55 ? 1 : a < 0.8 ? 2 : 3;
         buckets[p.tint * 4 + ab].push(p);
       }
-      var ALPHAS = [0.22, 0.42, 0.66, 0.92];
       for (b = 0; b < 12; b++) {
         var list = buckets[b];
         if (!list.length) continue;
@@ -211,181 +304,201 @@
         sctx.beginPath();
         for (i = 0; i < list.length; i++) {
           var q = list[i];
-          var sx = toScreenX(q.x), sy = toScreenY(q.y);
-          if (q.bright) {
-            sctx.rect(sx - 1.1, sy - 1.1, 2.2, 2.2);
-          } else {
-            sctx.rect(sx - q.size / 2, sy - q.size / 2, q.size, q.size);
-          }
+          var x = sx(q.x), y = sy(q.y), s = q.bright ? 2.2 : q.size;
+          sctx.rect(x - s / 2, y - s / 2, s, s);
         }
         sctx.fill();
       }
-      // halos on the bright few
+      // halos on breakthrough runs, flashes at fork points
       sctx.globalAlpha = 0.55;
-      for (i = 0; i < count; i++) {
-        var pb = particles[i];
-        if (!pb.bright) continue;
-        var e = Math.min(1, pb.age / 1.6, (pb.life - pb.age) / 2.2);
+      for (i = base; i < count; i++) {
+        p = particles[i];
+        if (p.dead || !p.bright) continue;
+        var e = Math.min(1, p.age / 1.2, (p.life - p.age) / 2.2);
         if (e <= 0.05) continue;
-        sctx.drawImage(SPRITE, toScreenX(pb.x) - 9, toScreenY(pb.y) - 9, 18, 18);
+        sctx.drawImage(SPRITE, sx(p.x) - 9, sy(p.y) - 9, 18, 18);
+      }
+      for (i = flashes.length - 1; i >= 0; i--) {
+        var f = flashes[i];
+        var ft = (t - f.t0) / 0.55;
+        if (ft >= 1 || ft < 0) { flashes.splice(i, 1); continue; }
+        var fr = 7 + ft * 9;
+        sctx.globalAlpha = 0.9 * (1 - ft);
+        sctx.drawImage(SPRITE, sx(f.x) - fr, sy(f.y) - fr, fr * 2, fr * 2);
       }
       sctx.globalAlpha = 1;
     }
 
-    /* ---------- streamlines ---------- */
-
-    function seedLines() {
-      seeds = [];
-      var lr = mulberry((opts.seed || 7) * 31 + 5);
-      var cols = Math.ceil(Math.sqrt(lineCount * W / Math.max(1, H)));
-      var rows = Math.ceil(lineCount / cols);
-      var vw = W / zoom * 1.7, vh = H / zoom * 1.7;
-      for (var r = 0; r < rows; r++) {
-        for (var c = 0; c < cols; c++) {
-          seeds.push({
-            x: homeX + ((c + 0.2 + lr() * 0.6) / cols - 0.5) * vw,
-            y: homeY + ((r + 0.2 + lr() * 0.6) / rows - 0.5) * vh
-          });
-        }
-      }
-    }
+    /* ---------- streamlines (cached in world space, re-projected per frame) ---------- */
 
     var STEP = 7, STEPS = 110, ARROW_GAP = 150;
 
+    function buildLines() {
+      var path = new Path2D();
+      var arrows = [];
+      var vw = W / zoom, vh = H / zoom;
+      var x0 = camX - vw * 0.85, x1 = camX + vw * 0.85;
+      var y0 = camY - vh * 0.85, y1 = camY + vh * 0.85;
+      var c0 = Math.floor(x0 / lineGap), c1 = Math.ceil(x1 / lineGap);
+      var r0 = Math.floor(y0 / lineGap), r1 = Math.ceil(y1 / lineGap);
+      var cells = (c1 - c0 + 1) * (r1 - r0 + 1);
+      var skip = cells > 320 ? Math.ceil(cells / 320) : 1;   // bounded budget when zoomed out
+      var n = 0;
+      for (var r = r0; r <= r1; r++) {
+        for (var c = c0; c <= c1; c++) {
+          if (skip > 1 && (n++ % skip) !== 0) continue;
+          var x = (c + 0.15 + hash2(c, r) * 0.7) * lineGap;
+          var y = (r + 0.15 + hash2(r, c + 7) * 0.7) * lineGap;
+          var arc = 0, nextArrow = ARROW_GAP * 0.5;
+          path.moveTo(x, y);
+          for (var i = 0; i < STEPS; i++) {
+            flow(x, y, t, vout);
+            var m = Math.sqrt(vout[0] * vout[0] + vout[1] * vout[1]) + 1e-6;
+            var ux = vout[0] / m, uy = vout[1] / m;
+            x += ux * STEP; y += uy * STEP;
+            path.lineTo(x, y);
+            arc += STEP;
+            if (arc >= nextArrow) { nextArrow += ARROW_GAP; arrows.push(x, y, ux, uy); }
+            if (x * x + y * y < 400) break;
+          }
+        }
+      }
+      linesPath = path;
+      linesArrows = arrows;
+      arrowsPath = null;
+    }
+
+    function buildArrows() {
+      var path = new Path2D();
+      var L = 5.5 / zoom, wdt = 0.6;
+      for (var i = 0; i < linesArrows.length; i += 4) {
+        var ax = linesArrows[i], ay = linesArrows[i + 1], ux = linesArrows[i + 2], uy = linesArrows[i + 3];
+        path.moveTo(ax - ux * L + uy * L * wdt, ay - uy * L - ux * L * wdt);
+        path.lineTo(ax, ay);
+        path.lineTo(ax - ux * L - uy * L * wdt, ay - uy * L + ux * L * wdt);
+      }
+      arrowsPath = path;
+      arrowsZoom = zoom;
+    }
+
     function drawLines() {
+      if (!linesPath) buildLines();
+      if (!arrowsPath || Math.abs(zoom / arrowsZoom - 1) > 0.12) buildArrows();
+      lctx.setTransform(DPR, 0, 0, DPR, 0, 0);
       lctx.clearRect(0, 0, W, H);
 
-      // pole glow
-      var px = toScreenX(0), py = toScreenY(0);
-      var halo = lctx.createRadialGradient(px, py, 0, px, py, 420 * Math.sqrt(zoom));
+      // pole glow, breathing slowly
+      var px = sx(0), py = sy(0), rz = Math.sqrt(zoom);
+      var halo = lctx.createRadialGradient(px, py, 0, px, py, 420 * rz);
       halo.addColorStop(0, "rgba(90,130,220,0.20)");
       halo.addColorStop(0.5, "rgba(60,95,180,0.07)");
       halo.addColorStop(1, "rgba(40,70,140,0)");
       lctx.fillStyle = halo;
       lctx.fillRect(0, 0, W, H);
       var breath = 0.62 + 0.2 * Math.sin(t * TAU / 9);
-      var core = lctx.createRadialGradient(px, py, 0, px, py, (24 + 6 * breath) * Math.sqrt(zoom));
+      var core = lctx.createRadialGradient(px, py, 0, px, py, (24 + 6 * breath) * rz);
       core.addColorStop(0, "rgba(255,255,255," + (0.6 + 0.3 * breath).toFixed(3) + ")");
       core.addColorStop(0.35, "rgba(230,238,255,0.25)");
       core.addColorStop(1, "rgba(200,220,255,0)");
       lctx.fillStyle = core;
-      lctx.fillRect(px - 40, py - 40, 80, 80);
+      lctx.fillRect(px - 60, py - 60, 120, 120);
 
-      lctx.lineWidth = 1;
+      // world -> screen transform; stroke the cached paths
+      lctx.setTransform(DPR * zoom, 0, 0, DPR * zoom, DPR * (W / 2 - camX * zoom), DPR * (H / 2 - camY * zoom));
       lctx.lineCap = "round";
       lctx.lineJoin = "round";
-      var arrows = [];
       lctx.strokeStyle = "rgba(96,142,224,0.28)";
-      lctx.beginPath();
-      for (var s = 0; s < seeds.length; s++) {
-        var x = seeds[s].x, y = seeds[s].y;
-        var arc = 0, nextArrow = 0;
-        var sx0 = toScreenX(x), sy0 = toScreenY(y);
-        lctx.moveTo(sx0, sy0);
-        for (var i = 0; i < STEPS; i++) {
-          flow(x, y, t, vout);
-          var m = Math.sqrt(vout[0] * vout[0] + vout[1] * vout[1]) + 1e-6;
-          var ux = vout[0] / m, uy = vout[1] / m;
-          x += ux * STEP; y += uy * STEP;
-          var sx = toScreenX(x), sy = toScreenY(y);
-          lctx.lineTo(sx, sy);
-          arc += STEP * zoom;
-          if (arc >= nextArrow + ARROW_GAP) {
-            nextArrow += ARROW_GAP;
-            if (sx > -10 && sx < W + 10 && sy > -10 && sy < H + 10) arrows.push(sx, sy, ux, uy);
-          }
-          if (x * x + y * y < 400) break;            // reached the core
-        }
-      }
-      lctx.stroke();
-
+      lctx.lineWidth = 1 / zoom;
+      lctx.stroke(linesPath);
       lctx.strokeStyle = "rgba(130,172,240,0.6)";
-      lctx.lineWidth = 1.1;
-      lctx.beginPath();
-      for (i = 0; i < arrows.length; i += 4) {
-        var ax = arrows[i], ay = arrows[i + 1], aux = arrows[i + 2], auy = arrows[i + 3];
-        var L = 5.5;
-        lctx.moveTo(ax - aux * L + auy * L * 0.6, ay - auy * L - aux * L * 0.6);
-        lctx.lineTo(ax, ay);
-        lctx.lineTo(ax - aux * L - auy * L * 0.6, ay - auy * L + aux * L * 0.6);
-      }
-      lctx.stroke();
+      lctx.lineWidth = 1.1 / zoom;
+      lctx.stroke(arrowsPath);
+      lctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     }
 
     /* ---------- camera ---------- */
 
-    function shiftTrails(dx, dy, scale, ox, oy) {
-      if (dx === 0 && dy === 0 && scale === 1) return;
+    // move the existing trails to where the new camera would draw them
+    function carryTrails(pz, pcx, pcy) {
+      if (pz === zoom && pcx === camX && pcy === camY) return false;
+      var s = zoom / pz;
+      var tx = (W / 2 - camX * zoom) - (W / 2 - pcx * pz) * s;
+      var ty = (H / 2 - camY * zoom) - (H / 2 - pcy * pz) * s;
       sctx.save();
       sctx.globalCompositeOperation = "copy";
-      sctx.setTransform(DPR * scale, 0, 0, DPR * scale,
-        DPR * (ox * (1 - scale) + dx), DPR * (oy * (1 - scale) + dy));
+      sctx.setTransform(DPR * s, 0, 0, DPR * s, DPR * tx, DPR * ty);
       sctx.drawImage(starsC, 0, 0, W, H);
       sctx.restore();
       sctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    }
-
-    function easeCamera() {
-      var changed = false;
-      var pz = zoom, pcx = camX, pcy = camY;
-      if (Math.abs(zoomT - zoom) > 1e-4) {
-        zoom += (zoomT - zoom) * 0.16;
-        if (Math.abs(zoomT - zoom) < 1e-4) zoom = zoomT;
-        changed = true;
-      }
-      if (Math.abs(camXT - camX) > 0.05 || Math.abs(camYT - camY) > 0.05) {
-        camX += (camXT - camX) * 0.22;
-        camY += (camYT - camY) * 0.22;
-        if (Math.abs(camXT - camX) < 0.05 && Math.abs(camYT - camY) < 0.05) { camX = camXT; camY = camYT; }
-        changed = true;
-      }
-      if (!changed) return false;
-      var scale = zoom / pz;
-      var ox = zoomAnchor ? zoomAnchor[0] : W / 2, oy = zoomAnchor ? zoomAnchor[1] : H / 2;
-      // screen shift of a fixed world point caused by the pan
-      var dx = (pcx - camX) * zoom, dy = (pcy - camY) * zoom;
-      shiftTrails(dx, dy, scale, ox, oy);
       return true;
     }
 
-    function zoomAt(sx, sy, factor) {
-      var nz = clamp(zoomT * factor, 0.55, 3.2);
-      if (nz === zoomT) return;
-      // keep the world point under the cursor fixed
-      var wx = (sx - W / 2) / zoomT + camXT, wy = (sy - H / 2) / zoomT + camYT;
-      zoomT = nz;
-      camXT = wx - (sx - W / 2) / nz;
-      camYT = wy - (sy - H / 2) / nz;
-      zoomAnchor = [sx, sy];
-      wake();
+    function stepCamera(dt) {
+      var pz = zoom, pcx = camX, pcy = camY;
+      if (homing) {
+        zoom += (1 - zoom) * 0.12;
+        camX += (homeX - camX) * 0.12;
+        camY += (homeY - camY) * 0.12;
+        if (Math.abs(1 - zoom) < 0.002 && Math.abs(homeX - camX) < 0.3 && Math.abs(homeY - camY) < 0.3) {
+          zoom = 1; camX = homeX; camY = homeY; homing = false;
+        }
+        zoomT = zoom;
+        setAnchor(W / 2, H / 2);
+      } else {
+        if (pendSX !== null) { aSX = pendSX; aSY = pendSY; pendSX = pendSY = null; }
+        if (!dragging && (velX !== 0 || velY !== 0)) {
+          aSX += velX * dt; aSY += velY * dt;
+          var f = Math.pow(0.012, dt);                 // ~1.2 s glide
+          velX *= f; velY *= f;
+          if (Math.abs(velX) + Math.abs(velY) < 6) velX = velY = 0;
+        }
+        if (zoom !== zoomT) {
+          zoom += (zoomT - zoom) * 0.16;
+          if (Math.abs(zoomT - zoom) < 0.0008) zoom = zoomT;
+        }
+        applyAnchor();
+      }
+      return carryTrails(pz, pcx, pcy);
     }
 
-    function resetView() {
-      zoomT = 1; camXT = homeX; camYT = homeY; zoomAnchor = null;
-      wake();
+    function zoomBy(px, py, factor, immediate) {
+      homing = false;
+      var nz = clamp(zoomT * factor, 0.55, 3);
+      if (nz === zoomT) return;
+      setAnchor(px, py);
+      zoomT = nz;
+      if (immediate) { zoom = nz; applyAnchor(); }
+    }
+
+    function goHome() {
+      homing = true; dragging = false;
+      velX = velY = 0; pendSX = pendSY = null;
+      if (reduced) {
+        zoom = zoomT = 1; camX = homeX; camY = homeY; homing = false;
+        setAnchor(W / 2, H / 2); redrawAll();
+      }
     }
 
     /* ---------- loop ---------- */
 
-    function update(dt) {
-      t += dt;
-      stepParticles(dt);
-    }
+    function redrawAll() { linesPath = null; drawLines(); drawStars(0); }
 
     function frameFn(now) {
       raf = null;
       if (!running) return;
       var dt = Math.min(0.05, (now - lastT) / 1000 || 0.016);
       lastT = now;
-      var moved = easeCamera();
-      update(dt);
-      drawStars(0.072);
-      if (moved || (frame++ % quality.lineEvery) === 0) drawLines();
+      var moved = stepCamera(dt);
+      t += dt;
+      stepParticles(dt);
+      drawStars(0.066);
+      var rebuild = (frame++ % quality.lineEvery) === 0;
+      if (rebuild) linesPath = null;
+      if (moved || rebuild) drawLines();
       govern(now, dt);
       raf = requestAnimationFrame(frameFn);
     }
 
-    /* frame-time governor: shed work on machines that cannot keep ~40 fps */
     function govern(now, dt) {
       dtAvg += (dt * 1000 - dtAvg) * 0.05;
       if (dtAvg > 27) {
@@ -394,7 +507,7 @@
           level++;
           if (level === 1) { quality.count = 0.6; quality.lineEvery = 12; }
           else { quality.dpr = 1 / 1.5; quality.lineEvery = 16; }
-          count = 0;                                   // force re-seed at the new budget
+          count = 0;
           resize();
           slowSince = 0; dtAvg = 16;
         }
@@ -412,20 +525,12 @@
       if (raf) { cancelAnimationFrame(raf); raf = null; }
     }
     function syncRun() { (visible && inView) ? start() : stop(); }
-    function wake() {
-      if (reduced) {                                   // static mode: settle instantly
-        var guard = 0;
-        while (easeCamera() && guard++ < 200) { /* converge */ }
-        drawLines();
-        drawStars(0);
-      }
-    }
 
-    /* pre-expose so the first paint already carries trails */
     function preroll(frames) {
       for (var i = 0; i < frames; i++) {
-        update(1 / 60);
-        drawStars(0.072);
+        t += 1 / 60;
+        stepParticles(1 / 60);
+        drawStars(0.066);
       }
       drawLines();
     }
@@ -434,61 +539,88 @@
 
     function bind() {
       var el = starsC;
-      var pointers = {};
-      var dragging = false, lastX = 0, lastY = 0, pinchD = 0, moved = 0;
-      var engaged = false, hintTimer = null;
       var hint = section.querySelector(".field-hint");
+      var pointers = {}, pinchD = 0, pinchZ = 1;
+      var engaged = false, hintTimer = null;
+      var samples = [];                              // recent pointer samples for inertia
+
+      function localXY(e) {
+        var r = el.getBoundingClientRect();
+        return [e.clientX - r.left, e.clientY - r.top];
+      }
+      function sample(x, y) {
+        var now = performance.now();
+        samples.push([now, x, y]);
+        while (samples.length > 6 || (samples.length && now - samples[0][0] > 120)) samples.shift();
+      }
 
       el.addEventListener("pointerdown", function (e) {
+        var xy = localXY(e);
         if (e.pointerType === "touch") {
-          pointers[e.pointerId] = [e.clientX, e.clientY];
+          pointers[e.pointerId] = xy;
           var ids = Object.keys(pointers);
           if (ids.length === 2) {
             var a = pointers[ids[0]], b = pointers[ids[1]];
             pinchD = Math.hypot(a[0] - b[0], a[1] - b[1]);
-            lastX = (a[0] + b[0]) / 2; lastY = (a[1] + b[1]) / 2;
-            el.setPointerCapture(e.pointerId);
+            pinchZ = zoomT;
+            homing = false; velX = velY = 0;
+            setAnchor((a[0] + b[0]) / 2, (a[1] + b[1]) / 2);
+            dragging = true;
+            try { el.setPointerCapture(e.pointerId); } catch (x) {}
           }
           return;
         }
         if (e.button !== 0) return;
-        dragging = true; moved = 0; engaged = true;
-        lastX = e.clientX; lastY = e.clientY;
-        el.setPointerCapture(e.pointerId);
+        homing = false; velX = velY = 0;
+        setAnchor(xy[0], xy[1]);
+        dragging = true; engaged = true;
+        samples.length = 0; sample(xy[0], xy[1]);
+        try { el.setPointerCapture(e.pointerId); } catch (x) {}
         el.classList.add("dragging");
+        if (reduced) redrawAll();
       });
 
       el.addEventListener("pointermove", function (e) {
+        var xy = localXY(e);
         if (e.pointerType === "touch") {
           if (!pointers[e.pointerId]) return;
-          pointers[e.pointerId] = [e.clientX, e.clientY];
+          pointers[e.pointerId] = xy;
           var ids = Object.keys(pointers);
           if (ids.length !== 2) return;
           var a = pointers[ids[0]], b = pointers[ids[1]];
           var d = Math.hypot(a[0] - b[0], a[1] - b[1]);
-          var mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2;
-          var r = el.getBoundingClientRect();
-          if (pinchD > 0) zoomAt(mx - r.left, my - r.top, d / pinchD);
-          camXT -= (mx - lastX) / zoomT; camYT -= (my - lastY) / zoomT;
-          camX = camXT; camY = camYT;
-          pinchD = d; lastX = mx; lastY = my;
+          zoomT = clamp(pinchZ * d / Math.max(1, pinchD), 0.55, 3);
+          zoom = zoomT;
+          pendSX = (a[0] + b[0]) / 2; pendSY = (a[1] + b[1]) / 2;
           e.preventDefault();
           return;
         }
         if (!dragging) return;
-        var dx = e.clientX - lastX, dy = e.clientY - lastY;
-        moved += Math.abs(dx) + Math.abs(dy);
-        lastX = e.clientX; lastY = e.clientY;
-        camXT -= dx / zoom; camYT -= dy / zoom;
-        camX = camXT; camY = camYT;                    // drag is immediate
-        shiftTrails(dx, dy, 1, 0, 0);
-        if (reduced) { drawLines(); drawStars(0); }
+        pendSX = xy[0]; pendSY = xy[1];
+        sample(xy[0], xy[1]);
+        if (reduced) { aSX = xy[0]; aSY = xy[1]; applyAnchor(); redrawAll(); }
       });
 
       function endPointer(e) {
-        if (e.pointerType === "touch") { delete pointers[e.pointerId]; pinchD = 0; return; }
+        if (e.pointerType === "touch") {
+          delete pointers[e.pointerId];
+          if (Object.keys(pointers).length < 2) { dragging = false; pinchD = 0; }
+          return;
+        }
+        if (!dragging) return;
         dragging = false;
         el.classList.remove("dragging");
+        // inertia from the last ~100 ms of motion
+        var now = performance.now();
+        if (samples.length >= 2) {
+          var last = samples[samples.length - 1], first = samples[0];
+          var span = (last[0] - first[0]) / 1000;
+          if (span > 0.02 && now - last[0] < 90) {
+            velX = clamp((last[1] - first[1]) / span, -2600, 2600);
+            velY = clamp((last[2] - first[2]) / span, -2600, 2600);
+          }
+        }
+        samples.length = 0;
       }
       el.addEventListener("pointerup", endPointer);
       el.addEventListener("pointercancel", endPointer);
@@ -496,12 +628,13 @@
       el.addEventListener("wheel", function (e) {
         if (!(e.ctrlKey || e.metaKey || engaged)) return;
         e.preventDefault();
-        var r = el.getBoundingClientRect();
-        var f = Math.exp(-e.deltaY * (e.deltaMode === 1 ? 0.05 : 0.0016));
-        zoomAt(e.clientX - r.left, e.clientY - r.top, f);
+        var xy = localXY(e);
+        var f = Math.exp(-e.deltaY * (e.deltaMode === 1 ? 0.05 : 0.0018));
+        zoomBy(xy[0], xy[1], f, reduced);
+        if (reduced) redrawAll();
       }, { passive: false });
 
-      el.addEventListener("dblclick", function (e) { e.preventDefault(); resetView(); });
+      el.addEventListener("dblclick", function (e) { e.preventDefault(); goHome(); });
 
       el.addEventListener("pointerenter", function (e) {
         if (e.pointerType === "touch" || !hint) return;
@@ -547,10 +680,10 @@
 
   function init() {
     var hero = document.querySelector("[data-field-hero]");
-    if (hero) createField(hero, { seed: 7, interactive: true, poleAt: [0.7, 0.46], density: 1, lines: 84 });
+    if (hero) createField(hero, { seed: 7, interactive: true, poleAt: [0.7, 0.46], density: 1, lineGap: 185, forkRate: 13 });
     var heads = document.querySelectorAll("[data-field-head]");
     for (var i = 0; i < heads.length; i++) {
-      createField(heads[i], { seed: 11 + i, interactive: false, poleAt: [0.76, 0.5], density: 0.55, lines: 44 });
+      createField(heads[i], { seed: 11 + i, interactive: false, poleAt: [0.76, 0.5], density: 0.55, lineGap: 230, forkRate: 3 });
     }
   }
 
