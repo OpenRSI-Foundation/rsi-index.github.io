@@ -299,6 +299,22 @@ section.block + section.block { border-top: 1px solid var(--line-soft); }
   to   { transform: translate3d(-10%, 10%, 0) scale(1.1); }
 }
 
+/* the cursor carries a lamp; ambient blobs lean toward it (JS sets translate) */
+.aurora-cursor {
+  position: absolute;
+  left: -210px; top: -210px;
+  width: 420px; height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(240, 155, 60, 0.20), rgba(240, 155, 60, 0) 70%);
+  filter: blur(48px);
+  opacity: 0;
+  transition: opacity 0.7s var(--ease);
+  pointer-events: none;
+  will-change: translate, opacity;
+}
+.aurora-cursor.on { opacity: 1; }
+.hero-aurora i { will-change: transform, translate; }
+
 .hero-scrim {
   position: absolute;
   inset: 0;
