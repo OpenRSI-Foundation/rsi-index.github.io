@@ -1,0 +1,327 @@
+/* ============================================================
+   OpenRSI Index — "sky pages": Blog, Task Sample, Contribute
+   After the GPT-6 Astra article: one fixed star-trail field behind the
+   whole page (assets/sky-pages.js), a full-screen hero with the page
+   title alone at the pole, and below it a light column — the Task
+   Sample width, ivory fading to the sky at both edges — carrying the
+   text in ink, square boxes ruled in ink, 2px rules. Loaded after
+   style.css and startrails.css; the light tokens are theirs.
+   ============================================================ */
+
+:root {
+  --bg: #dfdcd2;              /* the column: a dim, warm paper, well under the home's */
+  --bg-2: #d6d3c8;
+  --panel: #e6e3da;
+  --panel-2: #e6e3da;
+  --line-2: #b9b5a9;
+  --red: #b83a2a;
+  --bw: 2px;
+  --max: 1240px;              /* the column: wider now that the paper spans the viewport */
+  --maxw: 1240px;
+  --col: var(--max);          /* every column is the Task Sample column */
+  --fade: 9vh;                /* the light column eases in below the hero over this */
+  --band: calc(var(--max) + 24px);   /* the fully light width, a hair past the column */
+  --hero-h: 100svh;           /* set by sky-pages.js from the real hero */
+  --sky-win: 760px;
+  --sky-ramp: 36px;           /* a near-crisp edge: no halo */
+  --sky-dsp: 0;
+  --sky-col: 1;
+}
+
+/* ---------------- ground + the sky ---------------- */
+html { background: #000; }
+body.skypage { position: relative; background: #000; color: var(--text); padding-top: 0 !important; }
+
+.skybg { position: fixed; inset: 0; z-index: 0; background: #000; overflow: hidden; }
+.skybg canvas { display: block; width: 100%; height: 100%; }
+.skybg::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 45%, transparent 47%, rgba(0, 0, 0, 0.18) 72%, rgba(0, 0, 0, 0.78) 100%);
+}
+.skybg[data-sky-state="page"] { pointer-events: none; }
+/* the light column: ivory over the reading width, easing to the sky at both
+   sides, and easing in — slowly, along a smooth curve — below the hero. The
+   hero itself is pure sky; the text begins where the column is solid. */
+.sky-ground {
+  position: absolute; top: var(--hero-h); bottom: 0; left: 0; right: 0; z-index: 0; pointer-events: none;
+  background: none; -webkit-mask-image: none; mask-image: none;
+}
+/* the paper runs edge to edge below the hero: one flat sheet, a beige rim only where it meets the sky */
+.sky-ground::before {
+  content: ""; position: absolute; top: 0; bottom: 0; left: 0; right: 0; box-sizing: border-box;
+  background: #dfdcd2; border-top: var(--bw) solid #ebe7da;
+}
+body.skypage > :not(.skybg):not(.sky-ground):not(.nav) { position: relative; z-index: 1; }
+
+/* ---------------- nav: always over the sky ---------------- */
+body.skypage .nav { color: #fff; background: transparent; border-bottom: 0; }
+body.skypage .nav.scrolled { background: rgba(0, 0, 0, 0.72); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
+body.skypage .nav-links a { color: inherit; opacity: 0.72; }
+body.skypage .nav-links a:hover, body.skypage .nav-links a.active { opacity: 1; background: rgba(255, 255, 255, 0.1); }
+
+/* ---------------- the hero: the title at the pole ---------------- */
+.sky-hero {
+  position: relative; min-height: 100vh; min-height: 100svh;
+  display: grid; align-items: center; justify-items: center;
+  padding: 64px var(--gutter) 28px !important; text-align: center;
+  background: transparent !important; border: 0 !important; overflow: visible;
+}
+.sky-hero.detail-head { min-height: 74vh; min-height: 74svh; }
+.sky-hero .field-scrim { display: none !important; }
+.sky-hero .wrap { position: relative; z-index: 2; width: min(var(--wide), 100%); max-width: none; margin: 0 auto; padding: 0; pointer-events: none; display: grid; justify-items: center; gap: 0; }
+.sky-hero .wrap a, .sky-hero .wrap button { pointer-events: auto; }
+.sky-hero .eyebrow, .sky-hero p.eyebrow {
+  margin: 0 0 22px; padding: 0; display: block; font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255, 255, 255, 0.62) !important; max-width: none;
+  opacity: 0; animation: sky-fade-up 1.2s ease both; animation-delay: 1.6s;
+}
+.sky-hero .eyebrow::before { display: none; }
+.sky-hero .eyebrow a { color: inherit; text-decoration: none; }
+.sky-hero .eyebrow a:hover { text-decoration: underline; }
+.sky-hero h1, .sky-hero .h-lg, .sky-hero h1.vibe-h1 {
+  margin: 0; max-width: 16ch; font-family: var(--font-serif) !important; font-weight: 400 !important;
+  font-size: clamp(44px, 6.2vw, 88px) !important; line-height: 1.02 !important; letter-spacing: -0.02em !important;
+  color: #fff !important; text-wrap: balance; text-shadow: 0 0 40px rgba(0, 0, 0, 0.8), 0 0 12px rgba(0, 0, 0, 0.6);
+}
+.sky-hero h1 em, .sky-hero h1.vibe-h1 em { font-style: italic; color: #fff !important; -webkit-text-fill-color: #fff; background: none; }
+.sky-hero .hl { display: inline; white-space: normal; }
+.sky-hero .hl .w { display: inline-block; white-space: nowrap; }
+.sky-hero .hl .ch { display: inline-block; opacity: 0; animation: sky-ch-in 1.1s var(--ease) both; animation-delay: calc(0.85s + var(--i) * 0.035s); }
+.sky-hero .hl .ch:empty::after { content: "\00a0"; }
+@keyframes sky-ch-in { from { opacity: 0; transform: translateY(14px); filter: blur(6px); } to { opacity: 1; transform: none; filter: blur(0); } }
+@keyframes sky-fade-up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.sky-hero .vibe-rule, .sky-hero .sky-scroll { display: none !important; }
+.sky-replay { display: none !important; }
+.sky-replay-old {
+  position: absolute; right: 24px; bottom: 24px; z-index: 3; width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.22); border-radius: 999px; background: rgba(0, 0, 0, 0.35); color: #fff; cursor: pointer;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); transition: background 0.2s ease, border-color 0.2s ease;
+  opacity: 0; animation: sky-fade-up 1.2s ease both; animation-delay: 3.2s;
+}
+.sky-replay:hover { background: rgba(255, 255, 255, 0.14); border-color: rgba(255, 255, 255, 0.4); }
+.sky-replay svg { display: block; }
+
+/* ---------------- the intro: what used to sit under the title ---------------- */
+body.skypage section.block.sky-intro { padding: var(--fade) 0 0; }
+body.skypage .sky-intro .intro-tag { margin: 0 0 14px; font-family: var(--font-serif); font-size: clamp(24px, 2.4vw, 32px); line-height: 1.2; letter-spacing: -0.01em; color: var(--text); text-wrap: balance; }
+body.skypage .sky-intro .intro-chips { margin: 0 0 22px; font-family: var(--font-mono); font-size: 14px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text); }
+body.skypage .sky-intro .intro-chips .sep { margin: 0 8px; color: var(--line-2); }
+body.skypage .sky-intro .intro-chips .intro-chip { display: inline-block; background: #000; color: #fff; padding: 7px 12px 6px; margin: 0 10px 8px 0; border-radius: 0; }
+@media (min-width: 721px) { body.skypage .sky-intro .intro-chips .intro-chip { white-space: nowrap; } }
+body.skypage .sky-intro .lede { margin: 0; max-width: 60em; font-family: var(--font-serif); font-size: clamp(18px, 1.5vw, 21px); line-height: 1.5; color: var(--text); text-wrap: pretty; }
+body.skypage .article .standfirst, body.skypage .article.detail .standfirst { margin: 0 0 36px; }
+
+/* ---------------- the page below the hero: one wide column ---------------- */
+body.skypage .wrap, body.skypage .wrap.lb-wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+body.skypage section.block { padding: clamp(40px, 5vw, 72px) 0; background: transparent !important; }
+body.skypage section.block + section.block { border-top: 0; }
+body.skypage .section-head { margin-bottom: clamp(22px, 2.6vw, 34px); }
+body.skypage .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-3); margin: 0 0 14px; padding: 0; }
+body.skypage .eyebrow::before { display: none; }
+body.skypage section.block h2, body.skypage .h-lg, body.skypage .h-md { font-family: var(--font-serif); font-weight: 400; letter-spacing: -0.015em; color: var(--text); text-wrap: balance; }
+body.skypage .h-lg { font-size: clamp(30px, 3.4vw, 44px); line-height: 1.12; }
+body.skypage .h-md { font-size: clamp(22px, 2.2vw, 28px); line-height: 1.2; }
+body.skypage section.block h2 em, body.skypage .h-lg em { color: var(--text); font-style: italic; }
+body.skypage .lede { color: var(--text-2); }
+body.skypage .muted { color: var(--text-3); }
+body.skypage .mono { font-family: var(--font-mono); font-size: 0.92em; }
+
+/* ---------------- boxes: square, ruled in ink ---------------- */
+body.skypage .post-card, body.skypage .tcard, body.skypage .card, body.skypage .scorebox, body.skypage .task-fig,
+body.skypage .agent-note, body.skypage .article .fig-frame, body.skypage .run-figs figure,
+body.skypage .gpu-note, body.skypage .callout, body.skypage .ledger {
+  border: var(--bw) solid var(--line) !important; border-radius: 0 !important;
+  background: var(--panel-2) !important; box-shadow: none !important;
+}
+body.skypage .tcard:hover, body.skypage .post-card:hover, body.skypage .card:hover { transform: none; text-decoration: none; background: var(--bg-2) !important; }
+body.skypage .card::after { display: none; }
+body.skypage .article .fig-frame.fig-bare { background: transparent !important; border: 0 !important; padding: 0; }
+.runflow-img { display: block; width: 100%; height: auto; margin: 0; border: var(--bw) solid #000; background: #fff; }
+body.skypage .article .fig-frame.fig-dark { background: var(--field) !important; border-color: var(--field) !important; }
+
+/* ---------------- Blog: the list ---------------- */
+body.skypage .post-list { max-width: none; gap: 16px; }
+body.skypage .post-card { padding: 28px 30px 26px; color: var(--text); }
+body.skypage .post-card .meta, body.skypage .article .meta { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--text-3); }
+body.skypage .post-card .cat, body.skypage .article .cat { color: var(--text); border: 1px solid var(--line); background: none; border-radius: 0; padding: 3px 10px; }
+body.skypage .post-card h2 { font-family: var(--font-serif); font-weight: 400; font-size: 28px; letter-spacing: -0.015em; line-height: 1.15; margin-bottom: 10px; color: var(--text); }
+body.skypage .post-card p { color: var(--text-2); font-size: 16px; line-height: 1.6; }
+body.skypage .post-card .more { font-family: var(--font-sans); font-size: 14px; font-weight: 500; color: var(--text); }
+body.skypage .post-card:hover .more { letter-spacing: 0; text-decoration: underline; }
+body.skypage .post-note { margin: 28px 0 0; font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--text-3); }
+body.skypage .post-note a { color: var(--text-2); }
+
+/* ---------------- Blog: the article ---------------- */
+body.skypage article.article, body.skypage article.article.detail { max-width: var(--max); margin: 0 auto; padding: var(--fade) var(--gutter) 96px; }
+body.skypage .article .backlink { font-family: var(--font-mono); font-size: 12px; color: var(--text-3); }
+body.skypage .article h1 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(36px, 4.2vw, 52px); line-height: 1.1; letter-spacing: -0.015em; color: var(--text); }
+body.skypage .article h2 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(26px, 2.6vw, 32px); line-height: 1.2; letter-spacing: -0.01em; color: var(--text); margin: 64px 0 18px; }
+body.skypage .article h2 .sec { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.18em; color: var(--text-3); margin-bottom: 10px; }
+body.skypage .article h3 { font-family: var(--font-sans); font-weight: 600; font-size: 18px; color: var(--text); margin: 30px 0 10px; }
+body.skypage .article > p, body.skypage .article .lede, body.skypage .article > ul > li, body.skypage .article > ol > li,
+body.skypage .article section > p, body.skypage .article section > ul > li, body.skypage .article p {
+  font-family: var(--font-serif); font-size: 17.5px; line-height: 1.58; color: var(--text);
+}
+body.skypage .article ul, body.skypage .article ol { color: var(--text); }
+body.skypage .article .standfirst { border-left: 2px solid var(--text); padding-left: 22px; color: var(--text); font-family: var(--font-serif); font-size: clamp(19px, 1.7vw, 23px); line-height: 1.45; }
+body.skypage .article .lede { border-left: 2px solid var(--text); }
+body.skypage .article a { color: var(--text); text-decoration: underline; text-decoration-color: rgba(20, 20, 19, 0.4); }
+body.skypage .article a:hover { text-decoration-color: currentColor; }
+body.skypage .article blockquote { border-radius: 0; border-color: var(--field); }
+body.skypage .article .fig-frame { padding: 18px; margin: 26px 0; }
+body.skypage .article .tag, body.skypage .article .chip, body.skypage .article .pill { border-radius: 0; }
+body.skypage .article code, body.skypage .detail code, body.skypage .agent-note .note-body code { background: rgba(20, 20, 19, 0.06); color: var(--text); border-radius: 0; }
+body.skypage .article pre, body.skypage .detail pre.code, body.skypage pre.tree { border-radius: 0; }
+body.skypage .article th, body.skypage .table-scroll th { color: var(--text-3); border-bottom: 1px solid var(--line); font-weight: 500; }
+body.skypage .article td, body.skypage .table-scroll td { border-bottom: 1px solid var(--line-2); }
+body.skypage .rf-setup, body.skypage .rf-cycle, body.skypage .rf-work, body.skypage .rf-judge, body.skypage .rf-agent, body.skypage .rf-checkpoint, body.skypage .rf-final, body.skypage .rf-judge-origin, body.skypage .rf-files code { border-radius: 0; }
+body.skypage .rf-feedback::before { border-radius: 0; }
+
+/* ---------------- Task Sample: the filter and the grid ---------------- */
+body.skypage .filterbar, body.skypage .lb-filter {
+  display: inline-flex !important; flex-wrap: wrap; gap: 4px; padding: 4px !important; margin-bottom: 28px;
+  border: var(--bw) solid var(--line) !important; border-radius: 0 !important; background: var(--panel-2) !important;
+}
+body.skypage .filterbar .chip, body.skypage .lb-filter .chip {
+  font-family: var(--font-sans); font-size: 14px; font-weight: 500; padding: 8px 16px; border: 0; border-radius: 0;
+  background: none; color: var(--text-2); cursor: pointer; transition: background 0.2s ease, color 0.2s ease;
+}
+body.skypage .filterbar .chip:hover, body.skypage .lb-filter .chip:hover { color: var(--text); }
+body.skypage .filterbar .chip.active, body.skypage .lb-filter .chip.active { background: var(--text); color: #fff; }
+body.skypage .tgrid { gap: 16px; }
+body.skypage .tcard { padding: 24px 26px 20px; color: var(--text); }
+body.skypage .tcard h3 { font-family: var(--font-sans); font-weight: 600; font-size: 18px; letter-spacing: -0.01em; color: var(--text); }
+body.skypage .tcard p { color: var(--text-2); font-size: 15px; line-height: 1.6; }
+body.skypage .tcard-foot { border-top: 1px solid var(--line-2); color: var(--text-3); }
+body.skypage .tcard .dom { color: var(--text-3); }
+body.skypage .tcard .best { color: var(--text-2); }
+body.skypage .tcard .sigtag { color: var(--text-2); font-weight: 500; }
+body.skypage .tcard.sig, body.skypage .tcard.sig:hover { border-top: var(--bw) solid var(--line) !important; }
+
+/* ---------------- Task Sample: a task page ---------------- */
+body.skypage .scorebox { padding: 22px 24px 16px; margin-bottom: 30px; }
+body.skypage .scorebox-head { color: var(--text); }
+body.skypage .scorebox-head span, body.skypage .scorebox .basis, body.skypage .baseline-note { color: var(--text-3); }
+body.skypage .score-tie { border-left: 2px solid var(--text); background: var(--bg-2); color: var(--text-2); border-radius: 0; }
+body.skypage table.runs th { color: var(--text-3); border-bottom: 1px solid var(--line); }
+body.skypage table.runs td { border-bottom: 1px solid var(--line-2); }
+body.skypage .task-fig { padding: 16px 16px 14px; }
+body.skypage .task-fig .fig-body { background: transparent; border: 0; }
+body.skypage .task-fig .fig-body:has(> img) { aspect-ratio: auto; padding: 0; }
+body.skypage .task-fig img { border-radius: 0; }
+body.skypage .task-fig .fig-cap { color: var(--text-3); background: transparent; border-top: 1px solid var(--line-2); }
+body.skypage .task-fig .fig-cap b { color: var(--text-2); }
+body.skypage .task-fig .fig-cap a { color: var(--text-2); }
+body.skypage .task-fig .fig-cap .src-tag { display: inline-block; margin-left: 22px; padding: 2px 8px; border: 1px solid var(--line); font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-2); vertical-align: 1px; white-space: nowrap; }
+/* Let each run's wide chart/table scroll inside its own grid item on phones. */
+body.skypage .run-figs > * { min-width: 0; }
+body.skypage .agent-note { padding: 0 20px; }
+body.skypage .agent-note summary { color: var(--text); }
+body.skypage .agent-note .note-body { color: var(--text-2); border-top: 1px solid var(--line-2); }
+body.skypage .detail h2 { margin-top: 44px; }
+
+/* ---------------- Contribute ---------------- */
+body.skypage .steps { max-width: none; }
+body.skypage .step-item { padding: 30px 0 32px 74px; }
+body.skypage .step-item + .step-item { border-top: 1px solid var(--line-2); }
+body.skypage .step-item::before {
+  top: 32px; width: 40px; height: 40px; padding: 0; display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
+  color: #fff !important; background: var(--text) !important; border: 0; border-radius: 0 !important; box-shadow: none !important;
+}
+body.skypage .step-item::after { left: 20px; top: 80px; background: linear-gradient(var(--line-2), transparent) !important; }
+body.skypage .step-item h3 { font-family: var(--font-sans); font-weight: 600; font-size: 19px; letter-spacing: -0.01em; color: var(--text); margin-bottom: 10px; }
+body.skypage .step-item h3::before { display: none !important; }
+body.skypage .step-item p, body.skypage .step-item ul { color: var(--text-2); font-size: 16px; line-height: 1.62; }
+body.skypage .step-item p b, body.skypage .step-item ul li b { color: var(--text); }
+body.skypage .step-item a { color: var(--text); }
+body.skypage .callout { padding: 18px 20px; margin-top: 18px; }
+body.skypage .callout .k { color: var(--text-3); }
+body.skypage .callout.warn { border-color: var(--red) !important; }
+body.skypage .callout.warn .k { color: var(--red); }
+body.skypage .callout p { color: var(--text-2); font-size: 15px; }
+body.skypage .callout a { color: var(--text); }
+body.skypage .gpu-note { margin: 40px 0 0; padding: 24px 28px; }
+body.skypage .gpu-note .gpu-note-k { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--red); margin: 0 0 12px; }
+body.skypage .gpu-note p, body.skypage .gpu-note ol { color: var(--text-2); font-size: 15.5px; line-height: 1.62; }
+body.skypage .gpu-note b { color: var(--text); }
+body.skypage .gpu-note.scope-note .gpu-note-k { color: var(--text-3); }
+body.skypage .scope-note + .gpu-note { margin-top: 20px; }
+body.skypage .actions { margin: 30px 0 0 !important; }
+body.skypage .card { padding: 26px 28px; color: var(--text); }
+body.skypage .card .num { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.16em; color: var(--text-3); }
+body.skypage .card h3 { font-family: var(--font-sans); font-weight: 600; font-size: 19px; color: var(--text); margin: 8px 0 10px; }
+body.skypage .card p { color: var(--text-2); font-size: 15.5px; }
+body.skypage .cta-band { border: 0; border-radius: 0; box-shadow: none; padding: clamp(32px, 4.6vw, 52px); background: #000 !important; color: #fff; }
+body.skypage .cta-band p { color: rgba(255, 255, 255, 0.8); }
+body.skypage .cta-band .mono { color: #fff; }
+body.skypage section.block .cta-band h2 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(26px, 2.8vw, 36px); color: #fff; }
+
+/* buttons: ink primary, ink-ruled secondary, square */
+body.skypage .btn { font-family: var(--font-sans); font-size: 15px; font-weight: 500; letter-spacing: 0; border-radius: 0; padding: 12px 22px; }
+body.skypage .btn:hover { transform: none; }
+body.skypage .btn-paper, body.skypage .btn-solid { background: var(--text); color: #fff; box-shadow: none; }
+body.skypage .btn-paper:hover, body.skypage .btn-solid:hover { background: #000; }
+body.skypage .cta-band .btn-paper { background: #fff; color: var(--field); }
+body.skypage .cta-band .btn-paper:hover { background: #e8eaf0; }
+body.skypage .btn-paper-ghost, body.skypage .btn-ghost { color: var(--text); border: 1px solid var(--text); background: transparent; }
+body.skypage .btn-paper-ghost:hover, body.skypage .btn-ghost:hover { background: rgba(20, 20, 19, 0.05); }
+
+/* ---------------- footer ---------------- */
+body.skypage footer.site { width: min(var(--max), 100%); margin: 48px auto 0; border-top: 1px solid var(--line-2); background: transparent; }
+body.skypage footer.site a { text-decoration: none; }
+body.skypage footer.site a:hover { text-decoration: underline; }
+
+/* ---------------- phones ---------------- */
+@media (max-width: 720px) {
+  :root { --sky-ramp: 16px; --fade: 8vh; }
+  .sky-hero { min-height: 92svh; padding-top: 80px !important; }
+  .sky-hero h1, .sky-hero .h-lg, .sky-hero h1.vibe-h1 { font-size: clamp(38px, 11vw, 56px) !important; }
+  .sky-replay { right: 14px; bottom: 14px; }
+  body.skypage .step-item { padding-left: 58px; }
+  body.skypage .step-item::before { width: 34px; height: 34px; }
+  body.skypage .step-item::after { left: 17px; }
+}
+
+/* ---------------- motion preferences ---------------- */
+@media (prefers-reduced-motion: reduce) {
+  .sky-hero .hl .ch, .sky-hero .eyebrow, .sky-replay { animation: none !important; opacity: 1 !important; transform: none !important; filter: none !important; }
+}
+html.static .sky-hero .hl .ch, html.static .sky-hero .eyebrow, html.static .sky-replay { animation: none !important; opacity: 1 !important; transform: none !important; filter: none !important; }
+
+/* ---------------- type scale: a size up now that the paper runs edge to edge ---------------- */
+body.skypage .sky-intro .lede { font-size: clamp(19px, 1.6vw, 23px); }
+body.skypage .h-lg { font-size: clamp(32px, 3.6vw, 48px); }
+body.skypage .h-md { font-size: clamp(23px, 2.3vw, 30px); }
+body.skypage .article h2 { font-size: clamp(28px, 2.8vw, 36px); }
+body.skypage .article h3 { font-size: 20px; }
+body.skypage .article > p, body.skypage .article .lede, body.skypage .article > ul > li, body.skypage .article > ol > li,
+body.skypage .article section > p, body.skypage .article section > ul > li, body.skypage .article p { font-size: 19.5px; }
+body.skypage .article .standfirst { font-size: clamp(21px, 1.8vw, 25px); }
+body.skypage .post-card h2 { font-size: 30px; }
+body.skypage .post-card p { font-size: 17.5px; }
+body.skypage .tcard h3 { font-size: 20px; }
+body.skypage .tcard p { font-size: 16.5px; }
+body.skypage .step-item h3 { font-size: 21px; }
+body.skypage .step-item p, body.skypage .step-item ul { font-size: 17.5px; }
+body.skypage .callout p { font-size: 16.5px; }
+body.skypage .gpu-note p, body.skypage .gpu-note ol { font-size: 17px; }
+body.skypage .card h3 { font-size: 21px; }
+body.skypage .card p { font-size: 17px; }
+/* the home */
+.col p { font-size: 19.5px; }
+.sec .thesis-body > p { font-size: 19.5px; }
+.sec .thesis-body > p:first-child { font-size: clamp(21px, 1.7vw, 23px); }
+.points b { font-size: 19.5px; }
+.points p { font-size: 18px; }
+.sec .sample-preview-note { font-size: 15.5px; }
+.longform .partners-ack { font-size: 17.5px; }
+.task-frame .task-card h3, .task-frame .task-card .h-md { font-size: 26px; }
+.task-frame .tc-body, .task-frame .tc-target { font-size: 19px; }
+.task-frame .task-fig .fig-cap { font-size: 15px; }
+#contribute .cfc-question p { font-size: 22px; }
+#contribute .cfc-flow-desc { font-size: 18.5px; }
+#compute .pcard.solo p { font-size: 19.5px; }
+.advisors span { font-size: 18px; }
+.advisors small { font-size: 13.5px; }
+.footer-line { font-size: 15px; }

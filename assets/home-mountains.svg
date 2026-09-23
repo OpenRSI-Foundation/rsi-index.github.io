@@ -1,0 +1,193 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="370" viewBox="0 24 1800 370" preserveAspectRatio="none" fill="none">
+  <!-- A moonlit massif and a nearer, unlit shoulder. No sky: the live star field shows through. -->
+  <!-- A taller canvas lifts both ridges without scaling them; the foreground fills the new bottom (394). -->
+  <defs>
+    <linearGradient id="rock" x1="900" y1="25" x2="930" y2="320" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#46525a"/><stop offset=".36" stop-color="#2b3741"/>
+      <stop offset=".77" stop-color="#14212c"/><stop offset="1" stop-color="#0a111b"/>
+    </linearGradient>
+    <linearGradient id="lit" x1="928" y1="40" x2="844" y2="262" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#839095" stop-opacity=".38"/><stop offset=".53" stop-color="#63717b" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#2c3b49" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="shade" x1="1030" y1="60" x2="1128" y2="292" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#09131d" stop-opacity=".64"/><stop offset="1" stop-color="#0b1520" stop-opacity=".16"/>
+    </linearGradient>
+    <linearGradient id="snow" x1="1000" y1="35" x2="1070" y2="224" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#b2b9b6" stop-opacity=".46"/><stop offset=".44" stop-color="#8d9b9f" stop-opacity=".27"/>
+      <stop offset="1" stop-color="#738794" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="snowfield" x1="994" y1="30" x2="1024" y2="240" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#c7d0d0" stop-opacity=".52"/><stop offset=".43" stop-color="#93a8b3" stop-opacity=".36"/>
+      <stop offset="1" stop-color="#5d7787" stop-opacity=".08"/>
+    </linearGradient>
+    <linearGradient id="near" x1="410" y1="174" x2="420" y2="436" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1d2730"/><stop offset=".48" stop-color="#111923"/><stop offset="1" stop-color="#05090f"/>
+    </linearGradient>
+    <linearGradient id="nearLight" x1="260" y1="170" x2="330" y2="320" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#64717b" stop-opacity=".28"/><stop offset="1" stop-color="#1b2734" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="nearShadow" x1="300" y1="185" x2="350" y2="335" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#02060d" stop-opacity=".42"/><stop offset="1" stop-color="#02060d" stop-opacity="0"/>
+    </linearGradient>
+    <path id="massif" d="M0 245 38 241 64 244 99 234 123 236 149 228 174 230 202 220 228 223 255 212 276 207 295 211 316 205 343 208 366 196 385 197 407 185 430 186 449 180 475 183 490 174 513 176 531 180 552 171 575 163 591 166 611 161 625 151 637 150 650 135 662 139 678 137 691 145 708 129 725 113 738 114 749 108 763 110 777 100 789 98 807 88 819 84 829 77 842 72 855 72 870 65 882 54 893 48 903 47 914 41 927 43 938 38 950 39 958 33 970 31 978 34 990 30 1001 32 1015 30 1027 32 1037 28 1047 32 1058 39 1074 36 1082 43 1098 56 1110 54 1120 50 1131 61 1147 69 1158 76 1172 79 1185 86 1196 84 1208 89 1220 98 1238 103 1250 115 1262 119 1271 116 1280 119 1298 133 1308 134 1320 142 1341 145 1360 151 1372 157 1385 157 1400 169 1420 181 1436 182 1451 189 1468 191 1480 199 1500 205 1520 202 1530 205 1548 195 1564 198 1585 192 1601 201 1620 208 1640 211 1660 216 1681 211 1700 214 1723 225 1745 231 1771 229 1800 235V320H0Z"/>
+    <path id="foothill" d="M-150 258 -127 254 -105 256 -86 249 -63 247 -41 242 -19 244 0 237 22 235 39 228 65 227 88 221 107 223 126 215 143 212 163 205 180 202 195 197 215 195 234 187 251 186 271 181 289 178 302 175 313 177 329 179 342 183 359 185 376 192 395 194 412 199 431 201 447 207 466 212 481 221 496 227 513 237 532 242 550 247 567 254 586 258 605 267 623 270 643 280 669 287C715 299 751 293 787 287L812 280 832 281 854 274 876 272 893 268 910 270 930 263 949 260 968 263 983 271C1020 275 1049 287 1083 290L1112 287 1134 281 1159 279 1181 275 1204 274 1228 281 1252 284 1278 281 1294 278 1316 279 1341 287C1394 294 1441 280 1490 275L1514 273 1538 268 1567 269 1590 261 1610 265 1632 259 1651 261 1670 254 1694 256 1713 251 1736 252 1760 244 1780 247 1800 242V436H-150Z"/>
+    <clipPath id="mountainClip"><use href="#massif"/></clipPath>
+    <clipPath id="nearClip"><use href="#foothill"/></clipPath>
+    <!-- Static SVG texture; clipped back to the original alpha so it cannot haze the sky. -->
+    <filter id="stone" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".065 .18" numOctaves="4" seed="19" result="grain"/>
+      <feColorMatrix in="grain" type="matrix" values=".7 0 0 0 .53  .7 0 0 0 .53  .7 0 0 0 .53  0 0 0 0 1"/>
+      <feComposite in="SourceGraphic" operator="arithmetic" k1="1" result="roughRock"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".52 .7" numOctaves="2" seed="3"/>
+      <feColorMatrix type="matrix" values=".4 0 0 0 .73  .4 0 0 0 .73  .4 0 0 0 .73  0 0 0 0 1"/>
+      <feComposite in="roughRock" operator="arithmetic" k1="1"/>
+    </filter>
+    <filter id="broken" x="-4%" y="-4%" width="108%" height="108%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".08 .19" numOctaves="2" seed="7" result="crags"/>
+      <feDisplacementMap in="SourceGraphic" in2="crags" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+      <feGaussianBlur stdDeviation=".35"/>
+    </filter>
+    <filter id="softFaces" x="-5%" y="-5%" width="110%" height="110%">
+      <feGaussianBlur stdDeviation="4"/>
+    </filter>
+    <filter id="scree" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".2 .12" numOctaves="3" seed="12"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  3.5 0 0 0 -1.25"/>
+      <feComposite in="SourceGraphic" operator="in"/>
+    </filter>
+    <!-- Snow has finer grain than rock and a wind-broken, gently softened edge. -->
+    <filter id="packedSnow" x="-3%" y="-3%" width="106%" height="106%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".15 .21" numOctaves="2" seed="23" result="edge"/>
+      <feDisplacementMap in="SourceGraphic" in2="edge" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+      <feGaussianBlur stdDeviation="1.1" result="drift"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".035 .06" numOctaves="3" seed="11"/>
+      <feColorMatrix type="matrix" values=".5 0 0 0 .68  .5 0 0 0 .68  .5 0 0 0 .68  0 0 0 0 1"/>
+      <feComposite in="drift" operator="arithmetic" k1="1" result="folds"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".48 .55" numOctaves="2" seed="5"/>
+      <feColorMatrix type="matrix" values=".16 0 0 0 .88  .16 0 0 0 .88  .16 0 0 0 .88  0 0 0 0 1"/>
+      <feComposite in="folds" operator="arithmetic" k1="1"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#stone)">
+    <use href="#massif" fill="url(#rock)"/>
+    <g clip-path="url(#mountainClip)">
+      <!-- Broad, continuous rock faces, before the small eroded details. -->
+      <g filter="url(#softFaces)">
+      <path d="M968 29C946 62 913 78 899 101S849 144 840 168 795 210 751 250L630 290 700 196 788 99 872 64 921 37Z" fill="url(#lit)"/>
+      <path d="M971 30C974 60 1001 87 1000 110S1025 151 1041 173 1061 232 1110 269L984 313 940 231 935 174 946 110 949 71Z" fill="url(#lit)" opacity=".65"/>
+      <path d="M1040 29C1025 56 1026 74 1016 93S1013 131 1028 157 1069 193 1080 220 1120 252 1155 281L1246 307 1201 242 1163 213 1140 178 1099 152 1070 104 1065 65Z" fill="url(#shade)"/>
+      <path d="M1120 49C1115 76 1132 96 1139 112S1170 143 1178 172 1224 207 1230 234L1320 286 1252 222 1236 190 1208 163 1191 127 1152 97Z" fill="url(#lit)" opacity=".63"/>
+      <path d="M1196 84C1185 105 1211 136 1232 155S1258 181 1266 208 1317 257 1384 284L1486 320 1397 247 1357 215 1302 167 1280 118Z" fill="url(#shade)" opacity=".7"/>
+      <path d="M790 98C784 129 798 140 780 163S759 195 729 215 700 249 670 268L720 265 767 229 795 204 814 167 829 144 820 113Z" fill="url(#shade)" opacity=".52"/>
+      <path d="M650 134C646 161 624 182 595 197S558 235 522 253L450 281 542 226 583 181 612 163Z" fill="url(#lit)" opacity=".6"/>
+      <path d="M1548 194C1547 211 1519 220 1511 235L1459 270 1547 248 1588 231 1571 213Z" fill="url(#lit)" opacity=".54"/>
+      </g>
+
+      <!-- Tapering ravines: irregular branches, rather than a mesh of triangles. -->
+      <g filter="url(#broken)">
+        <g fill="#0c1822" opacity=".38">
+          <path d="M954 39 938 69 934 85 918 111 914 136 892 166 882 191 857 218 829 260 851 240 891 211 906 177 929 149 933 121 944 95 944 71Z"/>
+          <path d="M918 52 895 75 882 100 854 124 844 147 819 166 795 205 764 234 797 213 830 179 850 169 861 143 886 117 896 89Z"/>
+          <path d="M876 76 862 97 841 113 835 128 806 145 791 169 814 154 847 137 852 119 871 107Z"/>
+          <path d="M986 37 982 69 990 88 981 106 987 124 977 155 984 178 977 208 993 234 995 258 1003 235 989 205 995 178 988 151 999 124 992 105 1000 85Z"/>
+          <path d="M1009 52 1000 79 1008 103 1000 121 1012 148 1018 176 1040 195 1050 225 1065 244 1059 219 1050 185 1032 169 1026 144 1012 120 1019 100Z"/>
+          <path d="M1080 54 1084 88 1100 102 1103 129 1131 151 1142 178 1177 198 1194 224 1240 257 1204 220 1188 188 1154 166 1144 143 1115 121 1114 97Z"/>
+          <path d="M1148 83 1162 112 1165 132 1191 156 1197 179 1227 199 1244 224 1256 233 1247 210 1212 176 1208 148 1180 125 1173 106Z"/>
+          <path d="M1256 125 1266 154 1287 170 1294 190 1324 211 1334 231 1387 263 1352 228 1340 203 1310 185 1304 162 1280 148Z"/>
+          <path d="M728 120 725 149 700 171 695 192 664 218 647 239 681 219 708 198 712 177 738 154Z"/>
+          <path d="M600 175 588 197 570 208 559 231 525 251 566 235 582 215 602 203 612 185Z"/>
+        </g>
+        <!-- Small traces on exposed rock accompany the separate, smoother snowfields. -->
+        <g fill="url(#snow)" filter="url(#scree)" opacity=".55">
+          <path d="M895 49 915 44 933 44 922 53 913 58 902 76 883 94 892 76 897 66 891 67 880 76Z"/>
+          <path d="M947 40 959 34 978 35 971 43 959 47 950 59 954 69 944 78 948 60 938 63 927 75 927 66Z"/>
+          <path d="M970 49 966 70 955 92 957 109 947 124 941 137 944 117 948 104 945 91 954 79Z"/>
+          <path d="M940 143 930 162 927 180 911 193 908 208 893 224 899 202 913 184 917 166Z"/>
+          <path d="M984 34 1002 35 1010 32 1006 43 999 44 996 60 991 66 990 48Z"/>
+          <path d="M1016 32 1034 31 1045 35 1034 44 1031 57 1021 66 1017 86 1012 93 1014 71 1021 55 1021 42 1012 44Z"/>
+          <path d="M1057 40 1069 39 1078 45 1071 50 1079 61 1081 76 1090 92 1080 83 1071 64 1065 60Z"/>
+          <path d="M1098 57 1109 59 1120 54 1124 67 1119 78 1128 91 1133 106 1147 120 1150 137 1165 152 1152 144 1143 130 1136 123 1132 109 1120 101 1117 84 1111 74 1106 77Z"/>
+          <path d="M1134 67 1146 72 1148 84 1160 93 1165 105 1175 110 1180 125 1167 117 1160 102 1148 96Z"/>
+          <path d="M1175 84 1185 89 1195 87 1205 96 1213 110 1226 117 1234 132 1249 147 1252 164 1245 155 1237 143 1227 137 1222 123 1209 115 1201 102 1193 106 1186 98Z"/>
+          <path d="M1213 137 1222 145 1225 159 1237 169 1241 187 1256 201 1272 227 1254 211 1244 193 1233 182 1230 167 1219 159Z"/>
+          <path d="M1270 120 1280 123 1292 136 1305 141 1316 157 1327 162 1331 173 1319 167 1310 156 1296 151 1287 139 1279 136Z"/>
+          <path d="M1316 184 1324 189 1332 201 1348 209 1355 223 1381 244 1363 235 1345 217 1327 208Z"/>
+          <path d="M857 103 848 120 832 136 827 154 813 165 820 150 822 134 838 116Z" opacity=".6"/>
+          <path d="M877 133 868 152 850 169 844 189 828 204 819 226 813 225 822 201 835 182 842 162 860 147Z" opacity=".68"/>
+          <path d="M973 102 969 125 958 148 960 168 953 180 955 154 963 130Z" opacity=".7"/>
+          <path d="M1029 164 1039 178 1043 196 1055 208 1063 231 1051 216 1044 207 1035 187Z" opacity=".65"/>
+        </g>
+        <!-- Cross-bedded shelves and faint fractures interrupt the long fall lines. -->
+        <g stroke="#8b989f" stroke-opacity=".1" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m890 81 14-5 13 2m-45 17 19-7 9 2m-42 16 15-2 14-6m-39 23 15-4 11 2m26-49 13-3 10 4m-36 19 16-2 6 4m-31 15 17-4 9 2m-43 16 16 2 13-5m-45 22 14-4 10 2m-43 26 19-5 12 2m-30 18 10-3 13 4"/>
+          <path d="m964 66 10 4 5-2m-23 22 14 3m-15 21 9 5m-27 39 14 3 8-2m-35 20 12 5m-28 18 14 4m-49 22 23 2 12-5m-51 18 12 3 16-5"/>
+          <path d="m1057 77 14 6m-11 7 18 10m10 25 13 3 10 8m-14-22 16 7m16 35 16 5m-3 13 23 9m1 11 17 5 12 10m-47-8 13 7 15 1m15 15 20 5m-11 10 17 4 9 7"/>
+          <path d="m1142 99 11 4m-2 10 15 6m15 20 19 9m6 7 12 2 10 9m4 18 22 8m10 13 18 10m-5 6 22 8m-2 17 18 6 20 2"/>
+          <path d="m696 168 13-3m-34 26 18-6 10 2m-39 21 15-3m56-32 14-2 10-6m-44 34 19-4 11 3m-63 35 18-3 11-7m-114-4 16-3 11 2m-49 32 22-8"/>
+        </g>
+        <g stroke="#060e18" stroke-opacity=".3" stroke-width="1.6">
+          <path d="m928 82-5 9 1 9-7 11m-15 4-7 15-10 10m47-16-2 16-9 14m54-80-4 15 2 8m35 42 3 14-5 9m-130 15-11 10-4 9m195-14 11 12 1 10m62-36 8 13 11 7m21 18 7 8 1 11m-131 36 13 17 3 15"/>
+        </g>
+      </g>
+    </g>
+
+  </g>
+
+  <!-- Accumulation on upper shelves feeds a few gullies; dark rock ribs separate the drifts. -->
+  <g clip-path="url(#mountainClip)">
+    <g fill="url(#snowfield)" filter="url(#packedSnow)">
+      <path d="M953 39 967 34 980 36C974 43 963 43 958 51L953 59 958 64 953 74 947 77C940 78 943 87 935 91L929 98 930 103C926 112 918 111 914 121L904 129 889 135C900 122 903 109 913 100L916 92 909 89C899 87 895 99 882 102L878 99C883 88 896 83 900 74L895 72 883 78 873 80 881 70 893 61 904 57 914 49 925 49 937 44Z"/>
+      <path d="M983 36 998 35 1009 33 1017 36 1007 44 1002 50 1005 55 997 65 990 67 987 77 978 83 974 97 969 102 972 88 978 77 976 70 982 63 985 56 981 51 974 53 969 50 977 43Z"/>
+      <path d="M1024 35 1035 32 1042 36 1034 46 1030 46 1027 57 1021 63 1024 70 1018 80 1017 94 1012 100 1013 89 1009 84 1016 72 1014 67 1020 54 1018 46Z"/>
+      <path d="M974 110 980 101 981 115 976 125 978 136 973 149 969 154 971 139 968 133 972 121Z" opacity=".62"/>
+      <path d="M1010 110 1014 115 1012 129 1019 140 1018 148 1025 164 1021 165 1011 145 1007 135 1008 122Z" opacity=".6"/>
+      <path d="M938 120 941 114 940 135 931 147 927 164 917 180 911 186 902 210 891 222 896 205 903 190 904 181 915 165 918 153 925 149 929 134Z" opacity=".72"/>
+      <path d="M1059 41 1069 40 1077 45 1074 52 1081 60 1080 70 1088 82 1090 97 1085 100 1080 84 1070 72 1069 60 1061 55Z" opacity=".8"/>
+      <path d="M1099 59 1110 57 1119 54 1124 64 1120 73 1128 80 1128 91 1136 98 1139 111 1147 120 1149 131 1145 133 1137 121 1127 117 1126 106 1117 98 1120 88 1110 81 1109 71 1101 68Z"/>
+      <path d="M1140 139 1149 143 1154 154 1163 159 1171 175 1166 173 1157 162 1148 160 1146 150Z" opacity=".65"/>
+      <path d="M1145 80 1153 85 1156 95 1166 100 1169 111 1176 117 1179 130 1171 126 1167 117 1158 113 1156 102 1149 100Z" opacity=".6"/>
+      <path d="M1180 90 1193 90 1204 99 1207 109 1221 115 1229 128 1233 139 1244 150 1248 164 1243 163 1236 153 1225 147 1222 137 1214 131 1211 120 1197 116 1191 105 1183 101Z" opacity=".74"/>
+      <path d="M1240 175 1248 180 1254 194 1263 201 1272 217 1264 213 1255 202 1247 198 1245 185Z" opacity=".5"/>
+      <path d="M1220 168 1224 169 1229 183 1240 194 1244 207 1261 226 1271 241 1253 226 1240 210 1235 197 1225 187Z" opacity=".58"/>
+      <path d="M1268 125 1277 125 1288 140 1300 146 1306 156 1318 162 1327 176 1320 174 1309 164 1298 161 1292 151 1280 145Z" opacity=".65"/>
+      <!-- A lower pocket of old snow rests in a sheltered hollow, away from the main cap. -->
+      <path d="M862 124 872 114 878 105 884 101 881 115 873 125 870 134 860 142 855 151 850 153 854 140Z" opacity=".57"/>
+      <path d="M817 172C833 167 843 160 851 150L849 163 839 179 824 190 819 201 810 207 814 195 805 194 792 208 779 215 789 200 804 189Z" opacity=".4"/>
+    </g>
+    <!-- Exposed stones and blue-gray fold shadows give the snow cover thickness. -->
+    <g fill="#334653" opacity=".6" filter="url(#broken)">
+      <path d="m927 67 9-6 7 2-5 6-8 1-5 5-3-2Z"/>
+      <path d="m906 103 7-4 3 4-5 5-7 1Z"/>
+      <path d="m979 48 7-3 5 3-3 4-8 1Z"/>
+      <path d="m1125 101 8 2 4 7-7-3-4 2-3-3Z"/>
+      <path d="m1212 124 6 2 6 8-7-2-4 2Z"/>
+    </g>
+    <g fill="none" stroke="#d3dcdf" stroke-opacity=".18" stroke-linecap="round" filter="url(#broken)">
+      <path d="m912 57 12-5 10 1m-21 32 9-4 10-1m-37 43 9-5 7-1m-33 39 10-7 8-1m98-111 11-1m16 5 8-6m80 32 5 4 4 1m16 43 5 7 7 2m68 5 7 4 4 5"/>
+    </g>
+  </g>
+
+  <g transform="translate(150 -42)" filter="url(#stone)">
+    <!-- A modest right/up shift separates the near shoulder from the rear ridge.
+         The silhouette extends left and down to keep the viewport edges filled. -->
+    <use href="#foothill" fill="url(#near)"/>
+    <g clip-path="url(#nearClip)">
+      <g filter="url(#softFaces)">
+      <path d="M299 173C250 194 218 227 171 242S93 269 25 284L0 319H339C338 285 323 264 321 238S310 195 299 173Z" fill="url(#nearLight)"/>
+      <path d="M310 176C333 204 343 222 373 235S419 267 446 279 488 302 544 320H642C594 293 543 273 491 243S386 195 310 176Z" fill="url(#nearLight)" opacity=".46"/>
+      <path d="M306 179C315 213 305 234 322 255S336 295 349 336H391C363 290 365 268 346 247S329 203 306 179Z" fill="url(#nearShadow)"/>
+      <path d="M239 196C215 225 217 237 183 255S149 291 126 336H172C189 292 201 277 222 258S228 219 252 188Z" fill="url(#nearShadow)"/>
+      <path d="M945 262C915 280 905 299 875 320H991C973 297 965 278 945 262Z" fill="url(#nearLight)" opacity=".74"/>
+      <path d="M268 186C256 207 245 219 220 231S185 258 169 274L202 261C220 247 247 240 258 220S277 199 283 182Z" fill="url(#nearLight)" opacity=".58"/>
+      <path d="M347 185C365 211 389 218 407 235S440 262 475 278L489 290C448 278 418 267 395 245S358 218 332 183Z" fill="url(#nearLight)" opacity=".45"/>
+      <path d="M1669 256C1645 276 1615 281 1580 306L1659 295 1728 267 1748 252 1708 257Z" fill="url(#nearLight)" opacity=".58"/>
+      </g>
+      <g stroke="#66737b" stroke-opacity=".15" stroke-linecap="round" filter="url(#broken)">
+        <path d="M285 190c-16 10-20 24-38 33s-27 24-45 28m92-51c-11 18-15 35-34 45s-27 29-56 41m95-65c-1 18-15 25-17 41s-14 26-35 41m-20-88c-16 8-23 21-42 25s-35 24-56 32m211-68c17 14 19 26 43 39s30 27 52 33m-79-59c8 17 9 29 28 43s28 33 47 44m-29-80c30 13 48 37 77 47s42 22 68 36m-89-55c22 7 43 26 66 33m-309-30c-24 8-37 21-59 26s-44 13-67 27m875-13-31 20m43-12-21 21"/>
+        <path d="m225 214 12-4 7 1m-34 16 12-4 8 2m-43 16 16-3 6 1m-46 19 18-3 9-4m72-37 12-6 9-1m-36 24 9-3 10 1m87-35 10 7 9 2m-12 7 12 4 8 6m5 9 10 4 11 2m-18 9 13 5 12 1m-74-32 8 8 8 4m134 9 16 9 14 3m-32 4 13 6 8 1m419 12 12-5 8 2m-37 12 10-1 10-5m43 0 9 6 10 1m637-25 12-2 10-6m-45 24 14-4 12-1"/>
+      </g>
+    </g>
+  </g>
+</svg>

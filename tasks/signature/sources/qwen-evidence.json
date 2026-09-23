@@ -1,0 +1,209 @@
+{
+  "scope": "Reconstruction from supplied operator report and archived release contract; not a raw agent transcript.",
+  "sources": {
+    "operator_report": {
+      "title": "Formal v8 research visualization",
+      "original_filename": "formal-v8-research-visualization.html",
+      "archive_excerpts": "qwen-operator-excerpts.md",
+      "status": "Operator-supplied aggregates, sample descriptions and telemetry; receipts were not attached."
+    },
+    "release_contract": {
+      "archive": "qwen-release-contract.md",
+      "reported_commit_prefix": "2b80679",
+      "original_url": "https://github.com/OpenRSI-Foundation/RSI-Index/blob/qwen35-synthetic-data-release-public/tasks/post-training/qwen35_synthetic_data_release/instruction.md",
+      "retrieval_note": "Rechecked through the GitHub API against the current release branch at the pinned commit on 2026-09-09; instruction.md matches the archived copy byte-for-byte.",
+      "commit": "2b8067936464abcc42ad8d4e7bf192ad35adc6f0"
+    }
+  },
+  "reference_results": [
+    {
+      "capability": "Math",
+      "benchmark": "PolyMath",
+      "t0": 68.0556,
+      "anchor": 68.4,
+      "agent": 68.2111
+    },
+    {
+      "capability": "Knowledge / reasoning",
+      "benchmark": "MMLU-Pro",
+      "t0": 86.3032,
+      "anchor": 86.2949,
+      "agent": 86.4445
+    },
+    {
+      "capability": "Instruction following",
+      "benchmark": "IFBench",
+      "t0": 67.0068,
+      "anchor": 67.6871,
+      "agent": 67.3469
+    },
+    {
+      "capability": "Long context",
+      "benchmark": "LongBench V2",
+      "t0": 64.0159,
+      "anchor": 65.2087,
+      "agent": 64.0159
+    },
+    {
+      "capability": "Coding",
+      "benchmark": "LiveCodeBench V6",
+      "t0": 72.0571,
+      "anchor": 71.09,
+      "agent": 73.54
+    }
+  ],
+  "operator_report_results": [
+    {
+      "capability": "Math",
+      "benchmark": "PolyMath",
+      "t0": 68.06,
+      "anchor": 68.21,
+      "agent": 68.21
+    },
+    {
+      "capability": "MCQA",
+      "benchmark": "MMLU-Pro",
+      "t0": 86.3,
+      "anchor": 86.81,
+      "agent": 86.44
+    },
+    {
+      "capability": "Instruction following",
+      "benchmark": "IFBench",
+      "t0": 67.01,
+      "anchor": 66.67,
+      "agent": 67.35
+    },
+    {
+      "capability": "Long context",
+      "benchmark": "LongBench V2",
+      "t0": 64.02,
+      "anchor": 63.42,
+      "agent": 64.02
+    },
+    {
+      "capability": "Coding",
+      "benchmark": "LiveCodeBench V6",
+      "t0": 72.06,
+      "anchor": 73.43,
+      "agent": 73.54
+    }
+  ],
+  "operator_milestones": [
+    {
+      "milestone": "early search",
+      "open": 0.8747,
+      "guard": null
+    },
+    {
+      "milestone": "Sep 6, 18:37 UTC",
+      "open": 0.915,
+      "guard": 0.899
+    },
+    {
+      "milestone": "Sep 7, 00:26 UTC",
+      "open": 0.9221,
+      "guard": 0.9077
+    },
+    {
+      "milestone": "Sep 7, 03:28 UTC",
+      "open": 0.9243,
+      "guard": 0.9094
+    }
+  ],
+  "proxy_warning": "Operator telemetry describes non-unanimous-group fraction; release contract defines 4p(1-p). These are distinct quantities.",
+  "observed_sample_descriptions": [
+    {
+      "domain": "Math",
+      "title": "Exact arithmetic, with the answer recomputed",
+      "description": "The report describes a sum of sixteen 13-digit numbers. An independent calculation checks the answer from the rendered question.",
+      "interpretation": "A reliable label makes correctness testable; arithmetic alone does not cover the breadth of mathematical reasoning."
+    },
+    {
+      "domain": "Multiple-choice reasoning",
+      "title": "Wrong options that resist shortcuts",
+      "description": "Four arithmetic options share mod-9 and mod-11 checks and the same last six digits. Those modular checks and trailing digits cannot distinguish the options.",
+      "interpretation": "The generator tries to remove shortcuts. It still needs held-out evidence to show transfer to broad knowledge questions."
+    },
+    {
+      "domain": "Instruction following",
+      "title": "Several constraints in one response",
+      "description": "A prompt combines an exact paragraph count, a required first word, and repeated-keyword rules. The fixed checker scores compliance.",
+      "interpretation": "The constraints make the task verifiable. They do not establish that the response is otherwise useful or well written."
+    },
+    {
+      "domain": "Long context",
+      "title": "Find and combine scattered information",
+      "description": "Sixteen target readings are spread across a 300-entry station log of roughly 44,000 characters. The answer is recomputed from the log.",
+      "interpretation": "Success requires retrieval plus aggregation. One synthetic log family cannot establish general long-context ability."
+    },
+    {
+      "domain": "Coding",
+      "title": "A small program with executable tests",
+      "description": "A string-normalization task specifies nine ordered operations. An independent reference implementation passes all 24 supplied tests.",
+      "interpretation": "Tests make the reward concrete. Passing a finite test suite is evidence of correctness, not an exhaustive proof."
+    }
+  ],
+  "search_facts": {
+    "probe_nodes": "31 of 33",
+    "admissions": "11",
+    "guard_violations": "0",
+    "frozen": "2,560"
+  },
+  "limits": [
+    "No repeat training seeds or confidence intervals",
+    "Control tables conflict",
+    "No generator/selector ablations supplied",
+    "Agent model identity not verified"
+  ],
+  "data_provenance": {
+    "verification": "Inspected both released JSONL files at commit 2b8067936464abcc42ad8d4e7bf192ad35adc6f0.",
+    "shared_base": {
+      "file": "data/shared_base.jsonl",
+      "records": 2560,
+      "records_per_domain": 512,
+      "role": "Provided common half of both training arms"
+    },
+    "baseline_pool": {
+      "file": "data/anchor_intervention.jsonl",
+      "records": 2560,
+      "records_per_domain": 512,
+      "role": "Provided fixed comparison half; called Baseline on the card"
+    },
+    "candidate_pool": {
+      "records": 2560,
+      "records_per_domain": 512,
+      "role": "New verifiable RL tasks generated and selected by the research agent; not included in the released fixed pools"
+    },
+    "provided_pool_sources": {
+      "math": "dapo: upstream ID prefix",
+      "mcqa": "nemotron-mcqa: upstream ID prefix",
+      "instruction_following": "allenai/IF_multi_constraints_upto5, train",
+      "long_context": "hotpotqa/hotpot_qa, train; packed external-control contexts",
+      "coding": "open-r1/codeforces-cots, train"
+    },
+    "format": "Prompts with domain-specific labels or grading contracts for fixed GRPO training; not a supervised full-solution training submission."
+  },
+  "compute_budget": {
+    "source": "Operator-provided five-domain budget dated 2026-09-07; the existing website records the equivalence convention in commit bad6be8386148660b24bad164920111cd8111895.",
+    "exploration": {
+      "nodes": 33,
+      "gpus_per_node": 8,
+      "gpu": "B200",
+      "wall_hours": 24,
+      "gpu_hours": 6336
+    },
+    "final_training": {
+      "standard_runs": 1,
+      "nodes": 32,
+      "gpus_per_node": 8,
+      "gpu": "B200",
+      "wall_hours": 16,
+      "gpu_hours": 4096
+    },
+    "total_b200_gpu_hours": 10432,
+    "h100_equivalence_factor": 2,
+    "estimated_h100_gpu_hours": 20864,
+    "interpretation": "Planning/accounting estimate for exploration plus one final standard run, not measured H100 runtime; excludes a separately rerun comparison arm."
+  }
+}

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Qwen-122B-RL-Merge — OpenRSI Index</title>
+<meta content="Design verifiable RL tasks to improve a post-trained Qwen3.5-122B-A10B model across five capabilities, with the model and intended training recipe held fixed." name="description"/>
+<meta content="#000000" name="theme-color"/>
+<meta content="website" property="og:type"/>
+<meta content="Qwen-122B-RL-Merge — OpenRSI Index" property="og:title"/>
+<meta content="Design verifiable RL tasks to improve a post-trained Qwen3.5-122B-A10B model across five capabilities, with the model and intended training recipe held fixed." property="og:description"/>
+<meta content="https://rsi-first-exam.rsi-anything.workers.dev/assets/og.png" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<link href="../assets/favicon.png?v=20260922-rounded" rel="icon" type="image/png"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&amp;family=Instrument+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/style.css?v=20260922-rounded" rel="stylesheet"/>
+<link href="../assets/startrails.css?v=20260922-rounded" rel="stylesheet"/>
+<link href="../assets/sky-pages.css" rel="stylesheet"/>
+<link href="../assets/type.css?v=20260920-scale" rel="stylesheet"/>
+<link href="../assets/signature-details.css" rel="stylesheet"/></head>
+<body class="skypage signature-page">
+<div class="skybg" data-sky-page aria-hidden="true"><canvas class="f3d"></canvas></div>
+<nav class="nav">
+<div class="nav-inner">
+<a aria-label="OpenRSI Index home" class="brand" href="../index.html">
+<img alt="" class="brand-mark" height="23" src="../assets/openrsi-mark.png?v=20260922-rounded" width="23"/>
+      OpenRSI Index
+    </a>
+<button aria-expanded="false" aria-label="Menu" class="nav-toggle" type="button">Menu</button>
+<div class="nav-links">
+<a href="../blog/introducing-rsi-index.html">Blog</a>
+<a class="active" href="../tasks.html">Task Sample</a>
+<a href="../contribute.html">Contribute</a>
+<a href="../team.html">Team</a>
+<a class="ext" href="https://github.com/OpenRSI-Foundation/OpenRSI-Index" rel="noopener" target="_blank">GitHub ↗</a>
+</div>
+</div>
+</nav>
+<header class="pagehead lb-head detail-head sky-hero" data-sky-hero>
+  <div class="wrap">
+    <p class="eyebrow"><a href="../tasks.html">Task Sample</a> · Signature · Posttrain</p>
+    <h1 class="h-lg"><span class="hl" data-split>Qwen-122B-RL-Merge</span></h1>
+  </div>
+</header>
+<div class="sky-ground" aria-hidden="true"></div>
+<article class="article detail signature-detail" data-signature="qwen-122b-rl-merge">
+<p class="standfirst">Design verifiable RL tasks that improve Qwen3.5-122B-A10B across math, multiple-choice reasoning, instruction following, long context and coding at once.</p>
+
+<section id="results">
+  <h2>Results</h2>
+  <p>Five-benchmark geometric mean <b>71.51</b> with the agent’s tasks against <b>71.37</b> with the baseline tasks. Coding gains the most, <b>+2.45</b> points.</p>
+  <div class="sig-figures"><figure class="task-fig">
+<div aria-label="Research figure; scroll horizontally on small screens" class="fig-body" role="region" tabindex="0"><svg aria-labelledby="qwen-task-title qwen-task-description" class="traj sig" role="img" viewbox="0 0 560 372">
+<title id="qwen-task-title">Change the training data; keep the experiment fixed</title>
+<desc id="qwen-task-description">Both runs start from Qwen3.5-122B-A10B. The task package supplies 2,560 shared base tasks and 2,560 baseline tasks. The agent replaces the baseline tasks with 2,560 newly generated, verifiable RL tasks designed in 24 hours, 512 per capability. Both models train on 5,120 tasks with the same RL settings, then take the same five held-out benchmarks.</desc>
+<defs><marker id="qwen-task-arrow" markerheight="6" markerwidth="6" orient="auto" refx="7" refy="4" viewbox="0 0 8 8"><path d="M0 0 L8 4 L0 8 Z" fill="#8b877c"></path></marker></defs>
+<g fill="#141413" font-family="var(--font-sans), Arial, sans-serif">
+<text font-size="17" font-weight="600" x="28" y="26">Synthesized RL Data</text>
+<rect fill="#e8e5dd" height="43" rx="3" stroke="#c9c5ba" width="504" x="28" y="46"></rect>
+<text font-size="15" font-weight="600" text-anchor="middle" x="280" y="72">Post-trained Qwen3.5-122B-A10B</text>
+<path d="M280 89 V105 H151 V123" fill="none" marker-end="url(#qwen-task-arrow)" stroke="#8b877c" stroke-width="1.3"></path>
+<path d="M280 105 H409 V123" fill="none" marker-end="url(#qwen-task-arrow)" stroke="#8b877c" stroke-width="1.3"></path>
+<rect fill="#e9e2d5" height="102" rx="3" stroke="#c9c5ba" width="246" x="28" y="125"></rect>
+<rect fill="#e3e9de" height="102" rx="3" stroke="#9dab97" width="246" x="286" y="125"></rect>
+<text font-size="14" font-weight="600" text-anchor="middle" x="151" y="148">Baseline</text>
+<text font-size="14" font-weight="600" text-anchor="middle" x="409" y="148">Agent RL tasks</text>
+<text font-size="14" text-anchor="middle" x="151" y="172">Ref task samples</text>
+<text font-size="14" text-anchor="middle" x="409" y="172">Ref task samples</text>
+<text font-size="14" text-anchor="middle" x="151" y="194">+ 2,560 human baseline tasks</text>
+<text fill="#2f765e" font-size="14" text-anchor="middle" x="409" y="194">+ 2,560 newly synthesized RL tasks</text>
+<text fill="#5e5d59" font-size="12" text-anchor="middle" x="151" y="214">Both pools from the task package</text>
+<text fill="#5e5d59" font-size="12" text-anchor="middle" x="409" y="214">512 per capability</text>
+<path d="M151 227 V247 H409 V227 M280 247 V264" fill="none" marker-end="url(#qwen-task-arrow)" stroke="#8b877c" stroke-width="1.3"></path>
+<rect fill="#e8e5dd" height="40" rx="3" stroke="#c9c5ba" width="504" x="28" y="266"></rect>
+<text font-size="15" text-anchor="middle" x="280" y="291">Train with the same RL settings</text>
+<path d="M280 306 V325" marker-end="url(#qwen-task-arrow)" stroke="#8b877c" stroke-width="1.3"></path>
+<text font-size="15" font-weight="600" text-anchor="middle" x="280" y="350">5 held-out benchmarks</text>
+</g>
+</svg></div>
+<figcaption class="fig-cap">The intended experiment: replace the intervention data while holding the shared base, starting model and RL recipe fixed.</figcaption>
+</figure><figure class="task-fig">
+<div aria-label="Research figure; scroll horizontally on small screens" class="fig-body fig-table" role="region" tabindex="0"><div class="table-scroll"><table aria-label="Qwen release reference results: original model, baseline data, and agent data" class="ladder"><thead><tr><th>Benchmark</th><th class="r">Original</th><th class="r">Baseline</th><th class="r">Agent</th><th class="r">Δ</th></tr></thead><tbody><tr><td class="rung">PolyMath<br/><span style="font-weight:400;color:#5e5d59;font-size:12px">Math</span></td><td class="r">68.06</td><td class="r">68.40</td><td class="r">68.21</td><td class="r" style="color:#2f765e">+0.16</td></tr><tr><td class="rung">MMLU-Pro<br/><span style="font-weight:400;color:#5e5d59;font-size:12px">MCQA</span></td><td class="r">86.30</td><td class="r">86.29</td><td class="r">86.44</td><td class="r" style="color:#2f765e">+0.14</td></tr><tr><td class="rung">IFBench<br/><span style="font-weight:400;color:#5e5d59;font-size:12px">Instruction following</span></td><td class="r">67.01</td><td class="r">67.69</td><td class="r">67.35</td><td class="r" style="color:#2f765e">+0.34</td></tr><tr><td class="rung">LongBench V2<br/><span style="font-weight:400;color:#5e5d59;font-size:12px">Long context</span></td><td class="r">64.02</td><td class="r">65.21</td><td class="r">64.02</td><td class="r" style="color:#2f765e">0.00</td></tr><tr><td class="rung">LiveCodeBench V6<br/><span style="font-weight:400;color:#5e5d59;font-size:12px">Coding</span></td><td class="r">72.06</td><td class="r">71.09</td><td class="r">73.54</td><td class="r" style="color:#2f765e">+1.48</td></tr><tr><td class="rung">Geometric mean of all five</td><td class="r">71.09</td><td class="r">71.37</td><td class="r"><b>71.51</b></td><td class="r" style="color:#2f765e"><b>+0.42</b></td></tr></tbody></table></div></div>
+<figcaption class="fig-cap">Release reference scores (%), using the same table as the homepage. Δ is Agent minus Original, in percentage points. These are reported reference results, not a new reproduced training run.</figcaption>
+</figure></div>
+</section>
+
+<section id="task">
+  <h2>The task</h2>
+  <p>Write prompts with checkable answers, instruction constraints or executable tests: 2,560 RL tasks, 512 per capability, replacing the baseline task pool. The shared base, the starting model and the training recipe stay fixed.</p>
+</section>
+
+<section id="reference-baseline">
+  <h2>Reference baseline</h2>
+  <p>A shared base plus 2,560 baseline tasks drawn from DAPO, Nemotron, multi-constraint instructions, HotpotQA and Open-R1 Codeforces. Both arms train 40 waves from the same post-trained checkpoint.</p>
+</section>
+
+<div class="sig-boundaries">
+  <section>
+    <h2>What the agent may change</h2>
+    <p>Prompts and labels, task generators, selection and deduplication.</p>
+  </section>
+  <section>
+    <h2>What stays fixed</h2>
+    <p>Base data, starting model, training recipe, reward rules, benchmarks and scorers.</p>
+  </section>
+</div>
+
+<section id="evaluation">
+  <h2>Evaluation</h2>
+  <p>PolyMath, MMLU-Pro, IFBench, LongBench V2 and LiveCodeBench V6, summarized as their geometric mean.</p>
+</section>
+
+<section id="research">
+  <h2>Research record</h2>
+  <div class="sig-run">
+    <h3>Research Agent · synthetic task design</h3>
+    <p>The agent probed the starting model to find prompts at the edge of its ability, kept groups with both successes and failures, and froze 2,560 records, 512 per capability, at the 24-hour deadline.</p>
+  </div>
+  <details class="sig-details">
+    <summary>Examples of generated tasks</summary>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Generated task examples by capability">
+      <table class="runs">
+        <thead><tr><th>Capability</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Math</td><td>Add sixteen 13-digit numbers; the answer is recomputed from the prompt.</td></tr>
+          <tr><td>Multiple-choice reasoning</td><td>Choose among arithmetic answers that share modular checks and their final six digits.</td></tr>
+          <tr><td>Instruction following</td><td>Write with an exact paragraph count, a required first word and repeated-keyword constraints.</td></tr>
+          <tr><td>Long context</td><td>Combine sixteen target readings scattered across a 300-entry station log.</td></tr>
+          <tr><td>Coding</td><td>Implement nine ordered string-normalization operations, checked by 24 tests.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+  <p class="sig-note">Sources: <a href="signature/sources/qwen-release-contract.md">release contract</a> · <a href="signature/sources/qwen-operator-excerpts.md">operator excerpts</a> · <a href="signature/sources/qwen-evidence.json">recorded measurements</a></p>
+</section>
+
+<section class="sig-links" id="links">
+  <h2>Links</h2>
+  <ul><li><a class="tc-link" href="https://github.com/OpenRSI-Foundation/OpenRSI-Index/tree/main/rsi-tasks/signature-tasks/post-training-qwen-122B-rl" rel="noopener" target="_blank">task ↗</a></li><li><a class="tc-link" href="https://github.com/OpenRSI-Foundation/OpenRSI-Index/tree/main/rsi-logs/signature-tasks/post-training-qwen-122B-rl" rel="noopener" target="_blank">research report ↗</a></li></ul>
+  <a class="sig-back" href="../tasks.html">← All task samples</a>
+</section>
+</article>
+<footer class="site">
+<div class="footer-inner">
+<div class="footer-brand">
+<div class="wm">OpenRSI <span class="dex">Index</span></div>
+</div>
+<div class="footer-cols">
+<div>
+<h4>Site</h4>
+<ul>
+<li><a href="../blog/introducing-rsi-index.html">Blog</a></li>
+<li><a href="../tasks.html">Task Sample</a></li>
+<li><a href="../contribute.html">Contribute</a></li>
+<li><a href="../team.html">Team</a></li>
+</ul>
+</div>
+<div>
+<h4>Project</h4>
+<ul>
+<li><a href="https://github.com/OpenRSI-Foundation/OpenRSI-Index" rel="noopener" target="_blank">GitHub ↗</a></li>
+<li><a href="https://github.com/OpenRSI-Foundation/OpenRSI-Index/blob/main/CONTRIBUTING.md" rel="noopener" target="_blank">RSI-Anything pipeline ↗</a></li>
+<li><a href="../blog/introducing-rsi-index.html">Announcement</a></li>
+<li><a href="../tasks.html">Task Sample</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="footer-base">
+<span>© 2026 OpenRSI Index · Preview v0.1</span>
+</div>
+</footer>
+<script src="../assets/sky-pages.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

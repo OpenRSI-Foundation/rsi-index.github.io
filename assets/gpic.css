@@ -1,0 +1,80 @@
+/* The GPIC pair shares the signature frame's paper surface and scroll behavior. */
+#signature-frame .gpic-scroll:focus-visible {
+  outline: 2px solid #8a5cd0;
+  outline-offset: -3px;
+}
+#signature-frame .gpic-swipe-hint { display: none; }
+#signature-frame .gpic-media { row-gap: 24px; }
+#signature-frame .gpic-media .fig-cap { padding-top: 10px; }
+#signature-frame .gpic-stat-strip {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr 1.6fr;
+  gap: 20px;
+  border-block: 1px solid #aaa395;
+  padding: 24px 0;
+  margin: 26px 0;
+  font-family: var(--font-sans);
+}
+#signature-frame .gpic-stat-strip strong {
+  display: block;
+  font-size: clamp(26px, 2.7vw, 36px);
+  line-height: 1.15;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.04em;
+}
+#signature-frame .gpic-stat-strip span {
+  display: block;
+  margin-top: 7px;
+  color: var(--text-3);
+  font-size: 12px;
+}
+#signature-frame .gpic-links { display: flex; gap: 24px; flex-wrap: wrap; }
+#signature-frame .gpic-card .tc-target a,
+#signature-frame .gpic-answer a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: #9a8eaa;
+}
+#signature-frame .gpic-faq { margin-top: 48px; }
+#signature-frame .gpic-faq h4 {
+  font-family: var(--font-serif);
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 400;
+  margin: 8px 0 24px;
+  letter-spacing: -.025em;
+}
+#signature-frame .gpic-faq details { border-top: 1px solid #aaa395; }
+#signature-frame .gpic-faq details:last-child { border-bottom: 1px solid #aaa395; }
+#signature-frame .gpic-faq summary {
+  display: flex;
+  gap: 18px;
+  align-items: baseline;
+  cursor: pointer;
+  list-style: none;
+  padding: 21px 2px;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: 500;
+}
+#signature-frame .gpic-faq summary::-webkit-details-marker { display: none; }
+#signature-frame .gpic-faq summary span { color: #76518f; font-size: 12px; font-variant-numeric: tabular-nums; }
+#signature-frame .gpic-faq summary::after { content: "+"; margin-left: auto; color: #76518f; }
+#signature-frame .gpic-faq details[open] summary::after { content: "−"; }
+#signature-frame .gpic-faq summary:focus-visible { outline: 2px solid #8760b4; outline-offset: 3px; }
+#signature-frame .gpic-answer { padding: 0 36px 22px; max-width: 940px; }
+#signature-frame .gpic-answer p { margin: 0; font-family: var(--font-serif); font-size: 19px; line-height: 1.65; }
+@media (max-width: 560px) {
+  #signature-frame .gpic-swipe-hint {
+    display: block;
+    width: 100%;
+    color: #7650b1;
+    font-size: 10px;
+    letter-spacing: .04em;
+  }
+  #signature-frame .gpic-stat-strip { grid-template-columns: 1fr 1fr; }
+  #signature-frame .gpic-stat-strip > div:last-child { grid-column: 1 / -1; }
+  #signature-frame .gpic-answer { padding-inline: 0; }
+  #signature-frame .gpic-faq summary { gap: 12px; font-size: 16px; }
+}
