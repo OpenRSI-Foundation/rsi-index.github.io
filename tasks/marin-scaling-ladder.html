@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Marin-Scaling-Ladder — OpenRSI Index</title>
+<meta content="Design one scale-general optimizer and run it unchanged across the Marin ladder from 550M to 2.545B parameters, scored against the locked AdamH control at every rung." name="description"/>
+<meta content="#000000" name="theme-color"/>
+<meta content="website" property="og:type"/>
+<meta content="Marin-Scaling-Ladder — OpenRSI Index" property="og:title"/>
+<meta content="Design one scale-general optimizer and run it unchanged across the Marin ladder from 550M to 2.545B parameters, scored against the locked AdamH control at every rung." property="og:description"/>
+<meta content="https://rsi-first-exam.rsi-anything.workers.dev/assets/og.png" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<link href="../assets/favicon.png?v=20260922-rounded" rel="icon" type="image/png"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&amp;family=Instrument+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/style.css?v=20260922-rounded" rel="stylesheet"/>
+<link href="../assets/startrails.css?v=20260922-rounded" rel="stylesheet"/>
+<link href="../assets/sky-pages.css" rel="stylesheet"/>
+<link href="../assets/type.css?v=20260920-scale" rel="stylesheet"/>
+<link href="../assets/signature-details.css" rel="stylesheet"/></head>
+<body class="skypage signature-page">
+<div class="skybg" data-sky-page aria-hidden="true"><canvas class="f3d"></canvas></div>
+<nav class="nav">
+<div class="nav-inner">
+<a aria-label="OpenRSI Index home" class="brand" href="../index.html">
+<img alt="" class="brand-mark" height="23" src="../assets/openrsi-mark.png?v=20260922-rounded" width="23"/>
+      OpenRSI Index
+    </a>
+<button aria-expanded="false" aria-label="Menu" class="nav-toggle" type="button">Menu</button>
+<div class="nav-links">
+<a href="../blog/introducing-rsi-index.html">Blog</a>
+<a class="active" href="../tasks.html">Task Sample</a>
+<a href="../contribute.html">Contribute</a>
+<a href="../team.html">Team</a>
+<a class="ext" href="https://github.com/OpenRSI-Foundation/OpenRSI-Index" rel="noopener" target="_blank">GitHub ↗</a>
+</div>
+</div>
+</nav>
+<header class="pagehead lb-head detail-head sky-hero" data-sky-hero>
+  <div class="wrap">
+    <p class="eyebrow"><a href="../tasks.html">Task Sample</a> · Signature · Pretrain</p>
+    <h1 class="h-lg"><span class="hl" data-split>Marin-Scaling-Ladder</span></h1>
+  </div>
+</header>
+<div class="sky-ground" aria-hidden="true"></div>
+<article class="article detail signature-detail" data-signature="marin-scaling-ladder">
+<p class="standfirst">Design one optimizer update rule and run it unchanged across six Marin models, from 550M to 2.545B parameters, against Marin’s AdamH baseline at every rung.</p>
+
+<section id="results">
+  <h2>The results</h2>
+  <p>Codex’s PSPR beat AdamH at all six rungs, <b>+0.60%</b> on the combined metric. Claude Code’s RMBT beat it at five, <b>+0.35%</b>, and regressed 0.21% at 837M.</p>
+  <div class="sig-figures"><figure class="task-fig">
+<div aria-label="Research figure; scroll horizontally on small screens" class="fig-body fig-table" role="region" tabindex="0"><table aria-label="The Marin scaling ladder" class="ladder"><thead><tr><th>Rung</th><th>Model</th><th class="r">Params</th><th class="r">Tokens</th><th class="r">Scoring update</th><th class="r">GPUs</th><th class="r">GPU-h</th></tr></thead><tbody><tr><td class="rung">E0</td><td>d1152-L12</td><td class="r">550M</td><td class="r">2.904B</td><td class="r">44,317</td><td class="r">8</td><td class="r">17.6</td></tr><tr><td class="rung">E1</td><td>d1408-L15</td><td class="r">837M</td><td class="r">3.613B</td><td class="r">55,125</td><td class="r">8</td><td class="r">27.6</td></tr><tr><td class="rung">E2</td><td>d1536-L16</td><td class="r">998M</td><td class="r">4.983B</td><td class="r">38,014</td><td class="r">8</td><td class="r">31.0</td></tr><tr><td class="rung">E3</td><td>d1792-L18</td><td class="r">1.385B</td><td class="r">10.560B</td><td class="r">40,283</td><td class="r">32</td><td class="r">302.5</td></tr><tr><td class="rung">E4</td><td>d2048-L21</td><td class="r">1.935B</td><td class="r">14.805B</td><td class="r">30,000</td><td class="r">32</td><td class="r">286.2</td></tr><tr><td class="rung">E5</td><td>d2304-L23</td><td class="r">2.545B</td><td class="r">18.617B</td><td class="r">35,000</td><td class="r">128</td><td class="r">2,932.1</td></tr></tbody></table></div>
+<figcaption class="fig-cap"><a href="https://github.com/marin-community/marin" rel="noopener" target="_blank">Marin: an open-source framework for the research and development of foundation models</a><span class="src-tag">Stanford</span></figcaption>
+</figure><figure class="task-fig">
+<div aria-label="Research figure; scroll horizontally on small screens" class="fig-body" role="region" tabindex="0"><svg aria-label="Improvement over the AdamH control at each of the six Marin ladder rungs, for the Codex and Claude Code runs. Codex is ahead at all six rungs, Claude at five of six." class="traj sig" role="img" viewbox="0 0 560 372"><text style="font-size:17px;font-family:var(--font-sans);fill:#141413;font-weight:600" x="62" y="26">Improvement over AdamH, per ladder rung</text><text style="font-size:12px;font-family:var(--font-sans);fill:#5e5d59" x="62" y="47">Geometric mean of two ratios: Paloma bits-per-byte and log PPL.</text><text style="font-size:12px;font-family:var(--font-sans);fill:#5e5d59" x="62" y="63">Each rung is a separate model, 550M to 2.5B. Higher is better.</text><rect fill="#2f9e7a" fill-opacity="0.05" height="114.0" width="476" x="62" y="78.0"></rect><line class="gl" x1="62" x2="538" y1="281.1" y2="281.1"></line><text style="font-size:13px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="end" x="51" y="285.5">-1%</text><line class="gl" x1="62" x2="538" y1="236.5" y2="236.5"></line><text style="font-size:13px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="end" x="51" y="240.9">-0.5%</text><line class="gl" x1="62" x2="538" y1="147.5" y2="147.5"></line><text style="font-size:13px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="end" x="51" y="151.9">+0.5%</text><line class="gl" x1="62" x2="538" y1="102.9" y2="102.9"></line><text style="font-size:13px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="end" x="51" y="107.3">+1%</text><line class="ax" style="stroke:#141413;stroke-width:1.4" x1="62" x2="538" y1="192.0" y2="192.0"></line><text style="font-size:13px;font-family:var(--font-sans);fill:#141413;font-weight:600" text-anchor="end" x="51" y="196.4">0</text><text style="font-size:11.5px;font-family:var(--font-sans);fill:#141413" text-anchor="end" x="538" y="183.0">AdamH control</text><line style="stroke:#b83a2a;stroke-width:1.3;stroke-dasharray:5 4" x1="62" x2="538" y1="281.1" y2="281.1"></line><text style="font-size:11.5px;font-family:var(--font-sans);fill:#b83a2a" text-anchor="end" x="538" y="297.1">−1%: a rung below this fails the submission</text><polyline class="best-line" points="101.7,109.5 181.0,184.1 260.3,109.1 339.7,153.3 419.0,151.3 498.3,124.6" style="stroke:#2f9e7a;stroke-width:2.2;animation-delay:0.4s"></polyline><circle class="mk dot" cx="101.7" cy="109.5" r="4.2" style="fill:#2f9e7a;--d:0.50s"></circle><circle class="mk dot" cx="181.0" cy="184.1" r="4.2" style="fill:#2f9e7a;--d:0.78s"></circle><circle class="mk dot" cx="260.3" cy="109.1" r="4.2" style="fill:#2f9e7a;--d:1.06s"></circle><circle class="mk dot" cx="339.7" cy="153.3" r="4.2" style="fill:#2f9e7a;--d:1.34s"></circle><circle class="mk dot" cx="419.0" cy="151.3" r="4.2" style="fill:#2f9e7a;--d:1.62s"></circle><circle class="mk dot" cx="498.3" cy="124.6" r="4.2" style="fill:#2f9e7a;--d:1.90s"></circle><polyline class="best-line" points="101.7,161.2 181.0,210.5 260.3,130.2 339.7,171.8 419.0,163.6 498.3,124.8" style="stroke:#d9773a;stroke-width:2.2;animation-delay:1.3s"></polyline><circle class="mk dot" cx="101.7" cy="161.2" r="4.2" style="fill:#d9773a;--d:1.40s"></circle><circle class="mk dot" cx="181.0" cy="210.5" r="4.2" style="fill:#d9773a;--d:1.68s"></circle><circle class="mk dot" cx="260.3" cy="130.2" r="4.2" style="fill:#d9773a;--d:1.96s"></circle><circle class="mk dot" cx="339.7" cy="171.8" r="4.2" style="fill:#d9773a;--d:2.24s"></circle><circle class="mk dot" cx="419.0" cy="163.6" r="4.2" style="fill:#d9773a;--d:2.52s"></circle><circle class="mk dot" cx="498.3" cy="124.8" r="4.2" style="fill:#d9773a;--d:2.80s"></circle><rect fill="#e0ddd4" fill-opacity="0.9" height="48.1" width="460" x="70" y="222.3"></rect><line style="stroke:#2f9e7a;stroke-width:2.2" x1="76" x2="106" y1="229.0" y2="229.0"></line><circle cx="91" cy="229.0" r="4.2" style="fill:#2f9e7a"></circle><text style="font-size:12.5px;font-family:var(--font-sans);fill:#141413" x="116" y="233.0">Codex · GPT-5.6 — PSPR, +0.60% on average</text><line style="stroke:#d9773a;stroke-width:2.2" x1="76" x2="106" y1="255.7" y2="255.7"></line><circle cx="91" cy="255.7" r="4.2" style="fill:#d9773a"></circle><text style="font-size:12.5px;font-family:var(--font-sans);fill:#141413" x="116" y="259.7">Claude Code · Opus 5 — RMBT, +0.35% on average</text><text style="font-size:13px;font-family:var(--font-sans);fill:#141413" text-anchor="middle" x="101.7" y="327">E0</text><text style="font-size:11.5px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="middle" x="101.7" y="344">550M</text><text style="font-size:13px;font-family:var(--font-sans);fill:#141413" text-anchor="middle" x="181.0" y="327">E1</text><text style="font-size:11.5px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="middle" x="181.0" y="344">837M</text><text style="font-size:13px;font-family:var(--font-sans);fill:#141413" text-anchor="middle" x="260.3" y="327">E2</text><text style="font-size:11.5px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="middle" x="260.3" y="344">998M</text><text style="font-size:13px;font-family:var(--font-sans);fill:#141413" text-anchor="middle" x="339.7" y="327">E3</text><text style="font-size:11.5px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="middle" x="339.7" y="344">1.39B</text><text style="font-size:13px;font-family:var(--font-sans);fill:#141413" text-anchor="middle" x="419.0" y="327">E4</text><text style="font-size:11.5px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="middle" x="419.0" y="344">1.94B</text><text style="font-size:13px;font-family:var(--font-sans);fill:#141413" text-anchor="middle" x="498.3" y="327">E5</text><text style="font-size:11.5px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="middle" x="498.3" y="344">2.54B</text><text style="font-size:13px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="middle" x="300.0" y="364">Ladder rung and model size</text><text style="font-size:13px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="middle" transform="translate(15 192) rotate(-90)">Better than AdamH (%)</text></svg></div>
+<figcaption class="fig-cap">Combined improvement over AdamH at each model size, using Paloma bits-per-byte and fixed-window training loss. Higher is better; zero matches the control.</figcaption></figure><figure class="task-fig wide">
+<div aria-label="Research figure; scroll horizontally on small screens" class="fig-body" role="region" tabindex="0"><svg aria-label="Marin search history. Failed attempts, trials, previews and measured results appear directly on each agent’s best-so-far complete six-rung score curve. A failed attempt leaves the best score unchanged. Point details contain the actual local measurements and trajectory references." class="traj evo ref" role="img" viewbox="0 0 1100 510"><text style="font-size:19px;font-family:var(--font-sans);fill:#141413;font-weight:600" x="96" y="30">Best six-rung improvement during the search</text><text style="font-size:13px;font-family:var(--font-sans);fill:#5e5d59" x="96" y="54">● new best · × rejected / not retained · ○ trial · ◇ partial result · ▪ stopped</text><line class="gl" x1="96" x2="1056" y1="419.5" y2="419.5"></line><text style="font-size:13px;font-family:var(--font-sans);fill:#141413;font-weight:600" text-anchor="end" x="84" y="424.1">0</text><line class="gl" x1="96" x2="1056" y1="324.7" y2="324.7"></line><text style="font-size:13px;font-family:var(--font-sans);fill:#5e5d59;font-weight:400" text-anchor="end" x="84" y="329.3">+0.2%</text><line class="gl" x1="96" x2="1056" y1="229.8" y2="229.8"></line><text style="font-size:13px;font-family:var(--font-sans);fill:#5e5d59;font-weight:400" text-anchor="end" x="84" y="234.4">+0.4%</text><line class="gl" x1="96" x2="1056" y1="134.9" y2="134.9"></line><text style="font-size:13px;font-family:var(--font-sans);fill:#5e5d59;font-weight:400" text-anchor="end" x="84" y="139.5">+0.6%</text><line class="ax xax" style="stroke:#141413" x1="96" x2="1056" y1="448.0" y2="448.0"></line><line style="stroke:#c9c5ba" x1="96.0" x2="96.0" y1="448.0" y2="454.0"></line><text style="font-size:13px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="middle" x="96.0" y="473.0">0</text><line style="stroke:#c9c5ba" x1="216.0" x2="216.0" y1="448.0" y2="454.0"></line><text style="font-size:13px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="middle" x="216.0" y="473.0">10</text><line style="stroke:#c9c5ba" x1="336.0" x2="336.0" y1="448.0" y2="454.0"></line><text style="font-size:13px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="middle" x="336.0" y="473.0">20</text><line style="stroke:#c9c5ba" x1="456.0" x2="456.0" y1="448.0" y2="454.0"></line><text style="font-size:13px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="middle" x="456.0" y="473.0">30</text><line style="stroke:#c9c5ba" x1="576.0" x2="576.0" y1="448.0" y2="454.0"></line><text style="font-size:13px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="middle" x="576.0" y="473.0">40</text><line style="stroke:#c9c5ba" x1="696.0" x2="696.0" y1="448.0" y2="454.0"></line><text style="font-size:13px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="middle" x="696.0" y="473.0">50</text><line style="stroke:#c9c5ba" x1="816.0" x2="816.0" y1="448.0" y2="454.0"></line><text style="font-size:13px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="middle" x="816.0" y="473.0">60</text><line style="stroke:#c9c5ba" x1="936.0" x2="936.0" y1="448.0" y2="454.0"></line><text style="font-size:13px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="middle" x="936.0" y="473.0">70</text><line style="stroke:#c9c5ba" x1="1056.0" x2="1056.0" y1="448.0" y2="454.0"></line><text style="font-size:13px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="middle" x="1056.0" y="473.0">80</text><text style="font-size:13.5px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="middle" x="576.0" y="498">Cumulative runtime (hours)</text><text style="font-size:13.5px;font-family:var(--font-sans);fill:#5e5d59" text-anchor="middle" transform="translate(19 263) rotate(-90)">Best complete six-rung improvement (%)</text><line style="stroke:#8b877c;stroke-width:1.3;stroke-dasharray:5 4" x1="96" x2="1056" y1="419.5" y2="419.5"></line><polyline class="search-curve" data-agent="codex" points="96.0,419.5 290.1,419.5 290.1,280.5 722.3,280.5 722.3,135.5 1009.2,135.5" style="fill:none;stroke:#2f9e7a;stroke-width:2.2;stroke-dasharray:6 6;stroke-linejoin:round"></polyline><line class="score-gain" data-agent="codex" style="stroke:#2f9e7a;stroke-width:2.8" x1="290.1" x2="290.1" y1="419.5" y2="280.5"></line><line class="score-gain" data-agent="codex" style="stroke:#2f9e7a;stroke-width:2.8" x1="722.3" x2="722.3" y1="280.5" y2="135.5"></line><g class="curve-event" data-agent="codex" data-best="1.0000000" data-hour="3.6" data-kind="promote" transform="translate(139.2 419.5)"><title>Codex · GPT-5.6 · FCPR · 3.60 h
+Full ladder launched
+Best complete six-rung improvement at this time: +0.00%
+3.6h 'FCPR passes its second preregistered screen' → full ladder frozen</title><circle r="3.5" style="fill:#e0ddd4;stroke:#2f9e7a;stroke-width:1.5"></circle></g><g class="curve-event" data-agent="codex" data-best="1.0000000" data-hour="10.9" data-kind="lapsed" transform="translate(226.8 419.5)"><title>Codex · GPT-5.6 · TARF · 10.90 h
+Plan not launched
+Best complete six-rung improvement at this time: +0.00%
+9.2h preregistered contingent on T-FCPR passing; T-FCPR rejected 10.9h → never implemented or launched
+
+Nearby events on the same curve:
+
+Codex · GPT-5.6 · T-FCPR · 10.91 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.00%
+Rejected at E2, update 5,000: geometric gain 0.99955754 versus FCPR, despite passing the macro gate. E0 had narrowly passed at 1.00010275.
+Trajectory steps: 1527, 1679, 1680</title><circle r="3.5" style="fill:#e0ddd4;stroke:#8b877c;stroke-width:1.5"></circle></g><g class="curve-event" data-agent="codex" data-best="1.0000000" data-hour="12.3" data-kind="abandoned" transform="translate(243.6 419.5)"><title>Codex · GPT-5.6 · FCPR · 12.30 h
+Paused
+Best complete six-rung improvement at this time: +0.00%
+12.3h 'FCPR E0 25k comparison is negative … the pause is operational, not a substituted final verdict'; never resumed, never formally rejected
+
+Nearby events on the same curve:
+
+Codex · GPT-5.6 · TA-FCPR · 12.22 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.00%
+Rejected at both 5,000-update screens versus FCPR: geometric gain 0.98204696 on E0 and 0.98710723 on E2; both macro safety gates fail.
+Trajectory steps: 1852, 1856, 1912, 1915</title><circle r="3.5" style="fill:#e0ddd4;stroke:#8b877c;stroke-width:1.5"></circle></g><g class="curve-event" data-agent="codex" data-best="1.0000000" data-hour="15.4" data-kind="promote" transform="translate(280.8 419.5)"><title>Codex · GPT-5.6 · OEPR · 15.40 h
+Full ladder launched
+Best complete six-rung improvement at this time: +0.00%
+15.4h 'OEPR is promoted to a frozen full ladder'
+
+Nearby events on the same curve:
+
+Codex · GPT-5.6 · SCPR · 15.49 h
+Not selected
+Best complete six-rung improvement at this time: +0.00%
+Not selected for a full ladder: both 5,000-update screens improved RPM (geometric gain 1.00074440 on E0; 1.00252280 on E2), but OEPR improved more. This is selection rejection, not a negative score.
+Trajectory steps: 2393, 2470, 2471
+
+Codex · GPT-5.6 · MPR · 15.73 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.00%
+Rejected at both 5,000-update screens versus RPM: geometric gain 0.99291949 on E0 and 0.99619747 on E2. E0 also fails the macro safety gate.
+Trajectory steps: 2470, 2471, 2538, 2539, 2548</title><circle r="3.5" style="fill:#e0ddd4;stroke:#2f9e7a;stroke-width:1.5"></circle></g><g class="curve-event" data-agent="codex" data-best="1.0029321" data-hour="17.0" data-kind="promote" transform="translate(300.0 280.5)"><title>Codex · GPT-5.6 · AGPR · 17.00 h
+Full ladder launched
+Best complete six-rung improvement at this time: +0.29%
+16.9h passes E2 gate; 17.0h 'AGPR's six-rung ladder is submitted'</title><circle r="3.5" style="fill:#e0ddd4;stroke:#2f9e7a;stroke-width:1.5"></circle></g><g class="curve-event" data-agent="codex" data-best="1.0029321" data-hour="26.2" data-kind="promote" transform="translate(410.4 280.5)"><title>Codex · GPT-5.6 · PSPR · 26.20 h
+Full ladder launched
+Best complete six-rung improvement at this time: +0.29%
+26.1h E2 screen passes; 26.2h 'launching the six scored contracts as opt-014-pspr-full'</title><circle r="3.5" style="fill:#e0ddd4;stroke:#2f9e7a;stroke-width:1.5"></circle></g><g class="curve-event" data-agent="codex" data-best="1.0029321" data-hour="36.6" data-kind="preview" transform="translate(535.2 280.5)"><title>Codex · GPT-5.6 · OEPR · 36.60 h
+Partial / projected result
+Best complete six-rung improvement at this time: +0.29%
+Partial / projected score: +0.35% (projected, never completed); the completed best is unchanged.
+36.6h 'OEPR projects to reward 1.00354 with every safety gate passing—stronger than the staged RPM—but it is not stageable until its exact-final checkpoints and reload audit finish'; never mentioned after the 52.1h restart</title><path d="M0 -5 L5 0 L0 5 L-5 0 Z" style="fill:#e0ddd4;stroke:#2f9e7a;stroke-width:1.8"></path></g><g class="curve-event" data-agent="codex" data-best="1.0059878" data-hour="55.2" data-kind="promote" transform="translate(758.4 135.5)"><title>Codex · GPT-5.6 · CPSR · 55.20 h
+Full ladder launched
+Best complete six-rung improvement at this time: +0.60%
+55.1h passes E2; 55.2h 'frozen CPSR full ladder is launched as opt-017-cpsr-full'</title><circle r="3.5" style="fill:#e0ddd4;stroke:#2f9e7a;stroke-width:1.5"></circle></g><g class="curve-event" data-agent="codex" data-best="1.0059878" data-hour="56.1" data-kind="control" transform="translate(769.2 135.5)"><title>Codex · GPT-5.6 · AGPR → control · 56.10 h
+Reduced control
+Best complete six-rung improvement at this time: +0.60%
+56.1h AGPR E5 completes; 55.8h 'exact-35k PSPR-vs-AGPR gain 1.0003199' — AGPR is PSPR's reduced control; no six-rung reward ever stated</title><circle r="3.5" style="fill:#e0ddd4;stroke:#8b877c;stroke-width:1.5"></circle></g><g class="curve-event" data-agent="codex" data-best="1.0059878" data-hour="66.4" data-kind="cutoff" transform="translate(892.8 135.5)"><title>Codex · GPT-5.6 · CPSR · 66.40 h
+Stopped
+Best complete six-rung improvement at this time: +0.60%
+66.4h 'CPSR is now formally recorded as incomplete due to infrastructure and trusted launch cutoff'</title><rect height="6.4" style="fill:#2f9e7a;stroke:#e0ddd4;stroke-width:1" width="6.4" x="-3.2" y="-3.2"></rect></g><g class="curve-event" data-agent="codex" data-best="1.0000000" data-hour="0.8065513888888889" data-kind="reject" transform="translate(105.7 419.5)"><title>Codex · GPT-5.6 · AGST · 0.81 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.00%
+Rejected at E0, update 5,000: geometric gain 0.97835421 versus reduced AdamH (Paloma micro BPB 1.46582524 vs 1.43076432; fixed-window loss 4.07710351 vs 3.99814064). Its six-rung ladder was stopped; no complete-ladder score.
+Trajectory steps: 119, 120, 143</title><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#e0ddd4;stroke-width:4;stroke-linecap:round"></path><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#2f9e7a;stroke-width:2;stroke-linecap:round"></path></g><g class="curve-event" data-agent="codex" data-best="1.0000000" data-hour="9.760296666666667" data-kind="reject" transform="translate(213.1 419.5)"><title>Codex · GPT-5.6 · CA-TFCPR · 9.76 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.00%
+Rejected at E0, update 5,000: geometric gain 0.97556756 versus T-FCPR; macro BPB fails the 1% non-regression gate. E2 evaluation was interrupted, so it has no completed E2 screen.
+Trajectory steps: 1527, 1528, 1556, 1561</title><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#e0ddd4;stroke-width:4;stroke-linecap:round"></path><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#2f9e7a;stroke-width:2;stroke-linecap:round"></path></g><g class="curve-event" data-agent="codex" data-best="1.0000000" data-hour="10.905007777777778" data-kind="reject" transform="translate(226.9 419.5)"><title>Codex · GPT-5.6 · T-FCPR · 10.91 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.00%
+Rejected at E2, update 5,000: geometric gain 0.99955754 versus FCPR, despite passing the macro gate. E0 had narrowly passed at 1.00010275.
+Trajectory steps: 1527, 1679, 1680
+
+Nearby events on the same curve:
+
+Codex · GPT-5.6 · TARF · 10.90 h
+Plan not launched
+Best complete six-rung improvement at this time: +0.00%
+9.2h preregistered contingent on T-FCPR passing; T-FCPR rejected 10.9h → never implemented or launched</title><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#e0ddd4;stroke-width:4;stroke-linecap:round"></path><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#2f9e7a;stroke-width:2;stroke-linecap:round"></path></g><g class="curve-event" data-agent="codex" data-best="1.0000000" data-hour="12.2154825" data-kind="reject" transform="translate(242.6 419.5)"><title>Codex · GPT-5.6 · TA-FCPR · 12.22 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.00%
+Rejected at both 5,000-update screens versus FCPR: geometric gain 0.98204696 on E0 and 0.98710723 on E2; both macro safety gates fail.
+Trajectory steps: 1852, 1856, 1912, 1915
+
+Nearby events on the same curve:
+
+Codex · GPT-5.6 · FCPR · 12.30 h
+Paused
+Best complete six-rung improvement at this time: +0.00%
+12.3h 'FCPR E0 25k comparison is negative … the pause is operational, not a substituted final verdict'; never resumed, never formally rejected</title><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#e0ddd4;stroke-width:4;stroke-linecap:round"></path><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#2f9e7a;stroke-width:2;stroke-linecap:round"></path></g><g class="curve-event" data-agent="codex" data-best="1.0000000" data-hour="13.400992777777779" data-kind="reject" transform="translate(256.8 419.5)"><title>Codex · GPT-5.6 · SV-FCPR · 13.40 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.00%
+Rejected at both 5,000-update screens versus FCPR: geometric gain 0.99957022 on E0 and 0.99866946 on E2. Both macro safety gates pass, but neither screen improves the scored pair.
+Trajectory steps: 2005, 2105, 2122</title><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#e0ddd4;stroke-width:4;stroke-linecap:round"></path><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#2f9e7a;stroke-width:2;stroke-linecap:round"></path></g><g class="curve-event" data-agent="codex" data-best="1.0000000" data-hour="14.317126111111111" data-kind="reject" transform="translate(267.8 419.5)"><title>Codex · GPT-5.6 · GPRM · 14.32 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.00%
+Rejected at both 5,000-update screens versus RPM: geometric gain 0.99965743 on E0 and 0.99957609 on E2; both macro gates pass.
+Trajectory steps: 2214, 2218, 2282, 2283</title><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#e0ddd4;stroke-width:4;stroke-linecap:round"></path><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#2f9e7a;stroke-width:2;stroke-linecap:round"></path></g><g class="curve-event" data-agent="codex" data-best="1.0000000" data-hour="15.488075" data-kind="not_selected" transform="translate(281.9 419.5)"><title>Codex · GPT-5.6 · SCPR · 15.49 h
+Not selected
+Best complete six-rung improvement at this time: +0.00%
+Not selected for a full ladder: both 5,000-update screens improved RPM (geometric gain 1.00074440 on E0; 1.00252280 on E2), but OEPR improved more. This is selection rejection, not a negative score.
+Trajectory steps: 2393, 2470, 2471
+
+Nearby events on the same curve:
+
+Codex · GPT-5.6 · OEPR · 15.40 h
+Full ladder launched
+Best complete six-rung improvement at this time: +0.00%
+15.4h 'OEPR is promoted to a frozen full ladder'
+
+Codex · GPT-5.6 · MPR · 15.73 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.00%
+Rejected at both 5,000-update screens versus RPM: geometric gain 0.99291949 on E0 and 0.99619747 on E2. E0 also fails the macro safety gate.
+Trajectory steps: 2470, 2471, 2538, 2539, 2548</title><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#e0ddd4;stroke-width:4;stroke-linecap:round"></path><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#2f9e7a;stroke-width:2;stroke-linecap:round"></path></g><g class="curve-event" data-agent="codex" data-best="1.0000000" data-hour="15.725555833333333" data-kind="reject" transform="translate(284.7 419.5)"><title>Codex · GPT-5.6 · MPR · 15.73 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.00%
+Rejected at both 5,000-update screens versus RPM: geometric gain 0.99291949 on E0 and 0.99619747 on E2. E0 also fails the macro safety gate.
+Trajectory steps: 2470, 2471, 2538, 2539, 2548
+
+Nearby events on the same curve:
+
+Codex · GPT-5.6 · OEPR · 15.40 h
+Full ladder launched
+Best complete six-rung improvement at this time: +0.00%
+15.4h 'OEPR is promoted to a frozen full ladder'
+
+Codex · GPT-5.6 · SCPR · 15.49 h
+Not selected
+Best complete six-rung improvement at this time: +0.00%
+Not selected for a full ladder: both 5,000-update screens improved RPM (geometric gain 1.00074440 on E0; 1.00252280 on E2), but OEPR improved more. This is selection rejection, not a negative score.
+Trajectory steps: 2393, 2470, 2471</title><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#e0ddd4;stroke-width:4;stroke-linecap:round"></path><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#2f9e7a;stroke-width:2;stroke-linecap:round"></path></g><g class="curve-event" data-agent="codex" data-best="1.0029321" data-hour="34.895176944444444" data-kind="reject" transform="translate(514.7 280.5)"><title>Codex · GPT-5.6 · CTPR · 34.90 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.29%
+Rejected at both 5,000-update screens versus PSPR. The later exact re-audit reports geometric gain 0.99970355 on E0 and 0.99900770 on E2. Earlier commentary used slightly different comparisons; these are the re-audited screen-to-screen values.
+Trajectory steps: 5258, 5326, 5881, 5885</title><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#e0ddd4;stroke-width:4;stroke-linecap:round"></path><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#2f9e7a;stroke-width:2;stroke-linecap:round"></path></g><g class="curve-event" data-agent="codex" data-best="1.0059878" data-hour="53.51134611111111" data-kind="reject" transform="translate(738.1 135.5)"><title>Codex · GPT-5.6 · PSGR · 53.51 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.60%
+Rejected by the two-screen promotion rule: at update 5,000 versus PSPR, E0 passes narrowly (1.00005941), but E2 is below one (0.99989665); macro safety passes.
+Trajectory steps: 6034, 6084, 6086</title><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#e0ddd4;stroke-width:4;stroke-linecap:round"></path><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#2f9e7a;stroke-width:2;stroke-linecap:round"></path></g><g class="curve-event" data-agent="codex" data-best="1.0029321" data-hour="16.175363611111113" data-kind="measured" transform="translate(290.1 280.5)"><title>Codex · GPT-5.6 · RPM · 16.18 h
+New measured best
+Best complete six-rung improvement at this time: +0.29%
+16.2h 'RPM is now staged as the first eligible incumbent: exact-step reward 1.0029320791'
+Trajectory steps: 2612</title><circle r="4.8" style="fill:#2f9e7a;stroke:#e0ddd4;stroke-width:1"></circle></g><g class="curve-event" data-agent="codex" data-best="1.0059878" data-hour="52.18955527777778" data-kind="measured" transform="translate(722.3 135.5)"><title>Codex · GPT-5.6 · PSPR · 52.19 h
+New measured best
+Best complete six-rung improvement at this time: +0.60%
+52.2h 'PSPR's direct-step reward is 1.005988, a substantial improvement over the staged 1.002932 incumbent'; 56.1h 'PSPR is now the staged incumbent at reward 1.0059877526, replacing RPM'
+Trajectory steps: 5879</title><circle r="4.8" style="fill:#2f9e7a;stroke:#e0ddd4;stroke-width:1"></circle></g><line class="lead" x1="290.1" x2="316.1" y1="276.5" y2="251.5"></line><text style="font-size:12px;font-family:var(--font-sans);fill:#141413;paint-order:stroke;stroke:#e0ddd4;stroke-width:3" text-anchor="start" x="319.1" y="246.5"><tspan style="font-weight:600">RPM +0.29%</tspan> — polar residual mixing</text><line class="lead" x1="722.3" x2="746.3" y1="131.5" y2="110.5"></line><text style="font-size:12px;font-family:var(--font-sans);fill:#141413;paint-order:stroke;stroke:#e0ddd4;stroke-width:3" text-anchor="start" x="749.3" y="105.5"><tspan style="font-weight:600">PSPR +0.60%</tspan> — principal-sine polar transport</text><polyline class="search-curve" data-agent="claude" points="96.0,419.5 446.2,419.5 446.2,251.1 806.7,251.1" style="fill:none;stroke:#d9773a;stroke-width:2.2;stroke-dasharray:0 6 6 0;stroke-linejoin:round"></polyline><line class="score-gain" data-agent="claude" style="stroke:#d9773a;stroke-width:2.8" x1="446.2" x2="446.2" y1="419.5" y2="251.1"></line><g class="curve-event" data-agent="claude" data-best="1.0000000" data-hour="2.2" data-kind="promote" transform="translate(122.4 419.5)"><title>Claude Code · Opus 5 · RMBT v1 · 2.20 h
+Full ladder launched
+Best complete six-rung improvement at this time: +0.00%
+2.2h 'Ladder launched from a single frozen source'
+
+Nearby events on the same curve:
+
+Claude Code · Opus 5 · Cautious gating · 1.77 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.00%
+E0 screen at 4,000 updates: fixed-window training loss 3.84154 versus 3.75773 for the mechanism-off control (+2.231%, worse). This is a single-rung screen, not a six-rung score.
+Trajectory steps: 142
+
+Claude Code · Opus 5 · RMBT v1: cost overrun · 2.78 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.00%
+Initial ladder stopped before completion: E0/E1/E2 projected costs were 4.9%, 10.5%, and 9.1% above the AdamH manifest. E0 reached 5,000 updates and E5 reached zero; no complete six-rung score was measured.
+Trajectory steps: 196, 200, 201, 202</title><circle r="3.5" style="fill:#e0ddd4;stroke:#d9773a;stroke-width:1.5"></circle></g><g class="curve-event" data-agent="claude" data-best="1.0000000" data-hour="3.0" data-kind="promote" transform="translate(132.0 419.5)"><title>Claude Code · Opus 5 · RMBT v2 · 3.00 h
+Full ladder launched
+Best complete six-rung improvement at this time: +0.00%
+3.0h 'Ladder relaunched with the optimized source' (retraction rewritten as two Triton kernels)
+
+Nearby events on the same curve:
+
+Claude Code · Opus 5 · RMBT v1: cost overrun · 2.78 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.00%
+Initial ladder stopped before completion: E0/E1/E2 projected costs were 4.9%, 10.5%, and 9.1% above the AdamH manifest. E0 reached 5,000 updates and E5 reached zero; no complete six-rung score was measured.
+Trajectory steps: 196, 200, 201, 202</title><circle r="3.5" style="fill:#e0ddd4;stroke:#d9773a;stroke-width:1.5"></circle></g><g class="curve-event" data-agent="claude" data-best="1.0000000" data-hour="6.8" data-kind="infra" transform="translate(177.6 419.5)"><title>Claude Code · Opus 5 · E5 relaunch · 6.80 h
+Infrastructure retry
+Best complete six-rung improvement at this time: +0.00%
+6.7h 'E5 failed with zero updates' (NCCL mixed RoCE/IB); 6.8h relaunched as opt-002-rmbt-e5b</title><circle r="3.5" style="fill:#e0ddd4;stroke:#d9773a;stroke-width:1.5"></circle></g><g class="curve-event" data-agent="claude" data-best="1.0000000" data-hour="17.8" data-kind="preview" transform="translate(309.6 419.5)"><title>Claude Code · Opus 5 · preview · 17.80 h
+Partial / projected result
+Best complete six-rung improvement at this time: +0.00%
+Partial / projected score: +0.29% (E5 still at 15k); the completed best is unchanged.
+17.8h 'Six-rung preview reward: 1.00292' (E5 not yet at its 35,510 scoring update)</title><path d="M0 -5 L5 0 L0 5 L-5 0 Z" style="fill:#e0ddd4;stroke:#d9773a;stroke-width:1.8"></path></g><g class="curve-event" data-agent="claude" data-best="1.0035500" data-hour="59.225491" data-kind="cutoff" transform="translate(806.7 251.1)"><title>Claude Code · Opus 5 · exhaustion · 59.23 h
+Stopped
+Best complete six-rung improvement at this time: +0.35%
+59.2h 'Result — the optimizer works, but the ladder cannot be staged … No submission.json is producible — I am reporting exhaustion'
+Trajectory steps: 2297
+
+Nearby events on the same curve:
+
+Claude Code · Opus 5 · RMBT final validation failed · 59.21 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.35%
+The handoff staging check again failed endpoint noninferiority and mechanism ablation on the same measured ladder. The session ended at 59.22549 hours (step 2297, 2026-09-03T05:06:48.820Z) reporting exhaustion and no submission.json.
+Trajectory steps: 2294, 2297</title><rect height="6.4" style="fill:#d9773a;stroke:#e0ddd4;stroke-width:1" width="6.4" x="-3.2" y="-3.2"></rect></g><g class="curve-event" data-agent="claude" data-best="1.0000000" data-hour="1.770288" data-kind="reject" transform="translate(117.2 419.5)"><title>Claude Code · Opus 5 · Cautious gating · 1.77 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.00%
+E0 screen at 4,000 updates: fixed-window training loss 3.84154 versus 3.75773 for the mechanism-off control (+2.231%, worse). This is a single-rung screen, not a six-rung score.
+Trajectory steps: 142
+
+Nearby events on the same curve:
+
+Claude Code · Opus 5 · RMBT v1 · 2.20 h
+Full ladder launched
+Best complete six-rung improvement at this time: +0.00%
+2.2h 'Ladder launched from a single frozen source'</title><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#e0ddd4;stroke-width:4;stroke-linecap:round"></path><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#d9773a;stroke-width:2;stroke-linecap:round"></path></g><g class="curve-event" data-agent="claude" data-best="1.0000000" data-hour="2.780562" data-kind="reject" transform="translate(129.4 419.5)"><title>Claude Code · Opus 5 · RMBT v1: cost overrun · 2.78 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.00%
+Initial ladder stopped before completion: E0/E1/E2 projected costs were 4.9%, 10.5%, and 9.1% above the AdamH manifest. E0 reached 5,000 updates and E5 reached zero; no complete six-rung score was measured.
+Trajectory steps: 196, 200, 201, 202
+
+Nearby events on the same curve:
+
+Claude Code · Opus 5 · RMBT v1 · 2.20 h
+Full ladder launched
+Best complete six-rung improvement at this time: +0.00%
+2.2h 'Ladder launched from a single frozen source'
+
+Claude Code · Opus 5 · RMBT v2 · 3.00 h
+Full ladder launched
+Best complete six-rung improvement at this time: +0.00%
+3.0h 'Ladder relaunched with the optimized source' (retraction rewritten as two Triton kernels)</title><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#e0ddd4;stroke-width:4;stroke-linecap:round"></path><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#d9773a;stroke-width:2;stroke-linecap:round"></path></g><g class="curve-event" data-agent="claude" data-best="1.0000000" data-hour="3.934809" data-kind="reject" transform="translate(143.2 419.5)"><title>Claude Code · Opus 5 · Vocabulary redistribution · 3.93 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.00%
+E0 screen at 4,000 updates: applying trust redistribution to the vocabulary matrix raised fixed-window training loss to 3.82344 versus 3.75708 for the same-kernel mechanism-off control (+1.766%, worse). No six-rung score.
+Trajectory steps: 259
+
+Nearby events on the same curve:
+
+Claude Code · Opus 5 · Overcorrection (alpha=2) · 4.05 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.00%
+E0 screen at 4,000 updates: alpha=2 raised fixed-window training loss to 3.77349 versus 3.75708 for the same-kernel mechanism-off control (+0.437%, worse). No six-rung score.
+Trajectory steps: 269</title><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#e0ddd4;stroke-width:4;stroke-linecap:round"></path><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#d9773a;stroke-width:2;stroke-linecap:round"></path></g><g class="curve-event" data-agent="claude" data-best="1.0000000" data-hour="4.052576" data-kind="reject" transform="translate(144.6 419.5)"><title>Claude Code · Opus 5 · Overcorrection (alpha=2) · 4.05 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.00%
+E0 screen at 4,000 updates: alpha=2 raised fixed-window training loss to 3.77349 versus 3.75708 for the same-kernel mechanism-off control (+0.437%, worse). No six-rung score.
+Trajectory steps: 269
+
+Nearby events on the same curve:
+
+Claude Code · Opus 5 · Vocabulary redistribution · 3.93 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.00%
+E0 screen at 4,000 updates: applying trust redistribution to the vocabulary matrix raised fixed-window training loss to 3.82344 versus 3.75708 for the same-kernel mechanism-off control (+1.766%, worse). No six-rung score.
+Trajectory steps: 259</title><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#e0ddd4;stroke-width:4;stroke-linecap:round"></path><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#d9773a;stroke-width:2;stroke-linecap:round"></path></g><g class="curve-event" data-agent="claude" data-best="1.0035500" data-hour="41.110856" data-kind="reject" transform="translate(589.3 251.1)"><title>Claude Code · Opus 5 · RMBT staging failed · 41.11 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.35%
+The already measured RMBT ladder failed two staging guards: E1 cost-matched endpoint ratio 1.00614 exceeded the 1.005 limit, and E5 cost-matched mechanism-ablation gain 0.99908 fell below 1. This did not produce a new model score.
+Trajectory steps: 1589, 1590</title><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#e0ddd4;stroke-width:4;stroke-linecap:round"></path><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#d9773a;stroke-width:2;stroke-linecap:round"></path></g><g class="curve-event" data-agent="claude" data-best="1.0035500" data-hour="53.505858" data-kind="reject" transform="translate(738.1 251.1)"><title>Claude Code · Opus 5 · RMBT staging retry failed · 53.51 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.35%
+After supplementary controls, the same frozen RMBT ladder still failed E1 endpoint noninferiority and mechanism ablation. The full candidate checkpoints and measured score did not change; no submission.json was produced.
+Trajectory steps: 2057, 2058, 2062</title><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#e0ddd4;stroke-width:4;stroke-linecap:round"></path><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#d9773a;stroke-width:2;stroke-linecap:round"></path></g><g class="curve-event" data-agent="claude" data-best="1.0035500" data-hour="59.211306" data-kind="reject" transform="translate(806.5 251.1)"><title>Claude Code · Opus 5 · RMBT final validation failed · 59.21 h
+Rejected / failed
+Best complete six-rung improvement at this time: +0.35%
+The handoff staging check again failed endpoint noninferiority and mechanism ablation on the same measured ladder. The session ended at 59.22549 hours (step 2297, 2026-09-03T05:06:48.820Z) reporting exhaustion and no submission.json.
+Trajectory steps: 2294, 2297
+
+Nearby events on the same curve:
+
+Claude Code · Opus 5 · exhaustion · 59.23 h
+Stopped
+Best complete six-rung improvement at this time: +0.35%
+59.2h 'Result — the optimizer works, but the ladder cannot be staged … No submission.json is producible — I am reporting exhaustion'
+Trajectory steps: 2297</title><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#e0ddd4;stroke-width:4;stroke-linecap:round"></path><path d="M-4 -4 L4 4 M4 -4 L-4 4" style="fill:none;stroke:#d9773a;stroke-width:2;stroke-linecap:round"></path></g><g class="curve-event" data-agent="claude" data-best="1.0035500" data-hour="29.179357777777778" data-kind="measured" transform="translate(446.2 251.1)"><title>Claude Code · Opus 5 · RMBT · 29.18 h
+New measured best
+Best complete six-rung improvement at this time: +0.35%
+29.2h 'All six rungs are now at their exact scoring updates. Step-matched reward = 1.00355'; report.html: 'Exhaustion reported; no staging … two failed cost-based guards'
+Trajectory steps: 1170</title><circle r="4.8" style="fill:#d9773a;stroke:#e0ddd4;stroke-width:1"></circle></g><line class="lead" x1="446.2" x2="418.2" y1="247.1" y2="222.1"></line><text style="font-size:12px;font-family:var(--font-sans);fill:#141413;paint-order:stroke;stroke:#e0ddd4;stroke-width:3" text-anchor="end" x="415.2" y="217.1"><tspan style="font-weight:600">RMBT +0.35%</tspan> — radius-matched block trust</text><rect class="lgbox" height="80" rx="3" style="fill:#e0ddd4;stroke:#c9c5ba" width="228" x="816" y="277.2"></rect><line style="stroke:#2f9e7a;stroke-width:2;stroke-dasharray:6 6" x1="830" x2="860" y1="296.7" y2="296.7"></line><text style="font-size:13px;font-family:var(--font-sans);fill:#141413" x="870" y="301.2">Codex · GPT-5.6</text><line style="stroke:#d9773a;stroke-width:2;stroke-dasharray:6 6" x1="830" x2="860" y1="318.7" y2="318.7"></line><text style="font-size:13px;font-family:var(--font-sans);fill:#141413" x="870" y="323.2">Claude Code · Opus 5</text><line style="stroke:#8b877c;stroke-width:2;stroke-dasharray:6 6" x1="830" x2="860" y1="340.7" y2="340.7"></line><text style="font-size:13px;font-family:var(--font-sans);fill:#141413" x="870" y="345.2">Marin Adam Baseline</text></svg></div>
+<figcaption class="fig-cap">Research history: the best complete six-rung score reached so far. Hover over a point for the experiment and its outcome.</figcaption></figure></div>
+</section>
+
+<section id="task">
+  <h2>The task</h2>
+  <p>Invent an explicit new update rule: its equations, state and parameter grouping. Retuning learning rates does not count. The same implementation runs at every rung.</p>
+</section>
+
+<section id="baseline">
+  <h2>Reference baseline</h2>
+  <p>Marin’s locked AdamH control at each rung, with the same model, data order and recipe. E5 trains on 128 H100s.</p>
+</section>
+
+<div class="sig-boundaries">
+  <section>
+    <h2>What the agent may change</h2>
+    <ul>
+      <li>Gradient transformation, preconditioner and update geometry.</li>
+      <li>Optimizer state, parameter grouping and internal schedules.</li>
+      <li>Optimizer kernels, communication and checkpoint serialization.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>What stays fixed</h2>
+    <ul>
+      <li>Model, initialization, objective and tokenizer.</li>
+      <li>Data and order, tokens, batch and precision.</li>
+      <li>Evaluation and launchers.</li>
+    </ul>
+  </section>
+</div>
+
+<section id="evaluation">
+  <h2>Evaluation</h2>
+  <p>At each rung’s scoring update, the geometric mean of the AdamH-to-candidate ratios for Paloma bits-per-byte and log PPL over a fixed 16.8M-token window, then the geometric mean across the six rungs. A regression over 1% at any rung fails the submission.</p>
+</section>
+
+<section id="research">
+  <h2>Agent runs</h2>
+  <div class="sig-research-grid">
+    <div class="sig-run" data-agent="codex">
+      <h3>Codex · GPT-5.6 Sol</h3>
+      <p>17 hypotheses. PSPR, principal-sine polar transport, beat AdamH at every rung. At 2.545B, Paloma went from 0.9088 to <b>0.9018</b> bits-per-byte and training loss from 2.6040 to <b>2.5852</b>.</p>
+      <details class="sig-details">
+        <summary>PSPR measurements by rung</summary>
+        <div class="table-scroll"><table class="ladder" aria-label="Codex PSPR measurements">
+          <thead><tr><th scope="col">Rung</th><th scope="col">Paloma BPB</th><th scope="col">Training loss</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">E0</th><td>1.0681</td><td>3.0573</td></tr>
+            <tr><th scope="row">E1</th><td>1.0354</td><td>2.9755</td></tr>
+            <tr><th scope="row">E2</th><td>1.0031</td><td>2.8727</td></tr>
+            <tr><th scope="row">E3</th><td>0.9513</td><td>2.7270</td></tr>
+            <tr><th scope="row">E4</th><td>1.0366</td><td>2.9435</td></tr>
+            <tr><th scope="row">E5</th><td>0.9018</td><td>2.5852</td></tr>
+          </tbody>
+        </table></div>
+      </details>
+    </div>
+    <div class="sig-run" data-agent="claude">
+      <h3>Claude Code · Opus 5</h3>
+      <p>RMBT, radius-matched block trust, rescales each hidden unit’s update relative to its weights. At 2.545B it reached <b>0.9020</b> bits-per-byte and <b>2.5847</b> training loss; extending the rule to vocabulary rows made loss worse.</p>
+      <details class="sig-details">
+        <summary>RMBT measurements by rung</summary>
+        <div class="table-scroll"><table class="ladder" aria-label="Claude RMBT measurements">
+          <thead><tr><th scope="col">Rung</th><th scope="col">Paloma BPB</th><th scope="col">Training loss</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">E0</th><td>1.0749</td><td>3.0734</td></tr>
+            <tr><th scope="row">E1</th><td>1.0386</td><td>2.9841</td></tr>
+            <tr><th scope="row">E2</th><td>1.0057</td><td>2.8788</td></tr>
+            <tr><th scope="row">E3</th><td>0.9535</td><td>2.7319</td></tr>
+            <tr><th scope="row">E4</th><td>1.0380</td><td>2.9477</td></tr>
+            <tr><th scope="row">E5</th><td>0.9020</td><td>2.5847</td></tr>
+          </tbody>
+        </table></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="sig-links" id="links">
+  <h2>Links</h2>
+  <ul><li><a class="tc-link" href="https://github.com/OpenRSI-Foundation/OpenRSI-Index/tree/main/rsi-tasks/signature-tasks/pre-training-optimizer-update-geometry" rel="noopener" target="_blank">task ↗</a></li><li><a class="tc-link" href="https://github.com/OpenRSI-Foundation/OpenRSI-Index/tree/main/rsi-logs/signature-tasks/pre-training-optimizer-update-geometry/codex-5.6-sol-xhigh" rel="noopener" target="_blank">Codex trajectory ↗</a></li><li><a class="tc-link" href="https://github.com/OpenRSI-Foundation/OpenRSI-Index/tree/main/rsi-logs/signature-tasks/pre-training-optimizer-update-geometry/claude-opus-5-high" rel="noopener" target="_blank">Claude trajectory ↗</a></li></ul>
+  <a class="sig-back" href="../tasks.html">← All task samples</a>
+</section>
+</article>
+<footer class="site">
+<div class="footer-inner">
+<div class="footer-brand">
+<div class="wm">OpenRSI <span class="dex">Index</span></div>
+</div>
+<div class="footer-cols">
+<div>
+<h4>Site</h4>
+<ul>
+<li><a href="../blog/introducing-rsi-index.html">Blog</a></li>
+<li><a href="../tasks.html">Task Sample</a></li>
+<li><a href="../contribute.html">Contribute</a></li>
+<li><a href="../team.html">Team</a></li>
+</ul>
+</div>
+<div>
+<h4>Project</h4>
+<ul>
+<li><a href="https://github.com/OpenRSI-Foundation/OpenRSI-Index" rel="noopener" target="_blank">GitHub ↗</a></li>
+<li><a href="https://github.com/OpenRSI-Foundation/OpenRSI-Index/blob/main/CONTRIBUTING.md" rel="noopener" target="_blank">RSI-Anything pipeline ↗</a></li>
+<li><a href="../blog/introducing-rsi-index.html">Announcement</a></li>
+<li><a href="../tasks.html">Task Sample</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="footer-base">
+<span>© 2026 OpenRSI Index · Preview v0.1</span>
+</div>
+</footer>
+<script src="../assets/sky-pages.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

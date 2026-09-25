@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RSI-Anything — Contribute an RSI task</title>
+<meta name="description" content="RSI-Anything is the contribution pipeline for OpenRSI Index: bring a research idea and the agents turn it into a private, ready-to-use RSI task repository in about an hour.">
+<meta name="theme-color" content="#000000">
+<meta property="og:type" content="website">
+<meta property="og:title" content="RSI-Anything — Contribute an RSI task">
+<meta property="og:description" content="From idea to a ready RSI task in about 1 hour. Bring the idea and our agents handle the rest.">
+<meta property="og:image" content="https://rsi-first-exam.rsi-anything.workers.dev/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="assets/favicon.png?v=20260922-rounded">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=20260922-rounded">
+<link rel="stylesheet" href="assets/startrails.css?v=20260922-rounded">
+<link rel="stylesheet" href="assets/sky-pages.css">
+<link rel="stylesheet" href="assets/type.css?v=20260920-scale">
+</head>
+<body class="page-vibe joy skypage">
+
+<div class="skybg" data-sky-page aria-hidden="true"><canvas class="f3d"></canvas></div>
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html" aria-label="OpenRSI Index home">
+      <img class="brand-mark" src="assets/openrsi-mark.png?v=20260922-rounded" alt="" width="23" height="23">
+      OpenRSI Index
+    </a>
+    <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">Menu</button>
+    <div class="nav-links">
+      <a href="blog/introducing-rsi-index.html">Blog</a>
+      <a href="tasks.html">Task Sample</a>
+      <a class="active" href="contribute.html">Contribute</a>
+      <a href="team.html">Team</a>
+      <a class="ext" href="https://github.com/OpenRSI-Foundation/OpenRSI-Index" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</nav>
+
+<header class="pagehead sky-hero" data-sky-hero>
+  <div class="field-scrim" aria-hidden="true"></div>
+  <div class="wrap">
+    <h1 class="vibe-h1"><span class="hl" data-split>RSI-</span><em><span class="hl" data-split>Anything</span></em></h1>
+    <div class="vibe-rule" aria-hidden="true"></div>
+  </div>
+</header>
+<div class="sky-ground" aria-hidden="true"></div>
+
+<section class="block sky-intro">
+  <div class="wrap">
+    <p class="intro-tag">Challenge the frontier models with your own research.</p>
+    <p class="intro-chips"><span class="intro-chip">Idea → ready task in ~1 hour</span> <span class="intro-chip">Your baseline becomes the exam</span></p>
+    <p class="lede">RSI-Anything is the contribution pipeline for OpenRSI Index. It turns your research idea into a ready-to-run harbor task through an automated workflow. The agent asks for your input only when a task-defining choice genuinely needs it.</p>
+  </div>
+</section>
+
+<!-- ================= THE RSI-ANYTHING PATH ================= -->
+<section class="block">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="h-lg">Five steps.</h2>
+    </div>
+
+    <div class="steps">
+      <div class="step-item">
+        <h3>Create a proposal</h3>
+        <p>Clone the pipeline repository and open a fresh Codex or Claude Code session in it, on a
+        frontier model at its maximum reasoning setting. <b>Trust the repository hooks</b> when the
+        client asks: they attest the session, and without them the trajectory cannot be submitted
+        later. Then ask for the <span class="mono">proposal-agent</span> skill — one session, one
+        proposal. It walks you through the research question, baseline, evaluation, scope, and
+        compute budget, and drafts the proposal. Review it before you confirm.</p>
+      </div>
+
+      <div class="step-item">
+        <h3>Submit the proposal</h3>
+        <p>Confirm, and the agent posts the proposal as a
+        <a href="https://github.com/OpenRSI-Foundation/OpenRSI-Index/discussions/categories/task-ideas" target="_blank" rel="noopener">Task Ideas Discussion</a>
+        for you. Review is automatic and reruns on every edit. When feedback arrives, <b>go back to
+        the same session</b>: the agent reads the Discussion, revises the proposal with you, and
+        updates it in place.</p>
+      </div>
+
+      <div class="step-item">
+        <h3>Automatic task building</h3>
+        <p>A <b>PASS</b> on the initial check starts the build on its own. The bot only interrupts for
+        a genuine task-defining question, which you answer in the Discussion with
+        <span class="mono">/task</span>. At <b>ACCEPTED</b> it goes on to generate a private task
+        repository. <b>Keep the original session open</b> — you will need it once more.</p>
+      </div>
+
+      <div class="step-item">
+        <h3>Run it on your GPUs</h3>
+        <p>The private repository is a complete workspace: the Harbor task, the read-only
+        <span class="mono">RSI-Harness</span>, and the validator and runner skills. First ask the
+        original session to <b>upload the proposal trajectory and Discussion record</b>. Then, on a
+        machine with the GPUs your task declares, validate the environment, run the task through
+        the harness, and upload the completed <b>experiment trajectory</b>.</p>
+        <div class="callout warn">
+          <span class="k">Caution</span>
+          <p>We review every task for scientific soundness, rigor, and novelty, and independently
+          reproduce it. Approval and trajectory submission do not guarantee inclusion: a task with an
+          unreasonable, unsupported, or irreproducible design may still be excluded.</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <h3>Share feedback</h3>
+        <p>Leave brief feedback on <span class="mono">proposal-agent</span> and the pipeline in
+        <a href="https://github.com/OpenRSI-Foundation/OpenRSI-Index/discussions/7" target="_blank" rel="noopener">this Discussion</a>.
+        With the experiment trajectory pushed, your task is ready for review. Thank you for
+        contributing to OpenRSI Index.</p>
+      </div>
+    </div>
+
+    <div class="gpu-note scope-note">
+      <p class="gpu-note-k">Scope of our RSI tasks</p>
+      <p>Anything related to a foundation model are in our scope. Vertical foundation model development
+      like medical, legal, 3D vision, or scientific are also welcome.</p>
+    </div>
+
+    <div class="gpu-note">
+      <p class="gpu-note-k">A note on compute · Most contributions need GPU access</p>
+      <p>In most cases you will need the GPU resources your task calls for. Choose a task scope,
+      experiment plan, and compute budget that fit what you have.</p>
+      <ol>
+        <li><b>This cycle asks for the trajectory as well as the task.</b> Alongside the harbor task
+        you design, you submit the agent's actual run on it, which means running the task on your
+        own GPUs.</li>
+        <li><b>Tasks that need no GPU are welcome too.</b> Harness optimization is one example.</li>
+        <li><b>A proposal-only window may open next cycle.</b> Then no compute of your own is needed,
+        and you will not have to run the trajectory yourself.</li>
+        <li><b>No GPUs? You are still welcome to build with RSI-Anything.</b> We review every proposal
+        and task design that comes in. If your task matters a lot for your research, contact us:
+        when it is a high priority for the benchmark, we will run the trajectory for you on our
+        own compute.</li>
+      </ol>
+    </div>
+
+    <p class="actions" style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+      <a class="btn btn-paper" href="https://github.com/OpenRSI-Foundation/OpenRSI-Index/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Start RSI-Anything ↗</a>
+      <a class="btn btn-paper-ghost" href="https://github.com/OpenRSI-Foundation/OpenRSI-Index/tree/main/rsi-tasks" target="_blank" rel="noopener">Task examples ↗</a>
+      <a class="btn btn-paper-ghost" href="https://github.com/OpenRSI-Foundation/OpenRSI-Index/tree/main/rsi-logs" target="_blank" rel="noopener">Validation logs ↗</a>
+    </p>
+  </div>
+</section>
+
+<!-- ================= TWO PATHS ================= -->
+<section class="block">
+  <div class="wrap">
+    <h2 class="h-lg" style="margin-bottom: clamp(20px, 2.4vw, 30px);">Two ways in.</h2>
+    <div class="grid grid-2">
+      <div class="card">
+        <span class="num">PATH A</span>
+        <h3>Bring your coauthored representative project</h3>
+        <p>Contribute a representative, fully open project you helped build. You know its open
+        research directions, and its reward-hacking risks, better than anyone else.</p>
+      </div>
+      <div class="card">
+        <span class="num">PATH B</span>
+        <h3>Start from a domain well-known project</h3>
+        <p>Pick a domain influential open project that is closely aligned with your domain
+        expertise, and design an RSI task around one of its experiments.</p>
+      </div>
+    </div>
+
+    <div class="cta-band" style="margin-top: clamp(40px, 4.6vw, 60px);">
+      <h2 class="h-md">Ready to challenge the frontier?</h2>
+      <p>Clone the pipeline repository, confirm a proposal with <span class="mono">proposal-agent</span>,
+      and it posts the Task Ideas Discussion for you. The agents take it from there.</p>
+      <a class="btn btn-paper" href="https://github.com/OpenRSI-Foundation/OpenRSI-Index/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Start RSI-Anything ↗</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="wm">OpenRSI <span class="dex">Index</span></div>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="blog/introducing-rsi-index.html">Blog</a></li>
+          <li><a href="tasks.html">Task Sample</a></li>
+          <li><a href="contribute.html">Contribute</a></li>
+          <li><a href="team.html">Team</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul>
+          <li><a href="https://github.com/OpenRSI-Foundation/OpenRSI-Index" target="_blank" rel="noopener">GitHub ↗</a></li>
+          <li><a href="https://github.com/OpenRSI-Foundation/OpenRSI-Index/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">RSI-Anything pipeline ↗</a></li>
+          <li><a href="blog/introducing-rsi-index.html">Announcement</a></li>
+          <li><a href="tasks.html">Task Sample</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-base">
+    <span>© 2026 OpenRSI Index · Preview v0.1</span>
+  </div>
+</footer>
+
+<script src="assets/sky-pages.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>

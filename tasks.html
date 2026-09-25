@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Samples Preview — OpenRSI Index</title>
+<meta name="description" content="A preview of the RSI task samples: the three signature tasks and the public 1-node tasks with their logged agent results. Samples may be adjusted; more are ongoing.">
+<meta name="theme-color" content="#000000">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Samples Preview — OpenRSI Index">
+<meta property="og:description" content="A preview of the RSI task samples: the three signature tasks and the public 1-node tasks with their logged agent results. Samples may be adjusted; more are ongoing.">
+<meta property="og:image" content="https://rsi-first-exam.rsi-anything.workers.dev/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="assets/favicon.png?v=20260922-rounded">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=20260922-rounded">
+<link rel="stylesheet" href="assets/startrails.css?v=20260922-rounded">
+<link rel="stylesheet" href="assets/sky-pages.css">
+<link rel="stylesheet" href="assets/type.css?v=20260920-scale">
+</head>
+<body class="skypage wide">
+
+<div class="skybg" data-sky-page aria-hidden="true"><canvas class="f3d"></canvas></div>
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html" aria-label="OpenRSI Index home">
+      <img class="brand-mark" src="assets/openrsi-mark.png?v=20260922-rounded" alt="" width="23" height="23">
+      OpenRSI Index
+    </a>
+    <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">Menu</button>
+    <div class="nav-links">
+      <a href="blog/introducing-rsi-index.html">Blog</a>
+      <a href="tasks.html" class="active">Task Sample</a>
+      <a href="contribute.html">Contribute</a>
+      <a href="team.html">Team</a>
+      <a class="ext" href="https://github.com/OpenRSI-Foundation/OpenRSI-Index" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</nav>
+
+<header class="pagehead lb-head sky-hero" data-sky-hero>
+  <div class="field-scrim" aria-hidden="true"></div>
+  <div class="wrap">
+    <h1 class="h-lg"><span class="hl" data-split>Samples Preview</span></h1>
+  </div>
+</header>
+<div class="sky-ground" aria-hidden="true"></div>
+
+<section class="block sky-intro">
+  <div class="wrap">
+    <p class="lede">These samples are for an initial preview only and may be further adjusted. More samples are ongoing.</p>
+  </div>
+</section>
+
+<section class="block lb" id="tasks">
+  <div class="wrap lb-wrap">
+    <div class="section-head">
+      <p class="eyebrow">Task list</p>
+      <h2 class="h-lg">Browse the environments and their agent runs.</h2>
+    </div>
+    <div class="filterbar lb-filter"><button class="chip active" data-domain="all">All domains</button><button class="chip" data-domain="Agents">Agents</button><button class="chip" data-domain="Posttrain">Posttrain</button><button class="chip" data-domain="Pretrain">Pretrain</button><button class="chip" data-domain="Robotics">Robotics</button><button class="chip" data-domain="Systems">Systems</button><button class="chip" data-domain="Vision">Vision</button></div>
+    <div class="tgrid">
+      <a class="tcard sig" href="tasks/marin-scaling-ladder.html" data-domain="Pretrain">
+        <h3>Marin-Scaling-Ladder</h3>
+        <p>Design one scale-general optimizer and run it unchanged across the Marin ladder from 550M to 2.545B parameters, scored against the locked AdamH control at every rung.</p>
+        <div class="tcard-foot"><span class="dom">Pretrain</span><span class="best sigtag">Signature task</span></div>
+      </a><a class="tcard sig" href="tasks/gpic-leaderboard.html" data-domain="Vision">
+        <h3>GPIC Leaderboard</h3>
+        <p>Improve text-to-image generation from a shared JiT checkpoint, with at most one continuation pass over the same 10M-image GPIC subset.</p>
+        <div class="tcard-foot"><span class="dom">Vision</span><span class="best sigtag">Signature task</span></div>
+      </a><a class="tcard sig" href="tasks/qwen-122b-rl-merge.html" data-domain="Posttrain">
+        <h3>Qwen-122B-RL-Merge</h3>
+        <p>Design verifiable RL tasks to improve a post-trained Qwen3.5-122B-A10B model across five capabilities, with the model and intended training recipe held fixed.</p>
+        <div class="tcard-foot"><span class="dom">Posttrain</span><span class="best sigtag">Signature task</span></div>
+      </a>
+      <a class="tcard" href="tasks/ace-playbook-repair.html" data-domain="Agents">
+        <h3>ACE Playbook Inspection and Repair</h3>
+        <p>Inspect and repair the reusable advice in an ACE playbook so a frozen Qwen model answers Formula reasoning problems more accurately.</p>
+        <div class="tcard-foot"><span class="dom">Agents</span><span class="best"><span class="mk" style="color:#d9773a">✳</span> Claude Opus 5 · 0.73</span></div>
+      </a><a class="tcard" href="tasks/gemm-h100-refined.html" data-domain="Systems">
+        <h3>H100 fp16 GEMM Kernel Lab</h3>
+        <p>Build and refine a clean-room CUDA matrix-multiplication kernel for higher sustained H100 throughput while preserving the fixed interface and correctness rules.</p>
+        <div class="tcard-foot"><span class="dom">Systems</span><span class="best"><span class="mk" style="color:#d9773a">✳</span> Claude Opus 5 · 780</span></div>
+      </a><a class="tcard" href="tasks/isaaclab-peginsert-reward-search.html" data-domain="Robotics">
+        <h3>Isaac Lab PegInsert Reward Search</h3>
+        <p>Design a better training reward so a robot learns to align and insert a peg more reliably, with the simulator and training budget held fixed.</p>
+        <div class="tcard-foot"><span class="dom">Robotics</span><span class="best"><span class="mk" style="color:#2f9e7a">◎</span> GPT-5.6 Sol · 0.6045</span></div>
+      </a><a class="tcard" href="tasks/kev-decision-architecture.html" data-domain="Posttrain">
+        <h3>Kev Decision Architecture</h3>
+        <p>Kev is a Jev-inspired small neural model that makes decisions directly, without generating text. Improve its decision quality and confidence estimates on fixed training data.</p>
+        <div class="tcard-foot"><span class="dom">Posttrain</span><span class="best"><span class="mk" style="color:#2f9e7a">◎</span> GPT-5.6 Sol · 0.29233</span></div>
+      </a><a class="tcard" href="tasks/learnability-cot.html" data-domain="Posttrain">
+        <h3>Learnability-Aware Long/Short CoT Adaptation</h3>
+        <p>Adapt the supplied long and short mathematical reasoning examples so the same small language model learns more effectively under a fixed training recipe.</p>
+        <div class="tcard-foot"><span class="dom">Posttrain</span><span class="best"><span class="mk" style="color:#b2542a">✱</span> Claude Fable 5 · 47.5</span></div>
+      </a><a class="tcard" href="tasks/liger-tied-ce.html" data-domain="Systems">
+        <h3>Fused Tied-Weight Linear Cross-Entropy on H100</h3>
+        <p>Optimize a fused tied-weight linear cross-entropy implementation so it accelerates both the operator itself and a fixed language-model training step.</p>
+        <div class="tcard-foot"><span class="dom">Systems</span><span class="best"><span class="mk" style="color:#2f9e7a">◎</span> GPT-5.6 Sol · 1138</span></div>
+      </a><a class="tcard" href="tasks/minference-sparse-prefill.html" data-domain="Systems">
+        <h3>MInference 32-Head Sparse Prefill Kernel</h3>
+        <p>Speed up a fixed sparse-attention prefill operator without changing which tokens it attends to or weakening its numerical result.</p>
+        <div class="tcard-foot"><span class="dom">Systems</span><span class="best"><span class="mk" style="color:#2f9e7a">◎</span> GPT-5.6 Sol · 1.54</span></div>
+      </a><a class="tcard" href="tasks/molmo2-pointing-refined.html" data-domain="Vision">
+        <h3>Molmo2 Video-Pointing Inference Strategy</h3>
+        <p>Improve how a frozen Molmo2 model points to anomalies in video by tuning which frames it sees, how it is prompted, and how long it can answer.</p>
+        <div class="tcard-foot"><span class="dom">Vision</span><span class="best">tie · Claude Fable 5 & GPT-5.6 Sol · 0.462</span></div>
+      </a><a class="tcard" href="tasks/molmoweb-interaction-context.html" data-domain="Vision">
+        <h3>MolmoWeb Interaction Context Allocation</h3>
+        <p>Choose which interaction history, page details, and screenshots a frozen MolmoWeb model sees to improve its next browser-action prediction.</p>
+        <div class="tcard-foot"><span class="dom">Vision</span><span class="best"><span class="mk" style="color:#d9773a">✳</span> Claude Opus 5 · 0.6057</span></div>
+      </a><a class="tcard" href="tasks/reasonir-difficulty-curriculum.html" data-domain="Posttrain">
+        <h3>ReasonIR Difficulty Curriculum</h3>
+        <p>Choose how a fixed pool of easy and hard retrieval examples is weighted and ordered to improve ReasonIR-8B, without weakening its general retrieval ability.</p>
+        <div class="tcard-foot"><span class="dom">Posttrain</span><span class="best"><span class="mk" style="color:#d9773a">✳</span> Claude Opus 5 · 0.22340</span></div>
+      </a><a class="tcard" href="tasks/depth-width-allocation-d13.html" data-domain="Pretrain">
+        <h3>Allocate Decoder Width Across Depth</h3>
+        <p>Redistribute a fixed decoder&#x27;s capacity across its layers to reduce late-training loss without changing the model&#x27;s overall parameter or compute budget.</p>
+        <div class="tcard-foot"><span class="dom">Pretrain</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var chips=document.querySelectorAll('.lb-filter .chip'), cards=document.querySelectorAll('.tcard');
+  chips.forEach(function(c){c.addEventListener('click',function(){chips.forEach(function(q){q.classList.remove('active')});c.classList.add('active');var d=c.getAttribute('data-domain');cards.forEach(function(k){k.hidden=!(d==='all'||k.getAttribute('data-domain')===d)})})});
+})();
+</script>
+
+<footer class="site">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="wm">OpenRSI <span class="dex">Index</span></div>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="blog/introducing-rsi-index.html">Blog</a></li>
+          <li><a href="tasks.html">Task Sample</a></li>
+          <li><a href="contribute.html">Contribute</a></li>
+          <li><a href="team.html">Team</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul>
+          <li><a href="https://github.com/OpenRSI-Foundation/OpenRSI-Index" target="_blank" rel="noopener">GitHub ↗</a></li>
+          <li><a href="https://github.com/OpenRSI-Foundation/OpenRSI-Index/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">RSI-Anything pipeline ↗</a></li>
+          <li><a href="blog/introducing-rsi-index.html">Announcement</a></li>
+          <li><a href="tasks.html">Task Sample</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-base">
+    <span>© 2026 OpenRSI Index · Preview v0.1</span>
+  </div>
+</footer>
+
+<script src="assets/sky-pages.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+{
+  "metric": "FD-DINOv2",
+  "direction": "lower is better",
+  "evidence_type": "local validation-reference screening, not final verifier scores",
+  "task_url": "https://github.com/OpenRSI-Foundation/OpenRSI-Index/tree/main/rsi-tasks/signature-tasks/gpic_generation",
+  "sources": {
+    "claude": {
+      "file": "trajectory_claude(3).html",
+      "sha256": "98adfeb79ebbb7f8e205d80d0c2bf01f0a13fa9053497672daff32ba71177019"
+    }
+  },
+  "claude": {
+    "label": "Claude Code",
+    "color": "#d9773a",
+    "generated_images": 10000,
+    "caption_population": "10k validation-split screening captions",
+    "validation_reference_images": 50000,
+    "checkpoint_images": 77824000,
+    "points": [
+      {
+        "attempt": "gpic-001-ctrl-b1024-gen",
+        "label": "Dropout 0.1",
+        "fd": 547.0910870605494,
+        "seed": 0,
+        "source_line": 464,
+        "status": "screening of an incomplete-training checkpoint"
+      },
+      {
+        "attempt": "gpic-002-nocfgdrop-b1024-gen",
+        "label": "Dropout 0.0",
+        "fd": 531.5958786161159,
+        "seed": 0,
+        "source_line": 484,
+        "status": "screening of an incomplete-training checkpoint"
+      }
+    ],
+    "control_replication": {
+      "attempt": "gpic-005-noiseband",
+      "fd": 546.7258300905914,
+      "seed": 1,
+      "source_line": 524,
+      "note": "Same control checkpoint and 10k captions; a seed replication, not another candidate."
+    },
+    "latest_training": {
+      "attempt": "gpic-007-nocfgdrop-onepass",
+      "images": 99946496,
+      "gpu_hours": 819.3422,
+      "fd": null,
+      "source_line": 624,
+      "status": "training completed; Slurm cancelled during post-training teardown",
+      "note": "Final checkpoint saved at step 97604. No subsequent evaluation or selection is recorded. The earlier 50k-image fallback has no measured FD and uses an incomplete-training checkpoint."
+    },
+    "total_recorded_h100_hours": 2890.1533,
+    "ledger_records": 12,
+    "distinct_training_launch_attempts": 5,
+    "actual_data_consuming_training_runs": 5,
+    "full_pass_training_completions_reported": 1,
+    "zero_data_training_launch_attempts": 0,
+    "training_runs": [
+      {
+        "id": "gpic-001-ctrl-b1024",
+        "cycle": 2,
+        "status": "failed",
+        "gpu_hours": 901.3689,
+        "images_seen": 77824000,
+        "line": 416,
+        "mechanism": "Control:10% caption dropout,1.122B JiT,batch1024,lr2e-4,EMA0.9996.",
+        "outcome": "Failed/hung at76000 steps; retained checkpoint later screened.",
+        "steps": 76000,
+        "parameters": 1122396928,
+        "global_batch": 1024,
+        "consumed_training_data": true,
+        "fd_dinov2": 547.0910870605494,
+        "full_pass_training_reported": false
+      },
+      {
+        "id": "gpic-002-nocfgdrop-b1024",
+        "cycle": 3,
+        "status": "failed",
+        "gpu_hours": 901.2978,
+        "images_seen": 77824000,
+        "line": 436,
+        "mechanism": "Treatment:0% caption dropout; otherwise byte-identical matched training config.",
+        "outcome": "Failed/hung at76000 steps; retained checkpoint screened and provisionally staged.",
+        "steps": 76000,
+        "parameters": 1122396928,
+        "global_batch": 1024,
+        "consumed_training_data": true,
+        "fd_dinov2": 531.5958786161159,
+        "full_pass_training_reported": false
+      },
+      {
+        "id": "gpic-003-nocfgdrop-fullpass",
+        "cycle": 8,
+        "status": "rejected",
+        "gpu_hours": 55.8933,
+        "images_seen": 10600448,
+        "line": 536,
+        "mechanism": "No-dropout restart with hardened launcher and watchdog.",
+        "outcome": "Cancelled at~10352 steps after finding scheduled93750 steps could not cover full corpus.",
+        "steps": 10352,
+        "parameters": 1122396928,
+        "global_batch": 1024,
+        "consumed_training_data": true,
+        "fd_dinov2": null,
+        "full_pass_training_reported": false
+      },
+      {
+        "id": "gpic-006-nocfgdrop-onepass",
+        "cycle": 10,
+        "status": "rejected",
+        "gpu_hours": 197.76,
+        "images_seen": 26624000,
+        "line": 576,
+        "mechanism": "Sample-granular data partition;97604-step target; checkpoint every16000.",
+        "outcome": "Cancelled at~26000 after finding final checkpoint would not be saved; restarted.",
+        "steps": 26000,
+        "parameters": 1122396928,
+        "global_batch": 1024,
+        "consumed_training_data": true,
+        "fd_dinov2": null,
+        "full_pass_training_reported": false
+      },
+      {
+        "id": "gpic-007-nocfgdrop-onepass",
+        "cycle": 12,
+        "status": "rejected",
+        "gpu_hours": 819.3422,
+        "images_seen": 99946496,
+        "line": 616,
+        "mechanism": "Keep no dropout and exact sample partition; checkpoint every7508 so final save lands on97604.",
+        "outcome": "Training completed ledger-reported full pass,99946496 unique images; final checkpoint validated in ledger; watchdog cancelled teardown. No FD or final staging for this checkpoint.",
+        "steps": 97604,
+        "parameters": 1122396928,
+        "global_batch": 1024,
+        "consumed_training_data": true,
+        "fd_dinov2": null,
+        "full_pass_training_reported": true
+      }
+    ],
+    "control_measurement": {
+      "label": "Claude · dropout 0.1",
+      "kind": "matched control in Claude experiment",
+      "agent": "claude",
+      "attempt": "gpic-001-ctrl-b1024-gen",
+      "training_attempt": "gpic-001-ctrl-b1024",
+      "fd_dinov2": 547.0910870605494,
+      "guidance": 1.0,
+      "conditioning_dropout": 0.1,
+      "model": "JiT-T2I",
+      "parameters": 1122396928,
+      "training_steps": 76000,
+      "training_images": 77824000,
+      "generated_images": 10000,
+      "reference_images": 50000,
+      "reference_split": "validation",
+      "sampler": "50-step Euler",
+      "weights": "EMA",
+      "seed": 0,
+      "source_file": "trajectory_claude(3).html",
+      "source_line": 464,
+      "protocol_source_line": 469,
+      "seed1_replication_fd": 546.7258300905914,
+      "note": "Agent-run control with shared batch/LR/EMA changes relative to pinned recipe. Compared with the treatment at the same checkpoint step and screening protocol; not a full-epoch or final-test measurement.",
+      "applies_to_agents": [
+        "claude"
+      ],
+      "shared_across_agents": false
+    }
+  },
+  "total_recorded_h100_hours": 2890.1533,
+  "comparison_note": "Claude Code paired conditioning-dropout experiment. Same checkpoint step and screening protocol; no final-test result is supplied."
+}

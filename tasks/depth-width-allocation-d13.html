@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Allocate Decoder Width Across Depth — OpenRSI Index</title>
+<meta name="description" content="Redistribute a fixed decoder&#x27;s capacity across its layers to reduce late-training loss without changing the model&#x27;s overall parameter or compute budget.">
+<meta name="theme-color" content="#000000">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Allocate Decoder Width Across Depth — OpenRSI Index">
+<meta property="og:description" content="Redistribute a fixed decoder&#x27;s capacity across its layers to reduce late-training loss without changing the model&#x27;s overall parameter or compute budget.">
+<meta property="og:image" content="https://rsi-first-exam.rsi-anything.workers.dev/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="../assets/favicon.png?v=20260922-rounded">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css?v=20260922-rounded">
+<link rel="stylesheet" href="../assets/startrails.css?v=20260922-rounded">
+<link rel="stylesheet" href="../assets/sky-pages.css">
+<link rel="stylesheet" href="../assets/type.css?v=20260920-scale">
+</head>
+<body class="skypage">
+
+<div class="skybg" data-sky-page aria-hidden="true"><canvas class="f3d"></canvas></div>
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html" aria-label="OpenRSI Index home">
+      <img class="brand-mark" src="../assets/openrsi-mark.png?v=20260922-rounded" alt="" width="23" height="23">
+      OpenRSI Index
+    </a>
+    <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">Menu</button>
+    <div class="nav-links">
+      <a href="../blog/introducing-rsi-index.html">Blog</a>
+      <a href="../tasks.html" class="active">Task Sample</a>
+      <a href="../contribute.html">Contribute</a>
+      <a href="../team.html">Team</a>
+      <a class="ext" href="https://github.com/OpenRSI-Foundation/OpenRSI-Index" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</nav>
+
+<header class="pagehead lb-head detail-head sky-hero" data-sky-hero>
+  <div class="wrap">
+    <p class="eyebrow"><a href="../tasks.html">Task Sample</a> · Pretrain</p>
+    <h1 class="h-lg"><span class="hl" data-split>Allocate Decoder Width Across Depth</span></h1>
+  </div>
+</header>
+<div class="sky-ground" aria-hidden="true"></div>
+
+<article class="article detail">
+  <p class="standfirst">Redistribute a fixed decoder&#x27;s capacity across its layers to reduce late-training loss without changing the model&#x27;s overall parameter or compute budget.</p>
+
+
+  <figure class="task-fig"><div class="fig-body"><img src="../assets/tasks/depth-width-allocation-d13.jpg" alt="Teaser figure from Variable-Width Transformers (&gt;&lt;former)" width="1100" height="410"></div><figcaption class="fig-cap"><b>Source</b> · <a href="https://arxiv.org/abs/2606.18246" target="_blank" rel="noopener">Variable-Width Transformers</a><span class="src-tag">MIT · MIT-IBM Watson AI Lab</span></figcaption></figure>
+  <h2>The task</h2><p>Test where decoder capacity is most useful across depth. A candidate redistributes width while staying inside the same overall model and training budgets, and aims to lower loss.</p><h2>Environment</h2><ul><li>The starting point is the official variable-width decoder design.</li><li>The agent delivers one architecture manifest; optional research notes are not scored.</li></ul><h2>Reference baseline</h2><p>The official variable-width allocation is the reference design. Its loss is reported by the source paper rather than rerun beside each candidate; every candidate receives its own fresh training run.</p><h2>Research loop</h2><ol><li>Inspect the current allocation and the aggregate feedback from earlier submissions.</li><li>Change one aspect of how capacity is distributed and validate the architecture.</li><li>Train and score the candidate, then keep, revise, or reject the allocation hypothesis.</li></ol><h2>What the agent may change</h2><ul><li>How decoder width is distributed from early to late layers.</li><li>Whether the residual stream keeps a fixed width.</li><li>How input and output boundary widths are handled.</li><li>How representations expand when width changes between layers.</li></ul><h2>What stays fixed</h2><ul><li>Decoder depth, attention and MLP structure, tokenizer, and training data.</li><li>The parameter and compute ceilings.</li><li>Initialization, optimizer, schedule, update count, and precision.</li><li>The training-based Judge and its loss aggregation.</li></ul><h2>Evaluation</h2><p>The Judge reconstructs the submitted architecture and trains it with the fixed trajectory. The reward is negative late-training loss, so a higher score means a lower loss. Only aggregate loss and budget accounting are returned.</p>
+
+  <h2>Links</h2>
+  <ul>
+    <li><a href="https://github.com/OpenRSI-Foundation/OpenRSI-Index/tree/main/rsi-tasks/depth-width-allocation" target="_blank" rel="noopener">Task package (instruction, policy, tests) ↗</a></li><li><span>Run logs are not currently published.</span></li>
+    <li><a href="https://github.com/ZhaofengWu/variable-width-transformers" target="_blank" rel="noopener">Source project ↗</a></li>
+    <li><a href="https://arxiv.org/abs/2606.18246" target="_blank" rel="noopener">Paper ↗</a></li>
+  </ul>
+</article>
+
+<footer class="site">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="wm">OpenRSI <span class="dex">Index</span></div>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="../blog/introducing-rsi-index.html">Blog</a></li>
+          <li><a href="../tasks.html">Task Sample</a></li>
+          <li><a href="../contribute.html">Contribute</a></li>
+          <li><a href="../team.html">Team</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul>
+          <li><a href="https://github.com/OpenRSI-Foundation/OpenRSI-Index" target="_blank" rel="noopener">GitHub ↗</a></li>
+          <li><a href="https://github.com/OpenRSI-Foundation/OpenRSI-Index/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">RSI-Anything pipeline ↗</a></li>
+          <li><a href="../blog/introducing-rsi-index.html">Announcement</a></li>
+          <li><a href="../tasks.html">Task Sample</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-base">
+    <span>© 2026 OpenRSI Index · Preview v0.1</span>
+  </div>
+</footer>
+
+<script src="../assets/sky-pages.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

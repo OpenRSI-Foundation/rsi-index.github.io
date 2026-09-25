@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>GPIC Leaderboard — OpenRSI Index</title>
+<meta content="Improve text-to-image generation from a shared JiT checkpoint, with at most one continuation pass over the same 10M-image GPIC subset." name="description"/>
+<meta content="#000000" name="theme-color"/>
+<meta content="website" property="og:type"/>
+<meta content="GPIC Leaderboard — OpenRSI Index" property="og:title"/>
+<meta content="Improve text-to-image generation from a shared JiT checkpoint, with at most one continuation pass over the same 10M-image GPIC subset." property="og:description"/>
+<meta content="https://rsi-first-exam.rsi-anything.workers.dev/assets/og.png" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<link href="../assets/favicon.png?v=20260922-rounded" rel="icon" type="image/png"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&amp;family=Instrument+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/style.css?v=20260922-rounded" rel="stylesheet"/>
+<link href="../assets/startrails.css?v=20260922-rounded" rel="stylesheet"/>
+<link href="../assets/sky-pages.css" rel="stylesheet"/>
+<link href="../assets/type.css?v=20260920-scale" rel="stylesheet"/>
+<link href="../assets/signature-details.css" rel="stylesheet"/></head>
+<body class="skypage signature-page">
+<div class="skybg" data-sky-page aria-hidden="true"><canvas class="f3d"></canvas></div>
+<nav class="nav">
+<div class="nav-inner">
+<a aria-label="OpenRSI Index home" class="brand" href="../index.html">
+<img alt="" class="brand-mark" height="23" src="../assets/openrsi-mark.png?v=20260922-rounded" width="23"/>
+      OpenRSI Index
+    </a>
+<button aria-expanded="false" aria-label="Menu" class="nav-toggle" type="button">Menu</button>
+<div class="nav-links">
+<a href="../blog/introducing-rsi-index.html">Blog</a>
+<a class="active" href="../tasks.html">Task Sample</a>
+<a href="../contribute.html">Contribute</a>
+<a href="../team.html">Team</a>
+<a class="ext" href="https://github.com/OpenRSI-Foundation/OpenRSI-Index" rel="noopener" target="_blank">GitHub ↗</a>
+</div>
+</div>
+</nav>
+<header class="pagehead lb-head detail-head sky-hero" data-sky-hero>
+  <div class="wrap">
+    <p class="eyebrow"><a href="../tasks.html">Task Sample</a> · Signature · Vision</p>
+    <h1 class="h-lg"><span class="hl" data-split>GPIC Leaderboard</span></h1>
+  </div>
+</header>
+<div class="sky-ground" aria-hidden="true"></div>
+<article class="article detail signature-detail" data-signature="gpic-leaderboard">
+<p class="standfirst">Start from a 1.1B JiT text-to-image checkpoint trained for one pass over 10M GPIC images, and make it generate better with at most one more pass over the same images.</p>
+
+<section id="results">
+  <h2>The research</h2>
+  <div class="sig-figures"><figure class="task-fig">
+<div class="fig-body"><img alt="Image-caption pairs from Figure 1 of the GPIC paper" decoding="async" height="1064" loading="lazy" src="../assets/tasks/gpic-figure1.jpg" style="width:100%;height:100%;object-fit:cover" width="1400"/></div>
+<figcaption class="fig-cap"><a href="https://arxiv.org/abs/2605.30341" rel="noopener" target="_blank">GPIC: A Giant Permissive Image Corpus for Visual Generation</a><span class="src-tag">Stanford</span></figcaption>
+</figure><figure class="task-fig">
+<div aria-label="Research figure; scroll horizontally on small screens" class="fig-body gpic-scroll" role="region" tabindex="0"><svg aria-labelledby="gpic-result-title gpic-result-desc" class="gpic-fig gpic-results" role="img" viewbox="0 0 700 532">
+<title id="gpic-result-title">FD-DINOv2 of each agent’s checkpoints over research time</title>
+<desc id="gpic-result-desc">Claude Code · Opus 5: best FD 729.3. Codex · GPT-5.6 Sol: best FD 1043.4. The start checkpoint scores 1286.45. Dots are screening scores against the validation reference; step lines are each agent’s best so far. Lower is better.</desc>
+<text style="font-family:var(--font-sans),Arial,sans-serif;font-size:22px;fill:#141413;font-weight:600" text-anchor="start" x="28" y="40">FD-DINOv2 · lower is better</text>
+<line stroke="#dedbd2" stroke-width="1" x1="84" x2="672" y1="440.0" y2="440.0"></line>
+<text style="font-family:var(--font-mono),Menlo,monospace;font-size:13px;fill:#5e5d59" text-anchor="end" x="74" y="445.0">700</text>
+<line stroke="#dedbd2" stroke-width="1" x1="84" x2="672" y1="390.9" y2="390.9"></line>
+<text style="font-family:var(--font-mono),Menlo,monospace;font-size:13px;fill:#5e5d59" text-anchor="end" x="74" y="395.9">800</text>
+<line stroke="#dedbd2" stroke-width="1" x1="84" x2="672" y1="341.7" y2="341.7"></line>
+<text style="font-family:var(--font-mono),Menlo,monospace;font-size:13px;fill:#5e5d59" text-anchor="end" x="74" y="346.7">900</text>
+<line stroke="#dedbd2" stroke-width="1" x1="84" x2="672" y1="292.6" y2="292.6"></line>
+<text style="font-family:var(--font-mono),Menlo,monospace;font-size:13px;fill:#5e5d59" text-anchor="end" x="74" y="297.6">1000</text>
+<line stroke="#dedbd2" stroke-width="1" x1="84" x2="672" y1="243.4" y2="243.4"></line>
+<text style="font-family:var(--font-mono),Menlo,monospace;font-size:13px;fill:#5e5d59" text-anchor="end" x="74" y="248.4">1100</text>
+<line stroke="#dedbd2" stroke-width="1" x1="84" x2="672" y1="194.3" y2="194.3"></line>
+<text style="font-family:var(--font-mono),Menlo,monospace;font-size:13px;fill:#5e5d59" text-anchor="end" x="74" y="199.3">1200</text>
+<line stroke="#dedbd2" stroke-width="1" x1="84" x2="672" y1="145.1" y2="145.1"></line>
+<text style="font-family:var(--font-mono),Menlo,monospace;font-size:13px;fill:#5e5d59" text-anchor="end" x="74" y="150.1">1300</text>
+<line stroke="#dedbd2" stroke-width="1" x1="84" x2="672" y1="96.0" y2="96.0"></line>
+<text style="font-family:var(--font-mono),Menlo,monospace;font-size:13px;fill:#5e5d59" text-anchor="end" x="74" y="101.0">1400</text>
+<line stroke="#141413" stroke-dasharray="7 4" stroke-width="1.6" x1="84" x2="672" y1="151.8" y2="151.8"></line>
+<text style="font-family:var(--font-sans),Arial,sans-serif;font-size:13.5px;fill:#141413;font-weight:700" text-anchor="end" x="672" y="142.8">Start checkpoint · 1286.45</text>
+<text style="font-family:var(--font-mono),Menlo,monospace;font-size:13px;fill:#5e5d59" text-anchor="middle" x="84.0" y="464">0</text>
+<text style="font-family:var(--font-mono),Menlo,monospace;font-size:13px;fill:#5e5d59" text-anchor="middle" x="231.0" y="464">5</text>
+<text style="font-family:var(--font-mono),Menlo,monospace;font-size:13px;fill:#5e5d59" text-anchor="middle" x="378.0" y="464">10</text>
+<text style="font-family:var(--font-mono),Menlo,monospace;font-size:13px;fill:#5e5d59" text-anchor="middle" x="525.0" y="464">15</text>
+<text style="font-family:var(--font-mono),Menlo,monospace;font-size:13px;fill:#5e5d59" text-anchor="middle" x="672.0" y="464">20</text>
+<text style="font-family:var(--font-sans),Arial,sans-serif;font-size:13.5px;fill:#5e5d59;font-weight:600;letter-spacing:0.08em" text-anchor="middle" x="378.0" y="490">ELAPSED TIME (H)</text>
+<circle cx="90.1" cy="101.8" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-002-l0-probe-r1 · 0.2 h · FD 1388.3</title></circle>
+<circle cx="94.1" cy="156.5" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-003-root-eval-r1 · 0.3 h · FD 1276.9</title></circle>
+<circle cx="94.1" cy="151.8" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-003-root-eval-r1 · 0.3 h · FD 1286.5</title></circle>
+<circle cx="127.8" cy="280.3" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-011-cooldown · 1.5 h · FD 1025.0</title></circle>
+<circle cx="127.8" cy="276.2" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-010-ctrl · 1.5 h · FD 1033.3</title></circle>
+<circle cx="127.8" cy="262.7" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-011-cooldown · 1.5 h · FD 1060.7</title></circle>
+<circle cx="127.8" cy="247.0" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-010-ctrl · 1.5 h · FD 1092.6</title></circle>
+<circle cx="136.1" cy="283.0" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-013-nullp0 · 1.8 h · FD 1019.6</title></circle>
+<circle cx="136.1" cy="261.0" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-013-nullp0 · 1.8 h · FD 1064.2</title></circle>
+<circle cx="139.1" cy="297.7" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-015-diag-cfg-noise · 1.9 h · FD 989.6</title></circle>
+<circle cx="139.1" cy="247.2" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-015-diag-cfg-noise · 1.9 h · FD 1092.2</title></circle>
+<circle cx="139.1" cy="208.7" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-015-diag-cfg-noise · 1.9 h · FD 1170.7</title></circle>
+<circle cx="139.1" cy="152.0" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-015-diag-cfg-noise · 1.9 h · FD 1286.0</title></circle>
+<circle cx="142.7" cy="329.8" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-014-mg05 · 2.0 h · FD 924.3</title></circle>
+<circle cx="142.7" cy="293.4" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-014-mg05 · 2.0 h · FD 998.3</title></circle>
+<circle cx="192.4" cy="282.6" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-012-cropc · 3.7 h · FD 1020.3</title></circle>
+<circle cx="192.4" cy="260.2" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-012-cropc · 3.7 h · FD 1065.9</title></circle>
+<circle cx="371.4" cy="277.8" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-022-ctrl-seed1 · 9.8 h · FD 1030.0</title></circle>
+<circle cx="371.7" cy="286.1" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-023-stack3 · 9.8 h · FD 1013.1</title></circle>
+<circle cx="375.1" cy="361.9" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-020-mg10 · 9.9 h · FD 858.9</title></circle>
+<circle cx="378.3" cy="366.6" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-024-mg10-stack3 · 10.0 h · FD 849.3</title></circle>
+<circle cx="418.6" cy="332.7" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-025-ctrl-long · 11.4 h · FD 918.3</title></circle>
+<circle cx="418.6" cy="307.3" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-025-ctrl-long · 11.4 h · FD 970.0</title></circle>
+<circle cx="619.6" cy="425.6" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-033-mg30s3 · 18.2 h · FD 729.3</title></circle>
+<circle cx="619.6" cy="407.2" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-032-mg20s3 · 18.2 h · FD 766.8</title></circle>
+<circle cx="619.8" cy="385.7" fill="#d9773a" fill-opacity="0.45" r="4.2"><title>Claude Code · Opus 5 · c10m-034-mgema05cc · 18.2 h · FD 810.6</title></circle>
+<path d="M90.1 101.8 H94.1 V156.5 H127.8 V280.3 H136.1 V283.0 H139.1 V297.7 H142.7 V329.8 H375.1 V361.9 H378.3 V366.6 H619.6 V425.6 H625.8" fill="none" stroke="#d9773a" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"></path>
+<circle cx="619.8" cy="425.6" fill="#d9773a" r="5.2" stroke="#f5f2ea" stroke-width="1.6"></circle>
+<text style="font-family:var(--font-sans),Arial,sans-serif;font-size:14px;fill:#d9773a;font-weight:700;paint-order:stroke;stroke:#e6e3da;stroke-width:4px;stroke-linejoin:round" text-anchor="end" x="611.8" y="411.6">Claude Code · Opus 5 · 729.3</text>
+<circle cx="92.4" cy="151.4" fill="#2f9e7a" fill-opacity="0.45" r="4.2"><title>Codex · GPT-5.6 Sol · l1-fd-screen-4096 · 0.3 h · FD 1287.4</title></circle>
+<circle cx="92.4" cy="150.2" fill="#2f9e7a" fill-opacity="0.45" r="4.2"><title>Codex · GPT-5.6 Sol · l1-fd-screen-4096 · 0.3 h · FD 1289.7</title></circle>
+<circle cx="103.3" cy="154.2" fill="#2f9e7a" fill-opacity="0.45" r="4.2"><title>Codex · GPT-5.6 Sol · l2-fd-replication-4096-seed1 · 0.7 h · FD 1281.5</title></circle>
+<circle cx="103.3" cy="153.1" fill="#2f9e7a" fill-opacity="0.45" r="4.2"><title>Codex · GPT-5.6 Sol · l2-fd-replication-4096-seed1 · 0.7 h · FD 1283.8</title></circle>
+<circle cx="136.3" cy="173.2" fill="#2f9e7a" fill-opacity="0.45" r="4.2"><title>Codex · GPT-5.6 Sol · l2-fd-confirm-16384-seed2 · 1.8 h · FD 1242.9</title></circle>
+<circle cx="136.3" cy="171.7" fill="#2f9e7a" fill-opacity="0.45" r="4.2"><title>Codex · GPT-5.6 Sol · l2-fd-confirm-16384-seed2 · 1.8 h · FD 1245.9</title></circle>
+<circle cx="186.5" cy="205.8" fill="#2f9e7a" fill-opacity="0.45" r="4.2"><title>Codex · GPT-5.6 Sol · l2-fd-ema999-vs-ema9999-4096 · 3.5 h · FD 1176.6</title></circle>
+<circle cx="186.5" cy="153.1" fill="#2f9e7a" fill-opacity="0.45" r="4.2"><title>Codex · GPT-5.6 Sol · l2-fd-ema999-vs-ema9999-4096 · 3.5 h · FD 1283.7</title></circle>
+<circle cx="197.1" cy="199.5" fill="#2f9e7a" fill-opacity="0.45" r="4.2"><title>Codex · GPT-5.6 Sol · l2-fd-ema999-replication-4096-seed4 · 3.8 h · FD 1189.5</title></circle>
+<circle cx="197.1" cy="146.0" fill="#2f9e7a" fill-opacity="0.45" r="4.2"><title>Codex · GPT-5.6 Sol · l2-fd-ema999-replication-4096-seed4 · 3.8 h · FD 1298.4</title></circle>
+<circle cx="374.1" cy="242.4" fill="#2f9e7a" fill-opacity="0.45" r="4.2"><title>Codex · GPT-5.6 Sol · l3-fd-4000-vs-1000-4096 · 9.9 h · FD 1102.1</title></circle>
+<circle cx="374.1" cy="198.1" fill="#2f9e7a" fill-opacity="0.45" r="4.2"><title>Codex · GPT-5.6 Sol · l3-fd-4000-vs-1000-4096 · 9.9 h · FD 1192.3</title></circle>
+<circle cx="432.6" cy="271.2" fill="#2f9e7a" fill-opacity="0.45" r="4.2"><title>Codex · GPT-5.6 Sol · l3-fd-confirm-4000-vs-1000-16384-seed6 · 11.9 h · FD 1043.4</title></circle>
+<circle cx="432.6" cy="229.4" fill="#2f9e7a" fill-opacity="0.45" r="4.2"><title>Codex · GPT-5.6 Sol · l3-fd-confirm-4000-vs-1000-16384-seed6 · 11.9 h · FD 1128.6</title></circle>
+<path d="M92.4 151.4 H103.3 V154.2 H136.3 V173.2 H186.5 V205.8 H374.1 V242.4 H432.6 V271.2 H438.6" fill="none" stroke="#2f9e7a" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.6"></path>
+<circle cx="432.6" cy="271.2" fill="#2f9e7a" r="5.2" stroke="#f5f2ea" stroke-width="1.6"></circle>
+<text style="font-family:var(--font-sans),Arial,sans-serif;font-size:14px;fill:#2f9e7a;font-weight:700;paint-order:stroke;stroke:#e6e3da;stroke-width:4px;stroke-linejoin:round" text-anchor="start" x="450.6" y="293.2">Codex · GPT-5.6 Sol · 1043.4</text>
+</svg></div>
+<figcaption class="fig-cap">FD-DINOv2 is the Fréchet distance between DINOv2 features of generated images and of the validation reference; lower means closer to real images. Each step line is an agent’s best so far.<span class="gpic-swipe-hint">Swipe to explore →</span></figcaption>
+</figure></div>
+</section>
+
+<section id="task">
+  <h2>The task</h2>
+  <p>Architecture, objective, optimizer, schedule, weight averaging and sampler are open. Each candidate reads the shared 10M subset at most once, generates 256 × 256 images at guidance 1, and is scored by FD-DINOv2 against the validation reference.</p>
+</section>
+
+<section id="baseline">
+  <h2>Reference baseline</h2>
+  <p>PixelGen’s JiT_T2I checkpoint at step 39,060: 1.12B parameters with Qwen3-1.7B text conditioning, screening FD <b>1286.45</b>.</p>
+</section>
+
+<div class="sig-boundaries">
+  <section>
+    <h2>What the agent may change</h2>
+    <ul>
+      <li>Model architecture and parameterization.</li>
+      <li>Objective, conditioning and regularization.</li>
+      <li>Optimizer, schedule, EMA, transforms and sampler.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>What stays fixed</h2>
+    <ul>
+      <li>The starting checkpoint and the 10M subset, one pass per candidate.</li>
+      <li>256 × 256 output at guidance 1.</li>
+      <li>The FD-DINOv2 evaluator; DINO is evaluation-only.</li>
+    </ul>
+  </section>
+</div>
+
+<section id="evaluation">
+  <h2>Evaluation</h2>
+  <p>FD-DINOv2 is the Fréchet distance between DINOv2 features of generated images and of the validation reference; lower is better. The final submission is one image per frozen evaluation caption, 50,000 in all.</p>
+</section>
+
+<section id="research">
+  <h2>Agent runs</h2>
+  <div class="sig-research-grid">
+    <article class="sig-run" data-agent="codex">
+      <h3>Codex · GPT-5.6 Sol</h3>
+      <p>Removed conditioning dropout, moved EMA decay from 0.9999 to 0.999, then trained to 4,000 updates. Best FD <b>1043.39</b>, against 1128.60 for the 1,000-update anchor on the same 16,384 images.</p>
+    </article>
+    <article class="sig-run" data-agent="claude">
+      <h3>Claude Code · Opus 5</h3>
+      <p>Guidance-target distillation from the frozen starting model as teacher, with LR cooldown, center crops and no conditioning dropout. Best FD <b>729.33</b> at 6,000 updates, against 1033.32 for the plain continuation on the same 10,000 images.</p>
+    </article>
+  </div>
+  <details class="sig-details"><summary>Claude Code · Opus 5 — recorded evaluations</summary>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Claude Code · Opus 5 evaluation records">
+<table class="runs"><thead><tr><th>Experiment</th><th class="r">Hours</th><th class="r">FD ↓</th><th>Evaluation</th></tr></thead>
+<tbody><tr><td>c10m-002-l0-probe-r1</td><td class="r">0.21</td><td class="r">1388.2985</td><td>step 300 · EMA · 2k images</td></tr><tr><td>c10m-003-root-eval-r1</td><td class="r">0.34</td><td class="r">1286.4504</td><td>Root · EMA · 10k images</td></tr><tr><td>c10m-003-root-eval-r1</td><td class="r">0.34</td><td class="r">1276.8639</td><td>Root · Raw · 10k images</td></tr><tr><td>c10m-010-ctrl</td><td class="r">1.49</td><td class="r">1033.3217</td><td>step 6,000 · EMA · 10k images</td></tr><tr><td>c10m-010-ctrl</td><td class="r">1.49</td><td class="r">1092.6395</td><td>step 6,000 · Raw · 10k images</td></tr><tr><td>c10m-011-cooldown</td><td class="r">1.49</td><td class="r">1024.9618</td><td>step 6,000 · EMA · 10k images</td></tr><tr><td>c10m-011-cooldown</td><td class="r">1.49</td><td class="r">1060.7225</td><td>step 6,000 · Raw · 10k images</td></tr><tr><td>c10m-013-nullp0</td><td class="r">1.77</td><td class="r">1019.5685</td><td>step 6,000 · EMA · 10k images</td></tr><tr><td>c10m-013-nullp0</td><td class="r">1.77</td><td class="r">1064.2368</td><td>step 6,000 · Raw · 10k images</td></tr><tr><td>c10m-015-diag-cfg-noise</td><td class="r">1.88</td><td class="r">1170.6590</td><td>Root · CFG 1.5 · diagnostic</td></tr><tr><td>c10m-015-diag-cfg-noise</td><td class="r">1.88</td><td class="r">1092.2409</td><td>Root · CFG 2.0 · diagnostic</td></tr><tr><td>c10m-015-diag-cfg-noise</td><td class="r">1.88</td><td class="r">989.5696</td><td>Root · CFG 3.0 · diagnostic</td></tr><tr><td>c10m-015-diag-cfg-noise</td><td class="r">1.88</td><td class="r">1286.0265</td><td>Root · EMA · Seed1 · diagnostic</td></tr><tr><td>c10m-014-mg05</td><td class="r">2.00</td><td class="r">924.2950</td><td>step 6,000 · EMA · 10k images</td></tr><tr><td>c10m-014-mg05</td><td class="r">2.00</td><td class="r">998.3410</td><td>step 6,000 · Raw · 10k images</td></tr><tr><td>c10m-012-cropc</td><td class="r">3.69</td><td class="r">1020.2608</td><td>step 6,000 · EMA · 10k images</td></tr><tr><td>c10m-012-cropc</td><td class="r">3.69</td><td class="r">1065.9068</td><td>step 6,000 · Raw · 10k images</td></tr><tr><td>c10m-022-ctrl-seed1</td><td class="r">9.78</td><td class="r">1029.9870</td><td>step 6,000 · EMA · 10k images</td></tr><tr><td>c10m-023-stack3</td><td class="r">9.78</td><td class="r">1013.1067</td><td>step 6,000 · EMA · 10k images</td></tr><tr><td>c10m-020-mg10</td><td class="r">9.90</td><td class="r">858.9091</td><td>step 6,000 · EMA · 10k images</td></tr><tr><td>c10m-024-mg10-stack3</td><td class="r">10.01</td><td class="r">849.3444</td><td>step 6,000 · EMA · 10k images</td></tr><tr><td>c10m-025-ctrl-long</td><td class="r">11.38</td><td class="r">970.0202</td><td>step 12,000 · EMA · 10k images</td></tr><tr><td>c10m-025-ctrl-long</td><td class="r">11.38</td><td class="r">918.3345</td><td>step 18,000 · EMA · 10k images</td></tr><tr><td>c10m-032-mg20s3</td><td class="r">18.22</td><td class="r">766.8241</td><td>step 6,000 · EMA · 10k images</td></tr><tr><td>c10m-033-mg30s3</td><td class="r">18.22</td><td class="r">729.3343</td><td>step 6,000 · EMA · 10k images</td></tr><tr><td>c10m-034-mgema05cc</td><td class="r">18.22</td><td class="r">810.5863</td><td>step 6,000 · EMA · 10k images</td></tr></tbody></table></div></details>
+<details class="sig-details"><summary>Codex · GPT-5.6 Sol — recorded evaluations</summary>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Codex · GPT-5.6 Sol evaluation records">
+<table class="runs"><thead><tr><th>Experiment</th><th class="r">Hours</th><th class="r">FD ↓</th><th>Evaluation</th></tr></thead>
+<tbody><tr><td>l1-fd-screen-4096</td><td class="r">0.28</td><td class="r">1287.3553</td><td>Candidate</td></tr><tr><td>l1-fd-screen-4096</td><td class="r">0.28</td><td class="r">1289.7331</td><td>Control</td></tr><tr><td>l2-fd-replication-4096-seed1</td><td class="r">0.66</td><td class="r">1281.4701</td><td>Candidate</td></tr><tr><td>l2-fd-replication-4096-seed1</td><td class="r">0.66</td><td class="r">1283.7857</td><td>Control</td></tr><tr><td>l2-fd-confirm-16384-seed2</td><td class="r">1.78</td><td class="r">1242.9012</td><td>Candidate</td></tr><tr><td>l2-fd-confirm-16384-seed2</td><td class="r">1.78</td><td class="r">1245.9152</td><td>Control</td></tr><tr><td>l2-fd-ema999-vs-ema9999-4096</td><td class="r">3.49</td><td class="r">1176.6009</td><td>Candidate</td></tr><tr><td>l2-fd-ema999-vs-ema9999-4096</td><td class="r">3.49</td><td class="r">1283.7130</td><td>Control</td></tr><tr><td>l2-fd-ema999-replication-4096-seed4</td><td class="r">3.85</td><td class="r">1189.4820</td><td>Candidate</td></tr><tr><td>l2-fd-ema999-replication-4096-seed4</td><td class="r">3.85</td><td class="r">1298.3544</td><td>Control</td></tr><tr><td>l3-fd-4000-vs-1000-4096</td><td class="r">9.87</td><td class="r">1102.1357</td><td>Candidate</td></tr><tr><td>l3-fd-4000-vs-1000-4096</td><td class="r">9.87</td><td class="r">1192.2768</td><td>Control</td></tr><tr><td>l3-fd-confirm-4000-vs-1000-16384-seed6</td><td class="r">11.86</td><td class="r">1043.3926</td><td>Candidate</td></tr><tr><td>l3-fd-confirm-4000-vs-1000-16384-seed6</td><td class="r">11.86</td><td class="r">1128.5966</td><td>Control</td></tr></tbody></table></div></details>
+</section>
+
+<section class="sig-links" id="links">
+  <h2>Links</h2>
+  <ul><li><a class="tc-link" href="https://github.com/OpenRSI-Foundation/OpenRSI-Index/tree/main/rsi-tasks/signature-tasks/gpic_generation" rel="noopener" target="_blank">task ↗</a></li><li><a class="tc-link" href="https://github.com/OpenRSI-Foundation/OpenRSI-Index/tree/main/rsi-logs/signature-tasks/gpic-10m-autoresearch/codex-gpt-5.6-sol" rel="noopener" target="_blank">Codex trajectory ↗</a></li><li><a class="tc-link" href="https://github.com/OpenRSI-Foundation/OpenRSI-Index/tree/main/rsi-logs/signature-tasks/gpic-10m-autoresearch/claude-code-claude-opus-5" rel="noopener" target="_blank">Claude trajectory ↗</a></li></ul>
+  <a class="sig-back" href="../tasks.html">← All task samples</a>
+</section>
+</article>
+<footer class="site">
+<div class="footer-inner">
+<div class="footer-brand">
+<div class="wm">OpenRSI <span class="dex">Index</span></div>
+</div>
+<div class="footer-cols">
+<div>
+<h4>Site</h4>
+<ul>
+<li><a href="../blog/introducing-rsi-index.html">Blog</a></li>
+<li><a href="../tasks.html">Task Sample</a></li>
+<li><a href="../contribute.html">Contribute</a></li>
+<li><a href="../team.html">Team</a></li>
+</ul>
+</div>
+<div>
+<h4>Project</h4>
+<ul>
+<li><a href="https://github.com/OpenRSI-Foundation/OpenRSI-Index" rel="noopener" target="_blank">GitHub ↗</a></li>
+<li><a href="https://github.com/OpenRSI-Foundation/OpenRSI-Index/blob/main/CONTRIBUTING.md" rel="noopener" target="_blank">RSI-Anything pipeline ↗</a></li>
+<li><a href="../blog/introducing-rsi-index.html">Announcement</a></li>
+<li><a href="../tasks.html">Task Sample</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="footer-base">
+<span>© 2026 OpenRSI Index · Preview v0.1</span>
+</div>
+</footer>
+<script src="../assets/sky-pages.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>
